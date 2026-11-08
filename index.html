@@ -231,7 +231,27 @@ h1 { font-size: 1.55rem; line-height: 1.1; }
 .field > span { font-size: 0.8rem; font-weight: 800; color: var(--muted); }
 .input, .field input, .field select { width: 100%; min-width: 0; border: 1.5px solid var(--line); background: var(--surface-2); border-radius: 14px; padding: 10px 12px; }
 .input:focus, .field input:focus, .field select:focus { border-color: var(--accent); outline: none; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; align-items: end; }
+/* one height for every text box, date box and dropdown (iOS draws date inputs taller by default) */
+.field input, .field select, select.input, input.input { height: 46px; line-height: 1.2; font-size: 0.95rem; }
+.field input[type="date"] { -webkit-appearance: none; appearance: none; display: flex; align-items: center; text-align: left; }
+.field input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+.field select, select.input { -webkit-appearance: none; appearance: none; padding-right: 34px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%238f86a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 13px center; }
+.log-amt.inc { color: var(--mint-ink); }
+.log-amt small.back { color: var(--mint-ink); }
+.kpi.wide { grid-column: 1 / -1; }
+#fMode { margin-top: -4px; }
+.sheet { grid-template-columns: minmax(0, 1fr); }
+.sheet > *, .row > * { min-width: 0; }
+.field select { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+.paybacks { display: grid; gap: 4px; background: var(--mint-bg); border-radius: 18px; padding: 10px 12px; }
+.paybacks .lbl { color: var(--mint-ink); }
+.pb-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto auto; gap: 10px; align-items: center; }
+.pb-row .bub { width: 34px; height: 34px; border-radius: 11px; font-size: 1rem; }
+.pb-row .ghost { padding: 5px 10px; font-size: 0.78rem; }
+.pb-row .ghost.armed { background: var(--rose-ink); color: var(--surface); }
 .themes { display: flex; flex-wrap: wrap; gap: 10px; }
 .swatch { width: 46px; height: 46px; border-radius: 16px; border: 3px solid var(--surface); box-shadow: 0 0 0 1.5px var(--line); background: hsl(var(--sh) 75% 80%); }
 .swatch[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--accent-strong); }
@@ -367,6 +387,10 @@ button, label, .log { touch-action: manipulation; }
 <form class="sheet" id="logSheet" role="dialog" aria-modal="true" aria-labelledby="logTitle" hidden novalidate>
   <div class="grab" aria-hidden="true"></div>
   <div class="sheet-head"><h2 id="logTitle">Log spending</h2><button type="button" class="x" data-close aria-label="Close">✕</button></div>
+  <div class="seg" id="fMode" role="group" aria-label="Type of log">
+    <button type="button" data-mode="spend" aria-pressed="true">Spending</button>
+    <button type="button" data-mode="in" aria-pressed="false">Money in</button>
+  </div>
   <div class="amount-box">
     <select id="fCur" aria-label="Currency"></select>
     <input id="fAmt" inputmode="decimal" placeholder="0.00" autocomplete="off" aria-label="Amount">
@@ -377,16 +401,21 @@ button, label, .log { touch-action: manipulation; }
     <span id="fRateTo">USD</span>
     <span class="conv" id="fConv"></span>
   </div>
-  <div class="field"><span>Category</span><div class="catgrid" id="fCats"></div></div>
+  <div class="field" id="fCatsWrap"><span>Category</span><div class="catgrid" id="fCats"></div></div>
+  <div class="field" id="fInWrap" hidden><span>What came in?</span><div class="catgrid" id="fInCats"></div></div>
+  <label class="field" id="fForWrap" hidden><span>Paid back for which log?</span><select id="fFor"></select></label>
+  <p class="inline-note" id="fForNote" hidden></p>
   <div class="row">
     <label class="field"><span>Date</span><input type="date" id="fDate"></label>
-    <label class="field"><span>Note</span><input id="fNote" maxlength="80" placeholder="Optional"></label>
+    <label class="field"><span id="fNoteLbl">Note</span><input id="fNote" maxlength="80" placeholder="Optional"></label>
   </div>
+  <div class="paybacks" id="fPaybacks" hidden></div>
   <p class="msg" id="fMsg" aria-live="polite"></p>
   <div class="btn-row">
     <button type="submit" class="primary" id="fSave">Save log</button>
   </div>
   <div class="btn-row" id="fEditBtns" hidden>
+    <button type="button" class="secondary" id="fAddBack">Someone paid me back</button>
     <button type="button" class="secondary" id="fDup">Log again today</button>
     <button type="button" class="danger" id="fDel">Delete</button>
   </div>
@@ -464,6 +493,7 @@ button, label, .log { touch-action: manipulation; }
     period: "week", anchor: todayKey(),
     logsMonth: todayKey().slice(0, 7), logsCat: "all", logsQuery: "",
     edit: null, formCat: null, lastCur: null, catEdit: null, catHue: 205, catFromLog: false, budgetDay: null,
+    mode: "spend", inKind: "payback",
     pendingCur: null,
   };
   const pending = {}; let pendingSettings = 0;
@@ -484,8 +514,11 @@ button, label, .log { touch-action: manipulation; }
   const tidyRate = v => +Number(v).toPrecision(6);
 
   // ---------- data helpers ----------
+  // expenses (the spending logs); income lives in the same month docs with kind "income"
   const allEntries = () => Object.values(st.months).flat().filter(e => e && e.kind !== "income" && validKey(e.date));
-  function homeCents(e) {
+  const allIncome = () => Object.values(st.months).flat().filter(e => e && e.kind === "income" && validKey(e.date));
+  // any amount record {amt, cur, cents, home} -> current home currency
+  function toHome(e) {
     const h = S.currency, cur = e.cur || e.home || h, eh = e.home || h;
     if (cur === h) return e.amt ?? e.cents;
     if (eh === h) return e.cents;
@@ -493,20 +526,36 @@ button, label, .log { touch-action: manipulation; }
     if (S.rates[cur]) return Math.round((e.amt ?? e.cents) * S.rates[cur]);
     return e.cents;
   }
+  const paidBackOf = e => (Array.isArray(e.paybacks) ? e.paybacks : []).reduce((t, p) => t + toHome(p), 0);
+  const grossCents = e => toHome(e);
+  // what a log really cost you: the amount paid minus anything paid back (never below zero)
+  const homeCents = e => e.kind === "income" ? toHome(e) : Math.max(0, toHome(e) - paidBackOf(e));
+  const INCOME_CATS = [
+    { id: "inc-salary", name: "Salary", emoji: "💼", hue: 205 },
+    { id: "inc-side", name: "Side gig", emoji: "🧁", hue: 28 },
+    { id: "inc-gift", name: "Gift", emoji: "🎀", hue: 340 },
+    { id: "inc-refund", name: "Refund", emoji: "🧾", hue: 165 },
+    { id: "inc-other", name: "Other income", emoji: "🌱", hue: 100 },
+  ];
+  const PAYBACK = { id: "payback", name: "Paid back", emoji: "🤝", hue: 155 };
   const activeCats = () => S.categories.filter(c => !c.archived);
-  const catOf = id => S.categories.find(c => c.id === id) || { id, name: "Uncategorized", emoji: "•", hue: 250 };
+  const catOf = id => S.categories.find(c => c.id === id) || INCOME_CATS.find(c => c.id === id) || { id, name: "Uncategorized", emoji: "•", hue: 250 };
   const dayBudget = k => Object.prototype.hasOwnProperty.call(S.dayBudgets, k) ? S.dayBudgets[k] : S.dailyBudgetCents;
   function context() {
-    const all = allEntries(), byDay = {};
+    const all = allEntries(), byDay = {}, logDays = new Set(), paybacks = [];
     let first = null;
-    for (const e of all) { byDay[e.date] = (byDay[e.date] || 0) + homeCents(e); if (!first || e.date < first) first = e.date; }
+    for (const e of all) {
+      byDay[e.date] = (byDay[e.date] || 0) + homeCents(e); logDays.add(e.date);
+      if (!first || e.date < first) first = e.date;
+      for (const p of e.paybacks || []) if (validKey(p.date)) paybacks.push({ p, e });
+    }
     for (const k of Object.keys(S.noSpend)) if (!first || k < first) first = k;
     const today = todayKey();
-    return { all, byDay, today, start: S.startDate || first || today };
+    return { all, byDay, logDays, income: allIncome(), paybacks, today, start: S.startDate || first || today };
   }
   const isNoSpend = k => !!S.noSpend[k];
-  // a day counts toward budget totals once it has logs or is marked as a no-spend day
-  const logged = (k, c) => (c.byDay[k] || 0) > 0 || isNoSpend(k);
+  // a day counts toward budget totals once it has logs (even fully paid back) or is marked as a no-spend day
+  const logged = (k, c) => c.logDays.has(k) || isNoSpend(k);
   const counted = (k, c) => k >= c.start && k <= c.today && logged(k, c);
   const missed = (k, c) => k >= c.start && k < c.today && !logged(k, c);
   function setNoSpend(k, on) {
@@ -596,11 +645,20 @@ button, label, .log { touch-action: manipulation; }
 
   // ---------- render: shared pieces ----------
   function logRow(e) {
-    const c = catOf(e.cat), cur = e.cur || S.currency, foreign = cur !== S.currency;
+    const c = catOf(e.cat), cur = e.cur || S.currency, foreign = cur !== S.currency, inc = e.kind === "income", back = inc ? 0 : paidBackOf(e);
+    const sub = back > 0 ? `<small class="back">${money(grossCents(e))} − ${money(back)} back</small>` : foreign ? `<small>${money(e.amt ?? e.cents, cur)}</small>` : "";
     return `<button type="button" class="log" data-id="${esc(e.id)}" data-mk="${esc(e.date.slice(0, 7))}">
       <span class="bub" style="--ch:${+c.hue || 0}">${esc(c.emoji)}</span>
       <span class="log-main"><span class="log-name">${esc(c.name)}${e.ex ? '<span class="ex">Example</span>' : ""}</span>${e.note ? `<span class="log-note">${esc(e.note)}</span>` : ""}</span>
-      <span class="log-amt">${money(homeCents(e))}${foreign ? `<small>${money(e.amt ?? e.cents, cur)}</small>` : ""}</span></button>`;
+      <span class="log-amt${inc ? " inc" : ""}">${inc ? "+" : ""}${money(homeCents(e))}${sub}</span></button>`;
+  }
+  // a payback shown on the day it arrived; tapping opens the expense it belongs to
+  function paybackRow({ p, e }) {
+    const c = catOf(e.cat), cur = p.cur || S.currency;
+    return `<button type="button" class="log" data-id="${esc(e.id)}" data-mk="${esc(e.date.slice(0, 7))}">
+      <span class="bub" style="--ch:${PAYBACK.hue}">${PAYBACK.emoji}</span>
+      <span class="log-main"><span class="log-name">Paid back${p.note ? " · " + esc(p.note) : ""}</span><span class="log-note">for ${esc(c.emoji)} ${esc(e.note || c.name)} · ${esc(fmtD(e.date, { month: "short", day: "numeric" }))}</span></span>
+      <span class="log-amt inc">+${money(toHome(p))}${cur !== S.currency ? `<small>${money(p.amt ?? p.cents, cur)}</small>` : ""}</span></button>`;
   }
   function diffChip(diff, hasBudget) {
     if (!hasBudget) return "";
@@ -686,13 +744,15 @@ button, label, .log { touch-action: manipulation; }
     if (W.budget > 0 && W.days >= 3 && W.diff >= W.budget * 0.3) { if (mood === "happy" || mood === "neutral") mood = "excited"; msgs.push(`You've saved ${money(W.diff)} this week. I'm so proud!`); }
     else if (W.budget > 0 && W.days >= 2 && W.diff < 0) msgs.push(`This week is ${money(-W.diff)} over so far. We can turn it around!`);
     if (d.streak >= 2) msgs.push(`${d.streak} days on budget in a row! Keep the streak alive.`);
+    const backToday = c.paybacks.filter(o => o.p.date === k).reduce((t, o) => t + toHome(o.p), 0);
+    if (backToday) { msgs.splice(1, 0, `${money(backToday)} came back to you ${when}. Nice!`); if (mood === "neutral") mood = "happy"; }
     const by = {}; c.all.forEach(x => { if (x.date >= w.sk && x.date < w.ek) by[x.cat] = (by[x.cat] || 0) + homeCents(x); });
     const topCat = Object.entries(by).sort((a, z) => z[1] - a[1])[0];
     if (topCat) msgs.push(`Most of this week went to ${catOf(topCat[0]).emoji} ${catOf(topCat[0]).name} (${money(topCat[1])}).`);
     msgs.push(...funFacts(daySeed(k), 3));
     return { mood, msgs };
   }
-  function buddyReport(T, c, word, list) {
+  function buddyReport(T, c, word, list, extra = {}) {
     const msgs = []; let mood = "neutral";
     if (!T.days && !list.length) { mood = "sleepy"; msgs.push(`Nothing tracked this ${word} yet.`); }
     else if (T.budget <= 0) msgs.push(`You spent ${money(T.spent)} this ${word}. Add a daily budget so I can compare!`);
@@ -700,6 +760,8 @@ button, label, .log { touch-action: manipulation; }
     else if (T.diff >= T.budget * 0.3) { mood = "excited"; msgs.push(`Wow, you saved ${money(T.diff)} this ${word}! That's ${Math.round(T.diff / T.budget * 100)}% of the budget.`); }
     else { mood = "happy"; msgs.push(`You're ${money(T.diff)} under budget this ${word}. Steady!`); }
     if (T.noSpend) msgs.push(`${T.noSpend} no-spend day${T.noSpend > 1 ? "s" : ""} this ${word}. Love that!`);
+    if (extra.backSum) msgs.push(`Friends paid you back ${money(extra.backSum)} this ${word}, so your real spending is lower.`);
+    if (extra.incTotal) msgs.push(`${money(extra.incTotal)} came in this ${word}. Ka-ching!`);
     if (T.notLogged) msgs.push(`${T.notLogged} day${T.notLogged > 1 ? "s aren't" : " isn't"} logged yet. Tap “Not logged” below to fill ${T.notLogged > 1 ? "them" : "it"} in.`);
     if (T.days) msgs.push(`You average ${money(Math.round(T.spentCounted / T.days))} a day this ${word}.`);
     msgs.push(...funFacts(daySeed(todayKey()) + 1, 2));
@@ -787,7 +849,13 @@ button, label, .log { touch-action: manipulation; }
           : `<p class="empty">Nothing logged ${k === c.today ? "yet today" : "on this day"}. Tap <b>+</b> to add spending${canMark ? ", or mark it as a no-spend day" : ""}.</p>
              ${canMark ? `<button type="button" class="nospend-btn" id="markNoSpend"><span class="ns-badge" aria-hidden="true">✓</span>I didn't spend anything ${k === c.today ? "today" : "this day"}</button>` : ""}
              ${missed(k, c) ? `<p class="inline-note" style="text-align:center">Until you log or mark it, this day isn't counted in your reports.</p>` : ""}`}</div>
-      </div>`;
+      </div>
+      ${(() => {
+        const ins = [...c.income.filter(x => x.date === k).map(x => ({ t: x.at || 0, html: logRow(x), cents: homeCents(x) })),
+                     ...c.paybacks.filter(o => o.p.date === k).map(o => ({ t: o.p.at || 0, html: paybackRow(o), cents: toHome(o.p) }))].sort((a, z) => z.t - a.t);
+        if (!ins.length) return "";
+        return `<div class="card"><div class="card-head"><h2>Money in</h2><span class="chip good">+${money(ins.reduce((t, x) => t + x.cents, 0))}</span></div><div class="logs">${ins.map(x => x.html).join("")}</div></div>`;
+      })()}`;
     const mk = $("markNoSpend"); if (mk) mk.onclick = () => { if (!readOnly) setNoSpend(st.day, true); };
     const um = $("unmarkNoSpend"); if (um) um.onclick = () => { if (!readOnly) setNoSpend(st.day, false); };
     $("dayPrev").onclick = () => { st.day = shiftKey(st.day, -1); render(); };
@@ -869,7 +937,12 @@ button, label, .log { touch-action: manipulation; }
     }
     const hasB = T.budget > 0;
     const biggest = list.slice().sort((a, z) => homeCents(z) - homeCents(a)).slice(0, 5);
-    const rb = buddyReport(T, c, word, list);
+    // money in: paybacks lower the spending of the log they belong to; other income is shown on its own
+    const backSum = list.reduce((t, x) => t + Math.min(paidBackOf(x), grossCents(x)), 0);
+    const incList = c.income.filter(x => x.date >= sk && x.date < ek);
+    const incTotal = incList.reduce((t, x) => t + homeCents(x), 0);
+    const pbIn = c.paybacks.filter(o => o.p.date >= sk && o.p.date < ek).reduce((t, o) => t + toHome(o.p), 0);
+    const rb = buddyReport(T, c, word, list, { backSum, incTotal });
 
     $("view-reports").innerHTML = `
       <div class="seg" role="group" aria-label="Report period">
@@ -881,12 +954,14 @@ button, label, .log { touch-action: manipulation; }
         <button type="button" class="icon-btn" id="pNext" aria-label="Next ${word}" ${sk > c.today ? "disabled" : ""}>›</button>
       </div>
       <div class="kpis">
-        <div class="kpi"><span class="lbl">Spent</span><span class="v">${money(T.spent)}</span><span class="hint">${cmp}</span></div>
+        <div class="kpi"><span class="lbl">Spent</span><span class="v">${money(T.spent)}</span><span class="hint">${cmp}</span>${backSum ? `<span class="hint down">after ${money(backSum)} paid back</span>` : ""}</div>
         <div class="kpi"><span class="lbl">Budget</span><span class="v">${hasB ? money(T.budget) : "—"}</span><span class="hint">${T.days ? `${T.days} day${T.days === 1 ? "" : "s"} counted${isCurrent ? " so far" : ""}` : "No days counted yet"}</span></div>
         <div class="kpi ${hasB ? (T.diff >= 0 ? "good" : "bad") : ""}"><span class="lbl">${!hasB ? "Difference" : T.diff >= 0 ? "Saved" : "Over by"}</span><span class="v">${hasB ? money(Math.abs(T.diff)) : "—"}</span><span class="hint">Budget minus spending</span></div>
         <div class="kpi"><span class="lbl">Days on budget</span><span class="v">${hasB ? `${T.onBudget}/${T.days}` : "—"}</span><span class="hint">${hasB && T.days ? Math.round(T.onBudget / T.days * 100) + "% of days" : "Set a daily budget"}</span></div>
         <div class="kpi good"><span class="lbl">No-spend days</span><span class="v">${T.noSpend}</span><span class="hint">${T.noSpend ? (hasB ? `${money(T.nsKept)} kept` : "Nothing spent") : "Mark one from Today"}</span></div>
         <div class="kpi ${T.notLogged ? "bad" : ""}"><span class="lbl">Not logged</span><span class="v">${T.notLogged}</span><span class="hint">${T.notLogged ? "Not counted yet" : "All days accounted for"}</span></div>
+        <div class="kpi wide ${incTotal + pbIn ? "good" : ""}"><span class="lbl">Money in</span><span class="v">${incTotal + pbIn ? "+" + money(incTotal + pbIn) : "—"}</span>
+          <span class="hint">${incTotal + pbIn ? [pbIn ? `${money(pbIn)} paid back` : "", incTotal ? `${money(incTotal)} income` : ""].filter(Boolean).join(" · ") : "Tap + then “Money in” to log paybacks or income"}</span></div>
       </div>
       <div class="hang">${buddyZone("reports", rb)}<div class="card">
         <div class="card-head"><h2>${p === "year" ? "Spending by month" : "Spending by day"}</h2><span class="sub">avg ${money(T.days ? Math.round(T.spentCounted / T.days) : 0)}/day</span></div>
@@ -903,13 +978,13 @@ button, label, .log { touch-action: manipulation; }
         ${dayRows.length ? dayRows.map(r => `<div class="drow"><span>${esc(r.name)}${r.extra ? `<br><span class="sub">${esc(r.extra)}</span>` : ""}</span><span class="amt">${r.miss || r.ns ? "" : money(r.spent)}</span>${rowStatus(r)}</div>`).join("") : `<p class="empty">No tracked days in this ${word} yet.</p>`}
       </div>
       <div class="card">
-        <div class="card-head"><h2>Biggest spends</h2>${downloads && list.length ? `<button type="button" class="ghost" id="exportPeriod">Export CSV</button>` : ""}</div>
+        <div class="card-head"><h2>Biggest spends</h2>${downloads && (list.length || incList.length) ? `<button type="button" class="ghost" id="exportPeriod">Export CSV</button>` : ""}</div>
         <div class="logs">${biggest.length ? biggest.map(logRow).join("") : `<p class="empty">Nothing yet.</p>`}</div>
       </div>`;
     $("pPrev").onclick = () => { st.anchor = shiftPeriod(p, st.anchor, -1); render(); };
     $("pNext").onclick = () => { st.anchor = shiftPeriod(p, st.anchor, 1); render(); };
     const now = $("pNow"); if (now) now.onclick = () => { st.anchor = todayKey(); render(); };
-    const ex = $("exportPeriod"); if (ex) ex.onclick = () => exportCSV(list, `petal-ledger-${p}-${sk}.csv`);
+    const ex = $("exportPeriod"); if (ex) ex.onclick = () => exportCSV([...list, ...incList], `petal-ledger-${p}-${sk}.csv`);
   }
   $("view-reports").addEventListener("click", e => {
     const b = e.target.closest("[data-period]"); if (b) { st.period = b.dataset.period; render(); return; }
@@ -921,35 +996,40 @@ button, label, .log { touch-action: manipulation; }
   function renderLogs(c) {
     const mk = st.logsMonth, [y, m] = mk.split("-").map(Number);
     const q = st.logsQuery.trim().toLowerCase();
-    const list = c.all.filter(x => x.date.slice(0, 7) === mk && (st.logsCat === "all" || x.cat === st.logsCat) &&
-      (!q || (x.note || "").toLowerCase().includes(q) || catOf(x.cat).name.toLowerCase().includes(q)))
+    const cat = st.logsCat, wantIn = cat === "all" || cat === "in";
+    const pbItems = wantIn ? c.paybacks.map(o => ({ pb: o, date: o.p.date, at: o.p.at, note: `${o.p.note || ""} ${o.e.note || ""}`, cat: "payback" })) : [];
+    const list = [...(cat === "in" ? [] : c.all.filter(x => cat === "all" || x.cat === cat)), ...(wantIn ? c.income : []), ...pbItems]
+      .filter(x => x.date.slice(0, 7) === mk &&
+        (!q || (x.note || "").toLowerCase().includes(q) || (x.pb ? "paid back" : catOf(x.cat).name.toLowerCase()).includes(q)))
       .sort((a, z) => a.date === z.date ? (z.at || 0) - (a.at || 0) : (a.date < z.date ? 1 : -1));
+    const spentTotal = list.reduce((t, x) => t + (!x.pb && x.kind !== "income" ? homeCents(x) : 0), 0);
+    const inTotal = list.reduce((t, x) => t + (x.pb ? toHome(x.pb.p) : x.kind === "income" ? homeCents(x) : 0), 0);
     const groups = [];
     list.forEach(x => { const g = groups[groups.length - 1]; if (g && g.date === x.date) g.items.push(x); else groups.push({ date: x.date, items: [x] }); });
     if (st.logsCat === "all" && !q) {
-      Object.keys(S.noSpend).filter(k => k.slice(0, 7) === mk && !c.byDay[k] && k <= c.today).forEach(k => groups.push({ date: k, items: [], ns: true }));
+      Object.keys(S.noSpend).filter(k => k.slice(0, 7) === mk && !c.logDays.has(k) && k <= c.today).forEach(k => groups.push({ date: k, items: [], ns: true }));
       groups.sort((a, z) => a.date < z.date ? 1 : -1);
     }
-    const total = list.reduce((t, x) => t + homeCents(x), 0);
     const usedCats = [...new Set(c.all.map(x => x.cat))];
     const filterCats = [...activeCats().map(x => x.id), ...usedCats.filter(id => !activeCats().some(a => a.id === id))];
     const searchHad = document.activeElement && document.activeElement.id === "logSearch";
     $("view-logs").innerHTML = `
       <div class="pnav">
         <button type="button" class="icon-btn" id="lPrev" aria-label="Previous month">‹</button>
-        <div class="plabel">${esc(fmtD(new Date(y, m - 1, 1), { month: "long", year: "numeric" }))}<span class="sub" style="display:block;font-family:var(--font-body)">${money(total)} · ${list.length} log${list.length === 1 ? "" : "s"}</span></div>
+        <div class="plabel">${esc(fmtD(new Date(y, m - 1, 1), { month: "long", year: "numeric" }))}<span class="sub" style="display:block;font-family:var(--font-body)">${money(spentTotal)} spent${inTotal ? ` · +${money(inTotal)} in` : ""} · ${list.length} log${list.length === 1 ? "" : "s"}</span></div>
         <button type="button" class="icon-btn" id="lNext" aria-label="Next month">›</button>
       </div>
       <div class="search"><input id="logSearch" type="search" placeholder="Search notes or categories" value="${esc(st.logsQuery)}" aria-label="Search logs"></div>
       <div class="filters" role="group" aria-label="Filter by category">
         <button type="button" class="fchip" data-fcat="all" aria-pressed="${st.logsCat === "all"}">All</button>
+        <button type="button" class="fchip" data-fcat="in" aria-pressed="${st.logsCat === "in"}">🤝 Money in</button>
         ${filterCats.map(id => { const ct = catOf(id); return `<button type="button" class="fchip" data-fcat="${esc(id)}" aria-pressed="${st.logsCat === id}">${esc(ct.emoji)} ${esc(ct.name)}</button>`; }).join("")}
       </div>
       <div class="card">
         ${groups.length ? groups.map(g => {
           const sp = c.byDay[g.date] || 0, b = dayBudget(g.date), cn = counted(g.date, c);
           if (g.ns) return `<div class="day-group"><div class="day-head"><span>${esc(fmtD(g.date, { weekday: "short", month: "short", day: "numeric" }))}</span><button type="button" class="chip good btn" data-goto-day="${g.date}">No-spend day${b > 0 && cn ? " +" + money(b) : ""}</button></div></div>`;
-          return `<div class="day-group"><div class="day-head"><span>${esc(fmtD(g.date, { weekday: "short", month: "short", day: "numeric" }))} · ${money(sp)}</span>${cn ? diffChip(b - sp, b > 0) : ""}</div><div class="logs">${g.items.map(logRow).join("")}</div></div>`;
+          return `<div class="day-group"><div class="day-head"><span>${esc(fmtD(g.date, { weekday: "short", month: "short", day: "numeric" }))} · ${money(sp)}</span>${cn ? diffChip(b - sp, b > 0) : ""}</div><div class="logs">${g.items.map(x => x.pb ? paybackRow(x.pb) : logRow(x)).join("")}</div></div>`;
         }).join("") : `<p class="empty">No logs ${q || st.logsCat !== "all" ? "match this filter" : "this month"}.</p>`}
       </div>`;
     $("lPrev").onclick = () => { st.logsMonth = keyOf(new Date(y, m - 2, 1)).slice(0, 7); render(); };
@@ -1052,7 +1132,7 @@ button, label, .log { touch-action: manipulation; }
       case "sSwitchGo": { const r = parseNum($("sSwitchRate").value); if (!(r > 0)) { toast("Enter a rate above zero"); return; } switchHome(st.pendingCur, r); break; }
       case "sSwitchCancel": st.pendingCur = null; render(); break;
       case "sCatAdd": openCat(null); break;
-      case "sExport": exportCSV(allEntries().sort((a, z) => a.date < z.date ? -1 : 1), "petal-ledger-all.csv"); break;
+      case "sExport": exportCSV([...allEntries(), ...allIncome()], "petal-ledger-all.csv"); break;
       case "sClearEx": clearExamples(); break;
       case "sBackup":
         saveFile({ filename: `petal-ledger-backup-${todayKey()}.json`, data: backupData(), type: "application/json" })
@@ -1111,8 +1191,13 @@ button, label, .log { touch-action: manipulation; }
   async function exportCSV(rows, filename) {
     if (!downloads) return;
     const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
-    const csv = ["Date,Category,Amount,Currency,Original amount,Original currency,Note",
-      ...rows.map(x => [x.date, q(catOf(x.cat).name), (homeCents(x) / 100).toFixed(2), S.currency, ((x.amt ?? x.cents) / 100).toFixed(2), x.cur || S.currency, q(x.note)].join(","))].join("\n");
+    const d2 = c => (c / 100).toFixed(2);
+    const sorted = rows.slice().sort((a, z) => a.date < z.date ? -1 : a.date > z.date ? 1 : 0);
+    const csv = [`Date,Type,Category,Amount (${S.currency}),Paid back (${S.currency}),Cost to you (${S.currency}),Original amount,Original currency,Note`,
+      ...sorted.map(x => {
+        const inc = x.kind === "income", back = inc ? 0 : Math.min(paidBackOf(x), grossCents(x));
+        return [x.date, inc ? "Money in" : "Spending", q(catOf(x.cat).name), d2(grossCents(x)), inc ? "" : d2(back), inc ? "" : d2(homeCents(x)), d2(x.amt ?? x.cents), x.cur || S.currency, q(x.note)].join(",");
+      })].join("\n");
     try { await downloads.save({ filename, data: csv }); toast("Export ready"); }
     catch (e) { if (!e || e.code !== "declined") toast("Couldn't export the file"); }
   }
@@ -1156,22 +1241,104 @@ button, label, .log { touch-action: manipulation; }
   $("fCur").onchange = () => { const cur = $("fCur").value; $("fRate").value = S.rates[cur] || ""; updateRate(); if (cur !== S.currency && !S.rates[cur]) $("fRate").focus(); };
   $("fRate").oninput = updateRate; $("fAmt").oninput = updateRate;
 
-  function openLog(id, mk) {
+  // ----- Money in: paybacks and income -----
+  function renderInCats() {
+    const opts = st.edit ? INCOME_CATS : [PAYBACK, ...INCOME_CATS];
+    if (!opts.some(x => x.id === st.inKind)) st.inKind = opts[0].id;
+    $("fInCats").innerHTML = opts.map(x => `<button type="button" class="catbtn" data-ic="${x.id}" aria-pressed="${x.id === st.inKind}" style="--ch:${x.hue}"><span class="e">${x.emoji}</span><span class="t">${esc(x.name)}</span></button>`).join("");
+    const pb = st.inKind === "payback";
+    $("fForWrap").hidden = !pb || !!st.edit;
+    $("fNoteLbl").textContent = pb ? "Who paid you?" : "Note";
+    $("fNote").placeholder = pb ? "e.g. Sam" : "Optional";
+    if (pb && !st.edit) fillForSelect();
+    updateForNote(); updateTitle();
+  }
+  $("fInCats").addEventListener("click", e => { const b = e.target.closest("[data-ic]"); if (!b) return; st.inKind = b.dataset.ic; renderInCats(); });
+  function fillForSelect(pre) {
+    const since = shiftKey(todayKey(), -120);
+    const list = allEntries().filter(x => x.date >= since)
+      .sort((a, z) => a.date === z.date ? (z.at || 0) - (a.at || 0) : (a.date < z.date ? 1 : -1)).slice(0, 80);
+    const sel = $("fFor");
+    if (!list.length) { sel.innerHTML = `<option value="">No spending logged in the last 4 months</option>`; return; }
+    sel.innerHTML = list.map(x => {
+      const ct = catOf(x.cat), back = paidBackOf(x);
+      return `<option value="${esc(x.date.slice(0, 7))}|${esc(x.id)}">${esc(fmtD(x.date, { month: "short", day: "numeric" }))} · ${esc(x.note || ct.name)} · ${esc(money(grossCents(x)))}${back ? ` (${esc(money(back))} back)` : ""}</option>`;
+    }).join("");
+    if (pre) sel.value = pre;
+  }
+  function forTarget() {
+    const v = $("fFor").value; if (!v) return null;
+    const [mk, id] = v.split("|"); const e = (st.months[mk] || []).find(x => x.id === id);
+    return e ? { mk, id, e } : null;
+  }
+  function updateForNote() {
+    const n = $("fForNote");
+    const t = st.mode === "in" && st.inKind === "payback" && !st.edit ? forTarget() : null;
+    n.hidden = !t;
+    if (t) { const left = homeCents(t.e); n.textContent = left > 0 ? `You're covering ${money(left)} of this so far. A payback lowers that day's spending.` : "This log is already fully paid back."; }
+  }
+  $("fFor").onchange = updateForNote;
+  function updateTitle() {
+    const ed = !!st.edit, inn = st.mode === "in";
+    $("logTitle").textContent = ed ? (inn ? "Edit money in" : "Edit log") : (inn ? "Log money in" : "Log spending");
+    $("fSave").textContent = ed ? "Save changes" : inn ? (st.inKind === "payback" ? "Save payback" : "Save income") : "Save log";
+  }
+  function setMode(m) {
+    st.mode = m;
+    $("fMode").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === m)));
+    const inn = m === "in";
+    $("fCatsWrap").hidden = inn; $("fInWrap").hidden = !inn;
+    if (inn) renderInCats();
+    else { $("fForWrap").hidden = true; $("fForNote").hidden = true; $("fNoteLbl").textContent = "Note"; $("fNote").placeholder = "Optional"; renderFormCats(); updateTitle(); }
+  }
+  $("fMode").addEventListener("click", e => { const b = e.target.closest("[data-mode]"); if (b && !st.edit) setMode(b.dataset.mode); });
+  function renderPaybacks() {
+    const box = $("fPaybacks");
+    const e = st.edit && st.mode === "spend" ? (st.months[st.edit.mk] || []).find(x => x.id === st.edit.id) : null;
+    const list = e && Array.isArray(e.paybacks) ? e.paybacks : [];
+    box.hidden = !list.length;
+    if (!list.length) { box.innerHTML = ""; return; }
+    box.innerHTML = `<span class="lbl">Paid back</span>` + list.map(p => `<div class="pb-row">
+        <span class="bub" style="--ch:${PAYBACK.hue}">${PAYBACK.emoji}</span>
+        <span class="log-main"><span class="log-name">${esc(p.note || "Someone")}</span><span class="log-note">${esc(fmtD(p.date, { month: "short", day: "numeric" }))}</span></span>
+        <span class="log-amt inc">+${money(toHome(p))}</span>
+        <button type="button" class="ghost" data-pb-del="${esc(p.id)}">Remove</button></div>`).join("") +
+      `<p class="inline-note">You paid ${money(grossCents(e))}. After paybacks it cost you ${money(homeCents(e))}.</p>`;
+  }
+  $("fPaybacks").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-pb-del]"); if (!b) return;
+    armOr(b, "Remove", () => {
+      const { id, mk } = st.edit; const e = (st.months[mk] || []).find(x => x.id === id); if (!e) return;
+      const upd = { ...e, paybacks: (e.paybacks || []).filter(p => p.id !== b.dataset.pbDel) };
+      if (!upd.paybacks.length) delete upd.paybacks;
+      st.months[mk] = st.months[mk].map(x => x.id === id ? upd : x);
+      saveMonth(mk); renderPaybacks(); render(); toast("Payback removed");
+    });
+  });
+
+  function openLog(id, mk, opts = {}) {
     if (readOnly) { toast("You can view this ledger but not change it."); return; }
     const e = id ? (st.months[mk] || []).find(x => x.id === id) : null;
     st.edit = e ? { id, mk } : null;
-    const cur = e ? (e.cur || S.currency) : (st.lastCur && (st.lastCur === S.currency || S.rates[st.lastCur]) ? st.lastCur : S.currency);
+    const mode = e ? (e.kind === "income" ? "in" : "spend") : (opts.mode || "spend");
+    if (e && e.kind === "income") st.inKind = e.cat;
+    else if (opts.forKey) st.inKind = "payback";
+    const cur = e ? (e.cur || S.currency) : opts.cur && (opts.cur === S.currency || S.rates[opts.cur]) ? opts.cur : (st.lastCur && (st.lastCur === S.currency || S.rates[st.lastCur]) ? st.lastCur : S.currency);
     fillCurSelect($("fCur"), cur);
     $("fAmt").value = e ? ((e.amt ?? e.cents) / 100).toString() : "";
     $("fRate").value = e && cur !== S.currency ? (S.rates[cur] || (e.amt ? tidyRate(e.cents / e.amt) : "")) : (S.rates[cur] || "");
-    $("fDate").value = e ? e.date : (st.view === "today" ? st.day : todayKey());
+    $("fDate").value = e ? e.date : mode === "in" ? todayKey() : (st.view === "today" ? st.day : todayKey());
     $("fNote").value = e ? (e.note || "") : "";
-    st.formCat = e ? e.cat : (st.formCat || (activeCats()[0] || {}).id);
-    $("logTitle").textContent = e ? "Edit log" : "Log spending";
-    $("fSave").textContent = e ? "Save changes" : "Save log";
-    $("fEditBtns").hidden = !e; disarm($("fDel"), "Delete");
+    if (e && e.kind !== "income") st.formCat = e.cat;
+    else if (!e) st.formCat = st.formCat || (activeCats()[0] || {}).id;
+    $("fMode").hidden = !!e;
+    $("fEditBtns").hidden = !e;
+    $("fAddBack").hidden = !e || e.kind === "income";
+    disarm($("fDel"), "Delete");
     $("fMsg").textContent = "";
-    renderFormCats(); updateRate(); showSheet($("logSheet"));
+    setMode(mode);
+    if (opts.forKey) { fillForSelect(opts.forKey); updateForNote(); }
+    renderPaybacks(); updateRate(); showSheet($("logSheet"));
   }
   $("fab").onclick = () => openLog(null);
   function readForm() {
@@ -1179,7 +1346,6 @@ button, label, .log { touch-action: manipulation; }
     const a = parseNum($("fAmt").value), amt = Math.round(a * 100);
     if (!(amt > 0)) { msg.textContent = "Enter an amount above zero."; $("fAmt").focus(); return null; }
     const date = $("fDate").value; if (!validKey(date)) { msg.textContent = "Pick a date."; return null; }
-    if (!st.formCat) { msg.textContent = "Pick a category."; return null; }
     const cur = $("fCur").value; let cents = amt;
     if (cur !== S.currency) {
       const r = parseNum($("fRate").value);
@@ -1187,16 +1353,39 @@ button, label, .log { touch-action: manipulation; }
       if (S.rates[cur] !== tidyRate(r)) { S.rates[cur] = tidyRate(r); saveSettings(); }
       cents = Math.round(amt * r);
     }
-    return { date, amt, cur, cents, home: S.currency, cat: st.formCat, note: $("fNote").value.trim().slice(0, 80) };
+    const base = { date, amt, cur, cents, home: S.currency, note: $("fNote").value.trim().slice(0, 80) };
+    if (st.mode === "in") {
+      if (st.inKind === "payback" && !st.edit) {
+        const t = forTarget();
+        if (!t) { msg.textContent = "Pick the log this payback is for."; return null; }
+        return { ...base, payback: t };
+      }
+      return { ...base, kind: "income", cat: st.inKind === "payback" ? "inc-other" : st.inKind };
+    }
+    if (!st.formCat) { msg.textContent = "Pick a category."; return null; }
+    return { ...base, cat: st.formCat };
   }
   $("logSheet").addEventListener("submit", ev => {
     ev.preventDefault();
     const f = readForm(); if (!f) return;
+    st.lastCur = f.cur;
+    if (f.payback) {
+      const { mk: tmk, id: tid, e: te } = f.payback;
+      const p = { id: newId(), at: Date.now(), date: f.date, amt: f.amt, cur: f.cur, cents: f.cents, home: f.home, note: f.note };
+      const before = homeCents(te);
+      const upd = { ...te, paybacks: [...(te.paybacks || []), p] };
+      st.months[tmk] = st.months[tmk].map(x => x.id === tid ? upd : x);
+      saveMonth(tmk);
+      const extra = toHome(p) - before;
+      toast(extra > 0 ? `Saved. ${money(extra)} is more than you paid, so it isn't counted` : `Payback saved · that log now costs you ${money(homeCents(upd))}`);
+      closeSheet($("logSheet")); render(); return;
+    }
     const mk = f.date.slice(0, 7);
     if (st.edit) {
       const { id, mk: oldMk } = st.edit;
       const old = (st.months[oldMk] || []).find(x => x.id === id) || {};
       const entry = { id, at: old.at || Date.now(), ...f };
+      if (old.paybacks && f.kind !== "income") entry.paybacks = old.paybacks;
       st.months[oldMk] = (st.months[oldMk] || []).filter(x => x.id !== id);
       st.months[mk] = [...(st.months[mk] || []), entry];
       if (oldMk !== mk) saveMonth(oldMk);
@@ -1204,19 +1393,26 @@ button, label, .log { touch-action: manipulation; }
     } else {
       st.months[mk] = [...(st.months[mk] || []), { id: newId(), at: Date.now(), ...f }];
       saveMonth(mk);
-      const b = dayBudget(f.date), left = b - ((context().byDay[f.date]) || 0);
-      toast(b > 0 ? (left >= 0 ? `Logged · ${money(left)} left for the day` : `Logged · ${money(-left)} over for the day`) : `Logged ${money(f.cents)}`);
+      if (f.kind === "income") toast(`Money in: +${money(f.cents)}`);
+      else {
+        const b = dayBudget(f.date), left = b - ((context().byDay[f.date]) || 0);
+        toast(b > 0 ? (left >= 0 ? `Logged · ${money(left)} left for the day` : `Logged · ${money(-left)} over for the day`) : `Logged ${money(f.cents)}`);
+      }
     }
-    st.lastCur = f.cur;
-    if (S.noSpend[f.date]) { delete S.noSpend[f.date]; saveSettings(); }
+    if (f.kind !== "income" && S.noSpend[f.date]) { delete S.noSpend[f.date]; saveSettings(); }
     closeSheet($("logSheet")); render();
   });
   $("fDup").onclick = () => {
-    const f = readForm(); if (!f) return;
+    const f = readForm(); if (!f || f.payback) return;
     f.date = todayKey(); const mk = f.date.slice(0, 7);
     st.months[mk] = [...(st.months[mk] || []), { id: newId(), at: Date.now(), ...f }];
-    if (S.noSpend[f.date]) { delete S.noSpend[f.date]; saveSettings(); }
+    if (f.kind !== "income" && S.noSpend[f.date]) { delete S.noSpend[f.date]; saveSettings(); }
     saveMonth(mk); closeSheet($("logSheet")); toast("Logged again for today"); render();
+  };
+  $("fAddBack").onclick = () => {
+    const { id, mk } = st.edit; const e = (st.months[mk] || []).find(x => x.id === id); if (!e) return;
+    closeSheet($("logSheet"));
+    openLog(null, null, { mode: "in", forKey: `${mk}|${id}`, cur: e.cur });
   };
   let armT = null;
   function disarm(b, label) { b.classList.remove("armed"); b.textContent = label; }
