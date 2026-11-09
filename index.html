@@ -391,6 +391,155 @@ body.no-deco .deco-bg, body.no-deco .fab-deco, body.no-deco .tab-deco { display:
 .details-btn svg { transition: transform 0.2s; flex: none; color: var(--accent-strong); }
 .details-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
 
+/* sticker book */
+.sheet.book { max-height: 92%; }
+.book-top { display: grid; gap: 4px; }
+.book-count { font-family: var(--font-display); font-weight: 600; font-size: 1rem; }
+.book-bar { height: 9px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.book-bar span { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+.book-page { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 8px 14px; margin-top: 6px; margin-bottom: 6px; }
+.book-tape { position: absolute; top: -9px; left: 16px; font-size: 0.75rem; font-weight: 800; padding: 2px 11px; letter-spacing: 0.03em; }
+.book-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px 4px; }
+.sticker { border: 0; background: none; padding: 2px 0; display: grid; justify-items: center; gap: 3px; min-width: 0; color: var(--accent-strong); }
+.sticker .art { position: relative; width: 58px; height: 58px; display: grid; place-items: center; transform: rotate(var(--tilt, 0deg)); transition: transform 0.2s; }
+.sticker:hover .art { transform: rotate(0deg) scale(1.08); }
+.sticker .nm { font-size: 0.7rem; font-weight: 700; line-height: 1.15; text-align: center; max-width: 100%; }
+.sticker .leg { font-size: 0.62rem; font-weight: 800; color: #BA7517; text-transform: uppercase; letter-spacing: 0.06em; }
+.sticker.legendary .art::before { content: ""; position: absolute; inset: -3px; border-radius: 50%; border: 2px dashed #FAC775; }
+.sticker.locked { color: var(--muted); }
+.sticker.locked .q { width: 46px; height: 46px; border-radius: 50%; border: 1.5px dashed var(--line); background: var(--surface-2); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--muted); }
+.sticker .times { position: absolute; right: -4px; bottom: -2px; background: var(--accent); color: var(--on-accent); font-size: 0.66rem; font-weight: 800; border-radius: 999px; padding: 1px 6px; transform: rotate(calc(-1 * var(--tilt, 0deg))); }
+.book-btn { gap: 10px; }
+.book-btn-art { display: grid; place-items: center; transform: rotate(-8deg); flex: none; }
+.sticker-pop { position: fixed; z-index: 70; left: 50%; top: 50%; width: min(300px, calc(100% - 48px)); transform: translate(-50%, -50%); background: var(--surface); border-radius: 26px; padding: 18px 16px 16px; text-align: center; box-shadow: 0 20px 60px rgb(0 0 0 / 0.25); display: grid; gap: 6px; justify-items: center; overflow: hidden; animation: pop-in 0.45s cubic-bezier(.2, 1.4, .4, 1); }
+.sticker-pop[hidden] { display: none; }
+.pop-kicker { font-family: var(--font-display); font-weight: 600; color: var(--accent-strong); letter-spacing: 0.05em; font-size: 0.85rem; }
+.pop-art { transform: rotate(-6deg); animation: wiggle 1.6s ease-in-out 0.5s infinite; }
+.sticker-pop h2 { font-size: 1.3rem; }
+.sticker-pop .sub { margin: 0; }
+.pop-gus { display: flex; align-items: center; gap: 8px; background: var(--accent-soft); border-radius: 14px; padding: 6px 10px 6px 4px; text-align: left; font-size: 0.85rem; width: 100%; }
+.gus-mini { width: 40px; height: 40px; flex: none; display: block; }
+.gus-mini svg { width: 100%; height: 100%; overflow: visible; }
+.sticker-pop .primary { width: 100%; margin-top: 4px; }
+.confetti { position: absolute; inset: 0; pointer-events: none; }
+.confetti i { position: absolute; top: -10px; width: 7px; height: 4px; border-radius: 1px; animation: confetti 2.6s ease-in infinite; }
+.confetti i:nth-child(1) { left: 8%; background: #F09595; animation-delay: 0s; }
+.confetti i:nth-child(2) { left: 18%; background: #9FE1CB; animation-delay: .5s; }
+.confetti i:nth-child(3) { left: 30%; background: #FAC775; animation-delay: 1.1s; }
+.confetti i:nth-child(4) { left: 42%; background: #AFA9EC; animation-delay: .3s; }
+.confetti i:nth-child(5) { left: 55%; background: #F4C0D1; animation-delay: .9s; }
+.confetti i:nth-child(6) { left: 66%; background: #9FE1CB; animation-delay: 1.5s; }
+.confetti i:nth-child(7) { left: 76%; background: #F09595; animation-delay: .7s; }
+.confetti i:nth-child(8) { left: 86%; background: #FAC775; animation-delay: 1.3s; }
+.confetti i:nth-child(9) { left: 93%; background: #AFA9EC; animation-delay: .2s; }
+.confetti i:nth-child(10) { left: 48%; background: #F7C1C1; animation-delay: 1.8s; }
+@keyframes confetti { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(330px) rotate(540deg); opacity: 0; } }
+@keyframes pop-in { from { transform: translate(-50%, -50%) scale(0.6) rotate(-8deg); opacity: 0; } to { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; } }
+@keyframes wiggle { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(4deg) scale(1.04); } }
+
+/* reward decorations */
+:root { --pond: hsl(205 60% 90%); --pond-ripple: hsl(205 60% 80%); }
+:root[data-theme="dark"] { --pond: hsl(210 30% 20%); --pond-ripple: hsl(210 30% 32%); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --pond: hsl(210 30% 20%); --pond-ripple: hsl(210 30% 32%); } }
+.fx-garland { position: absolute; top: 0; left: 0; right: 0; height: 56px; pointer-events: none; z-index: 0; }
+.fx-garland[hidden], .fx-flies[hidden], .fx-pond[hidden] { display: none; }
+body.fx-lanterns .app { padding-top: 58px; }
+.fx-garland .rope { position: absolute; left: 0; top: 0; width: 100%; height: 30px; }
+.fx-garland .lan { position: absolute; top: 4px; transform-origin: 50% 0; animation: sway-l 3.2s ease-in-out infinite alternate; }
+.fx-flies { position: fixed; z-index: 12; top: 0; bottom: 0; left: max(0px, calc(50% - 260px)); width: min(100%, 520px); pointer-events: none; overflow: hidden; }
+.bfly { position: absolute; }
+.bfly .wing-l, .bfly .wing-r { transform-box: fill-box; animation: flap 0.5s ease-in-out infinite alternate; }
+.bfly .wing-l { transform-origin: 100% 50%; } .bfly .wing-r { transform-origin: 0% 50%; }
+@keyframes flap { from { transform: scaleX(1); } to { transform: scaleX(0.35); } }
+.fly1 { top: 30%; right: 0; animation: drift1 14s ease-in-out infinite; }
+.fly2 { top: 58%; left: 0; animation: drift2 17s ease-in-out infinite; }
+.fly3 { top: calc(env(safe-area-inset-top, 0px) + 64px); right: 30%; animation: drift3 19s ease-in-out infinite; }
+/* butterflies stay along the screen edges and up by the header, away from your numbers */
+@keyframes drift1 { 0%, 100% { transform: translate(0, 0) rotate(10deg); } 33% { transform: translate(-6px, 40px) rotate(-6deg); } 66% { transform: translate(-2px, -30px) rotate(14deg); } }
+@keyframes drift2 { 0%, 100% { transform: translate(0, 0) rotate(-12deg); } 40% { transform: translate(6px, -46px) rotate(8deg); } 70% { transform: translate(2px, 24px) rotate(-4deg); } }
+@keyframes drift3 { 0%, 100% { transform: translate(0, 0) rotate(4deg); } 50% { transform: translate(-60px, 6px) rotate(-10deg); } }
+.fx-pond { position: fixed; z-index: 0; left: max(0px, calc(50% - 260px)); width: min(100%, 520px); bottom: calc(60px + env(safe-area-inset-bottom, 0px)); height: 96px; pointer-events: none; overflow: hidden; }
+.fx-pond .water { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fx-pond .koi { position: absolute; width: 46px; height: 21px; }
+.fx-pond .k1 { bottom: 28px; animation: swim 26s linear infinite; }
+.fx-pond .k2 { bottom: 10px; width: 36px; height: 16px; animation: swim-back 33s linear infinite; }
+.fx-pond .pad { position: absolute; width: 28px; height: 28px; bottom: 30px; right: 22%; }
+@keyframes swim { from { left: -15%; transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(3deg); } to { left: 105%; transform: translateY(0) rotate(-4deg); } }
+@keyframes swim-back { from { left: 105%; transform: scaleX(-1) translateY(0); } 50% { transform: scaleX(-1) translateY(6px); } to { left: -15%; transform: scaleX(-1) translateY(0); } }
+body.gilded .deco.vine, body.gilded .deco.tendril { color: #D9A441 !important; }
+body.gilded .deco.stitch { color: #EBC97A; }
+.vol-gift { margin-top: 6px; font-size: 0.78rem; font-weight: 800; color: #8A5A12; background: #FBF3DD; border: 1px dashed #F2C562; border-radius: 999px; padding: 4px 12px; justify-self: start; display: inline-block; }
+
+/* page rewards */
+.gift-tag { position: absolute; top: -9px; right: 12px; font-size: 0.7rem; font-weight: 800; padding: 2px 9px; border-radius: 999px; background: var(--surface); border: 1px dashed var(--accent); color: var(--accent-strong); }
+.gift-tag.open { border-style: solid; background: #FBE7B0; border-color: #F2C562; color: #5C3A06; }
+.pop-art.reveal { position: relative; width: 128px; height: 128px; }
+.pop-art.reveal .gift, .pop-art.reveal .prize { position: absolute; inset: 0; width: 128px; height: 128px; display: grid; place-items: center; }
+.pop-art.reveal .prize svg { width: 112px; height: 112px; overflow: visible; }
+.pop-art.reveal .gift { animation: gift-open 0.9s ease-in 0.5s forwards; }
+.pop-art.reveal .prize { animation: prize-in 0.6s cubic-bezier(.2, 1.5, .4, 1) 1.25s both; }
+@keyframes gift-open { 0% { transform: scale(1) rotate(0); } 30% { transform: scale(1.1) rotate(-8deg); } 55% { transform: scale(1.1) rotate(8deg); } 100% { transform: scale(0.2) rotate(0); opacity: 0; } }
+@keyframes prize-in { from { transform: scale(0.2) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.sticker-pop .secondary { width: 100%; }
+.sticker-pop.revealing .primary, .sticker-pop.revealing #popLater { visibility: hidden; }
+.panda { width: 50px; height: 50px; flex: none; margin-right: -30px; position: relative; z-index: 1; animation: sway 4.5s ease-in-out infinite reverse; transform-origin: 50% 100%; }
+.panda svg { width: 100%; height: 100%; overflow: visible; display: block; }
+
+/* Golden Blossom theme (reward for the savings page) */
+:root[data-gold] { --bg: hsl(42 75% 96%); --surface-2: hsl(42 70% 93%); --line: hsl(40 45% 86%); --accent: hsl(40 82% 62%); --accent-strong: hsl(32 68% 34%); --accent-soft: hsl(44 92% 89%); --on-accent: hsl(30 60% 15%); }
+@media (prefers-color-scheme: dark) { :root[data-gold]:not([data-theme="light"]) { --bg: hsl(35 20% 10%); --surface-2: hsl(35 18% 18%); --line: hsl(35 16% 24%); --accent: hsl(40 75% 66%); --accent-strong: hsl(42 85% 74%); --accent-soft: hsl(38 35% 24%); --on-accent: hsl(30 60% 12%); } }
+:root[data-gold][data-theme="dark"] { --bg: hsl(35 20% 10%); --surface-2: hsl(35 18% 18%); --line: hsl(35 16% 24%); --accent: hsl(40 75% 66%); --accent-strong: hsl(42 85% 74%); --accent-soft: hsl(38 35% 24%); --on-accent: hsl(30 60% 12%); }
+.swatch.gold { background: linear-gradient(135deg, #F8E2A0, #E2A93E); display: grid; place-items: center; font-size: 0.9rem; }
+.swatch.gold.locked { opacity: 0.6; }
+/* golden book + volumes */
+.book-cover { position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: linear-gradient(135deg, #FBE7B0, #F2C562); color: #5C3A06; overflow: hidden; }
+.book-cover .ribbon { position: absolute; right: 18px; top: 0; width: 14px; height: 40px; background: #E24B4A; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%); }
+.cover-title { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+.cover-sub { font-size: 0.8rem; font-weight: 700; opacity: 0.8; }
+.book-tabs { margin-top: 2px; }
+.book-bar.gold span { background: linear-gradient(90deg, #F2C562, #E2A93E); }
+.book-page.gilded { border-color: #F2C562; box-shadow: inset 0 0 0 1px #FBE7B0; }
+.book-miles { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.mile { font-size: 0.74rem; font-weight: 700; color: var(--muted); background: var(--surface-2); border-radius: 999px; padding: 3px 10px; }
+.mile b { color: var(--accent-strong); margin-right: 4px; }
+.mile.got { background: #FBE7B0; color: #5C3A06; }
+.mile.got b { color: #5C3A06; }
+/* finale */
+.finale { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; overflow: hidden; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); background: radial-gradient(circle at 50% 30%, #FFF4D8 0%, #FBE4EE 45%, #E4DCFF 100%); }
+.finale[hidden] { display: none; }
+.fin-card { position: relative; z-index: 3; width: min(330px, 100%); background: rgb(255 255 255 / 0.92); border-radius: 28px; padding: 16px 18px 18px; text-align: center; display: grid; gap: 8px; color: #26215C; box-shadow: 0 20px 60px rgb(120 80 20 / 0.2); animation: fin-in 0.6s cubic-bezier(.2, 1.4, .4, 1) 1.6s both; }
+.fin-card h2 { font-size: 1.45rem; color: #26215C; }
+.fin-card .sub { color: #5F5A7A; margin: 0; font-size: 0.85rem; }
+.fin-card .pop-kicker { color: #B07A1A; }
+.fin-stage { position: relative; height: 128px; display: flex; align-items: flex-end; justify-content: center; gap: 4px; }
+.fin-book { width: 92px; animation: book-glow 1.4s ease-in-out 1.6s infinite alternate; }
+.fin-gus { width: 118px; height: 118px; animation: dance 0.7s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+.fin-gus svg { width: 100%; height: 100%; overflow: visible; }
+.fin-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.fin-stats div { background: #FBF3DD; border-radius: 14px; padding: 7px 6px; display: grid; }
+.fin-stats b { font-family: var(--font-display); font-size: 1.05rem; color: #5C3A06; }
+.fin-stats span { font-size: 0.72rem; font-weight: 700; color: #8A6A3A; }
+.fin-card .secondary { background: #F3EEFF; color: #3C3489; }
+.fin-fly { position: absolute; left: 50%; top: 32%; width: 0; height: 0; z-index: 2; }
+.fly { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; animation: fly-in 1.1s cubic-bezier(.4, .1, .3, 1) var(--d) both; }
+@keyframes fly-in { 0% { transform: translate(var(--fx), var(--fy)) rotate(var(--fr)) scale(1.1); opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { transform: translate(0, 0) rotate(0) scale(0.3); opacity: 0; } }
+.fin-lanterns { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-around; z-index: 1; pointer-events: none; }
+.fin-lanterns span { width: 38px; transform-origin: 50% 0; animation: sway-l 3s ease-in-out infinite alternate; }
+.fin-lanterns span:nth-child(2) { width: 30px; animation-delay: -1s; margin-top: -8px; }
+.fin-lanterns span:nth-child(3) { width: 34px; animation-delay: -2s; }
+.fin-lanterns span:nth-child(4) { width: 28px; animation-delay: -0.5s; margin-top: -6px; }
+.fin-fireworks i { position: absolute; z-index: 1; width: 6px; height: 6px; border-radius: 50%; background: #FAC775; animation: burst 1.8s ease-out infinite; box-shadow: 0 -34px #F09595, 24px -24px #FAC775, 34px 0 #9FE1CB, 24px 24px #AFA9EC, 0 34px #F4C0D1, -24px 24px #FAC775, -34px 0 #9FE1CB, -24px -24px #AFA9EC; }
+.fin-fireworks i:nth-child(1) { left: 18%; top: 22%; animation-delay: 0.2s; }
+.fin-fireworks i:nth-child(2) { left: 80%; top: 18%; animation-delay: 0.8s; }
+.fin-fireworks i:nth-child(3) { left: 12%; top: 70%; animation-delay: 1.3s; }
+.fin-fireworks i:nth-child(4) { left: 86%; top: 66%; animation-delay: 0.5s; }
+.fin-fireworks i:nth-child(5) { left: 50%; top: 10%; animation-delay: 1.6s; }
+@keyframes fin-in { from { transform: scale(0.6) rotate(-6deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes burst { 0% { transform: scale(0.2); opacity: 1; } 70% { opacity: 1; } 100% { transform: scale(1.7); opacity: 0; } }
+@keyframes dance { from { transform: rotate(-6deg) translateY(0); } to { transform: rotate(6deg) translateY(-6px); } }
+@keyframes book-glow { from { filter: drop-shadow(0 0 0 #F6D88A); } to { filter: drop-shadow(0 0 12px #F2C562); } }
+@keyframes sway-l { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 </style>
 <style>
@@ -408,10 +557,13 @@ button, label, .log { touch-action: manipulation; }
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <defs id="decoBase"></defs><defs id="decoSeason"></defs>
+  <defs id="decoBase"></defs><defs id="decoSeason"></defs><defs id="stickerDefs"></defs>
 </svg>
 <div class="deco-bg" id="decoBg" aria-hidden="true"></div>
+<div class="fx-pond" id="fxPond" aria-hidden="true" hidden></div>
+<div class="fx-flies" id="fxFlies" aria-hidden="true" hidden></div>
 <div class="app">
+  <div class="fx-garland" id="fxGarland" aria-hidden="true" hidden></div>
   <header class="bar">
     <div class="brand">
       <div class="logo" aria-hidden="true">
@@ -517,6 +669,42 @@ button, label, .log { touch-action: manipulation; }
   <div class="btn-row" id="cEditBtns" hidden><button type="button" class="danger" id="cDel">Remove</button></div>
 </form>
 
+<!-- Sticker book -->
+<div class="sheet book" id="bookSheet" role="dialog" aria-modal="true" aria-labelledby="bookTitle" hidden>
+  <div class="grab" aria-hidden="true"></div>
+  <div class="sheet-head"><h2 id="bookTitle">Sticker book</h2><button type="button" class="x" data-close aria-label="Close">✕</button></div>
+  <div id="bookBody"></div>
+</div>
+<div class="sticker-pop" id="stickerPop" role="dialog" aria-modal="true" aria-labelledby="popName" hidden>
+  <div class="confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="pop-kicker" id="popKicker">New sticker!</div>
+  <div class="pop-art" id="popArt"></div>
+  <h2 id="popName"></h2>
+  <p class="sub" id="popHow"></p>
+  <div class="pop-gus" id="popGus"></div>
+  <button type="button" class="primary" id="popStick">Stick it in my book</button>
+  <button type="button" class="secondary" id="popLater" hidden>Maybe later</button>
+</div>
+
+<!-- Sticker book finale -->
+<div class="finale" id="finale" role="dialog" aria-modal="true" aria-labelledby="finTitle" hidden>
+  <div class="fin-lanterns" aria-hidden="true"><span><svg viewBox="0 0 40 70" aria-hidden="true"><path d="M20 0 v14" stroke="#BA7517" stroke-width="1.5"/><rect x="12" y="12" width="16" height="5" rx="2" fill="#FAC775"/><ellipse cx="20" cy="32" rx="16" ry="15" fill="#E24B4A"/><path d="M20 17 C13 22 13 42 20 47 M20 17 C27 22 27 42 20 47" stroke="#C83A39" stroke-width="1.2" fill="none"/><rect x="12" y="46" width="16" height="5" rx="2" fill="#FAC775"/><path d="M17 51 v12 M20 51 v14 M23 51 v12" stroke="#FAC775" stroke-width="1.5" stroke-linecap="round"/><text x="20" y="37" text-anchor="middle" font-size="11" font-weight="700" fill="#FAC775" font-family="sans-serif">福</text></svg></span><span><svg viewBox="0 0 40 70" aria-hidden="true"><path d="M20 0 v14" stroke="#BA7517" stroke-width="1.5"/><rect x="12" y="12" width="16" height="5" rx="2" fill="#FAC775"/><ellipse cx="20" cy="32" rx="16" ry="15" fill="#E24B4A"/><path d="M20 17 C13 22 13 42 20 47 M20 17 C27 22 27 42 20 47" stroke="#C83A39" stroke-width="1.2" fill="none"/><rect x="12" y="46" width="16" height="5" rx="2" fill="#FAC775"/><path d="M17 51 v12 M20 51 v14 M23 51 v12" stroke="#FAC775" stroke-width="1.5" stroke-linecap="round"/><text x="20" y="37" text-anchor="middle" font-size="11" font-weight="700" fill="#FAC775" font-family="sans-serif">福</text></svg></span><span><svg viewBox="0 0 40 70" aria-hidden="true"><path d="M20 0 v14" stroke="#BA7517" stroke-width="1.5"/><rect x="12" y="12" width="16" height="5" rx="2" fill="#FAC775"/><ellipse cx="20" cy="32" rx="16" ry="15" fill="#E24B4A"/><path d="M20 17 C13 22 13 42 20 47 M20 17 C27 22 27 42 20 47" stroke="#C83A39" stroke-width="1.2" fill="none"/><rect x="12" y="46" width="16" height="5" rx="2" fill="#FAC775"/><path d="M17 51 v12 M20 51 v14 M23 51 v12" stroke="#FAC775" stroke-width="1.5" stroke-linecap="round"/><text x="20" y="37" text-anchor="middle" font-size="11" font-weight="700" fill="#FAC775" font-family="sans-serif">福</text></svg></span><span><svg viewBox="0 0 40 70" aria-hidden="true"><path d="M20 0 v14" stroke="#BA7517" stroke-width="1.5"/><rect x="12" y="12" width="16" height="5" rx="2" fill="#FAC775"/><ellipse cx="20" cy="32" rx="16" ry="15" fill="#E24B4A"/><path d="M20 17 C13 22 13 42 20 47 M20 17 C27 22 27 42 20 47" stroke="#C83A39" stroke-width="1.2" fill="none"/><rect x="12" y="46" width="16" height="5" rx="2" fill="#FAC775"/><path d="M17 51 v12 M20 51 v14 M23 51 v12" stroke="#FAC775" stroke-width="1.5" stroke-linecap="round"/><text x="20" y="37" text-anchor="middle" font-size="11" font-weight="700" fill="#FAC775" font-family="sans-serif">福</text></svg></span></div>
+  <div class="fin-fireworks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="fin-fly" id="finFly" aria-hidden="true"></div>
+  <div class="fin-card">
+    <div class="fin-stage">
+      <div class="fin-book" aria-hidden="true"><svg viewBox="0 0 80 64"><rect x="6" y="6" width="68" height="52" rx="6" fill="#F6D88A" stroke="#C9922E" stroke-width="2"/><rect x="6" y="6" width="10" height="52" rx="4" fill="#E8B44A"/><path d="M52 6 v30 l6 -5 l6 5 v-30" fill="#E24B4A"/><text x="44" y="44" text-anchor="middle" font-size="11" font-weight="700" fill="#8A5A12" font-family="Fredoka, sans-serif">16/16</text></svg></div>
+      <div class="fin-gus" id="finGus"></div>
+    </div>
+    <div class="pop-kicker">Sticker book complete!</div>
+    <h2 id="finTitle">You're a Master saver</h2>
+    <div class="fin-stats" id="finStats"></div>
+    <p class="sub">Every page is complete. Your book turned gold, and Volume 2 is waiting with new stickers.</p>
+    <button type="button" class="primary" id="finTang">Start Volume 2</button>
+    <button type="button" class="secondary" id="finBook">See my golden book</button>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
@@ -538,7 +726,7 @@ button, label, .log { touch-action: manipulation; }
   // ---------- constants ----------
   const CURRENCIES = ["USD","EUR","GBP","JPY","CNY","KRW","INR","PHP","SGD","HKD","TWD","IDR","MYR","THB","VND","AUD","NZD","CAD","MXN","BRL","ZAR","NGN","AED","SAR","CHF","SEK","NOK","DKK","PLN","TRY"];
   const HUES = [350, 12, 28, 45, 70, 100, 140, 165, 185, 205, 225, 250, 270, 295, 320];
-  const THEMES = [["Lavender", 265], ["Mint", 158], ["Peach", 22], ["Sky", 205], ["Rose", 340], ["Butter", 45]];
+  const THEMES = [["Lavender", 265], ["Mint", 158], ["Peach", 22], ["Sky", 205], ["Rose", 340]];
   const DEFAULT_CATS = [
     { id: "food", name: "Food", emoji: "🍜", hue: 28 },
     { id: "groceries", name: "Groceries", emoji: "🥕", hue: 100 },
@@ -710,7 +898,8 @@ button, label, .log { touch-action: manipulation; }
   // Light pastel is the default look; dark only when chosen (or "Match phone" while the phone is dark)
   function applyTheme() {
     const root = document.documentElement;
-    root.style.setProperty("--h", S.theme);
+    root.style.setProperty("--h", S.goldTheme && S.unlocks && S.unlocks.gold ? 40 : S.theme);
+    root.toggleAttribute("data-gold", !!(S.goldTheme && S.unlocks && S.unlocks.gold));
     if (S.appearance === "system") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", S.appearance === "dark" ? "dark" : "light");
     const dark = S.appearance === "dark" || (S.appearance === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
     const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = dark ? `hsl(${S.theme} 22% 11%)` : `hsl(${S.theme} 70% 97%)`;
@@ -765,6 +954,11 @@ button, label, .log { touch-action: manipulation; }
     <symbol id="dk-pt" viewBox="0 0 10 8"><path d="M1 4 Q5 -1 9 4 Q5 9 1 4Z" fill="currentColor"/></symbol>
     <symbol id="dk-vine" viewBox="0 0 160 14" preserveAspectRatio="none"><path d="M0 7 C20 2 30 12 50 7 C70 2 80 12 100 7 C120 2 130 12 160 7" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/></symbol>
     <symbol id="dk-stitch" viewBox="0 0 160 6" preserveAspectRatio="none"><path d="M1 3 H159" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></symbol>
+    <symbol id="dk-gb" viewBox="-10 -10 20 20"><g fill="#F6D88A" stroke="#D9A441" stroke-width="0.6"><circle cx="0" cy="-4.6" r="4.3"/><circle cx="4.4" cy="-1.4" r="4.3"/><circle cx="2.7" cy="3.7" r="4.3"/><circle cx="-2.7" cy="3.7" r="4.3"/><circle cx="-4.4" cy="-1.4" r="4.3"/></g><circle r="2.1" fill="#FFF3D6"/><g fill="#D9A441"><circle cx="0" cy="-2.6" r="0.6"/><circle cx="2.4" cy="-0.6" r="0.6"/><circle cx="1.5" cy="2.2" r="0.6"/><circle cx="-1.5" cy="2.2" r="0.6"/><circle cx="-2.4" cy="-0.6" r="0.6"/></g></symbol>
+    <symbol id="dk-spark" viewBox="-5 -5 10 10"><path d="M0 -5 L1.2 -1.2 L5 0 L1.2 1.2 L0 5 L-1.2 1.2 L-5 0 L-1.2 -1.2Z" fill="currentColor"/></symbol>
+    <symbol id="fx-lan" viewBox="0 0 20 34"><path d="M10 0 v5" stroke="#BA7517" stroke-width="1"/><rect x="5" y="4" width="10" height="3" rx="1" fill="#FAC775"/><ellipse cx="10" cy="15" rx="8.5" ry="8" fill="#E24B4A"/><path d="M10 7 C6 10 6 20 10 23 M10 7 C14 10 14 20 10 23" stroke="#C83A39" stroke-width="0.8" fill="none"/><text x="10" y="18.5" text-anchor="middle" font-size="7" font-weight="700" fill="#FAC775" font-family="sans-serif">福</text><rect x="5" y="22" width="10" height="3" rx="1" fill="#FAC775"/><path d="M8 25 v7 M10 25 v8 M12 25 v7" stroke="#FAC775" stroke-width="1" stroke-linecap="round"/></symbol>
+    <symbol id="fx-fly" viewBox="0 0 24 20"><g class="wing-l"><path d="M12 10 C6 0 0 2 2 8 C3 12 9 12 12 10Z" fill="#CECBF6"/><path d="M12 10 C8 14 6 19 9 19 C11 19 12 14 12 10Z" fill="#AFA9EC"/></g><g class="wing-r"><path d="M12 10 C18 0 24 2 22 8 C21 12 15 12 12 10Z" fill="#F4C0D1"/><path d="M12 10 C16 14 18 19 15 19 C13 19 12 14 12 10Z" fill="#ED93B1"/></g><path d="M12 6 v10" stroke="#534AB7" stroke-width="1.4" stroke-linecap="round"/><path d="M12 6 q-2 -4 -4 -5 M12 6 q2 -4 4 -5" stroke="#534AB7" stroke-width="0.8" fill="none"/></symbol>
+    <symbol id="fx-koi" viewBox="0 0 40 18"><path d="M4 9 C10 1 24 1 31 9 C24 17 10 17 4 9Z" fill="#fff" stroke="#F09595" stroke-width="0.8"/><path d="M31 9 L39 3 L37 9 L39 15Z" fill="#F09595"/><path d="M12 4 C16 6 18 9 16 13 C20 12 24 9 22 5 C19 3 15 3 12 4Z" fill="#F09595"/><circle cx="8.5" cy="8" r="1" fill="#26215C"/><path d="M14 13 l-3 4 l5 -2Z M18 5 l-2 -4 l4 2Z" fill="#F7C1C1"/></symbol>
     <symbol id="dk-tendril" viewBox="0 0 28 28"><path d="M2 26 C2 14 8 6 21 3.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M9 10 q-4 -1 -5 -5 q4 0 5 5Z" fill="#C7DCA8"/><use href="#dk-mini" x="18" y="-1" width="8" height="8"/></symbol>`;
   // per season: corner spray, small accent, watermark, background silhouette, drifting petal colour
   const DECO_SEASONS = {
@@ -789,14 +983,22 @@ button, label, .log { touch-action: manipulation; }
       wm: `<use href="#dk-leaf" x="-5" y="-10" width="10" height="20"/>`,
       bg: `<path d="M0 120 C30 92 50 70 72 42 C84 28 98 18 122 10" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><use href="#dk-leaf" x="40" y="62" width="12" height="24" transform="rotate(-60 46 74)"/><use href="#dk-leaf" x="64" y="30" width="12" height="24" transform="rotate(40 70 42)"/><use href="#dk-leaf" x="92" y="8" width="11" height="22" transform="rotate(-50 97 19)"/><use href="#dk-osm" x="76" y="44" width="10" height="10"/><use href="#dk-osm" x="104" y="20" width="9" height="9"/>` },
   };
+  const GILDED = { dot: "#F6D88A", petal: "#F2C562",
+    spray: `<path d="M-2 6 C18 8 34 16 56 36 M26 13 C32 6 40 3 50 4 M44 26 C52 24 60 26 66 30" stroke="#B8862C" stroke-width="2.2" fill="none" stroke-linecap="round"/><use href="#dk-gb" x="13" y="2" width="18" height="18"/><use href="#dk-gb" x="44" y="24" width="15" height="15"/><use href="#dk-gb" x="42" y="-3" width="13" height="13"/><g color="#F2C562"><use href="#dk-spark" x="66" y="10" width="8" height="8"/><use href="#dk-spark" x="30" y="32" width="6" height="6"/><use href="#dk-spark" x="6" y="22" width="5" height="5"/></g>`,
+    mini: `<use href="#dk-gb" x="-10" y="-10" width="20" height="20"/>`,
+    wm: `<use href="#dk-s5" x="-10" y="-10" width="20" height="20"/>`,
+    bg: `<path d="M0 120 C30 90 50 70 70 40 C80 25 95 15 120 8 M48 78 C60 76 74 80 86 88 M70 40 C64 30 62 20 64 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/><use href="#dk-s5" x="58" y="28" width="20" height="20"/><use href="#dk-s5" x="110" y="0" width="16" height="16"/><use href="#dk-s5" x="80" y="80" width="16" height="16"/>` };
   const decoOn = () => S.decor !== false;
+  const fxOn = key => !!(S.decos && S.decos[key] && S.unlocks && S.unlocks[key]);
   let decoSeason = null;
   function applyDecor() {
     document.body.classList.toggle("no-deco", !decoOn());
-    const season = seasonOf(todayKey());
-    if (season === decoSeason) return;
-    decoSeason = season;
-    const d = DECO_SEASONS[season];
+    applyFx();
+    const season = seasonOf(todayKey()), gild = fxOn("gilded");
+    document.body.classList.toggle("gilded", gild);
+    if (season + gild === decoSeason) return;
+    decoSeason = season + gild;
+    const d = gild ? GILDED : DECO_SEASONS[season];
     document.body.dataset.season = season;
     document.documentElement.style.setProperty("--deco-petal", d.petal);
     $("decoBase").innerHTML = DECO_BASE;
@@ -808,6 +1010,22 @@ button, label, .log { touch-action: manipulation; }
     $("decoBg").innerHTML = `<svg class="bg-branch" aria-hidden="true"><use href="#dk-bg"/></svg><svg class="bg-branch2" aria-hidden="true"><use href="#dk-bg"/></svg>` +
       petals.map(([t, l, r, rot, w], i) => `<svg class="bg-petal" style="top:${t};${l ? "left:" + l : "right:" + r};width:${w}px;height:${Math.round(w * 0.8)}px;--r:${rot}deg;animation-delay:${-i * 1.3}s;color:${d.petal}" aria-hidden="true"><use href="#dk-pt"/></svg>`).join("") +
       dots.map(([t, l], i) => `<span class="bg-dot" style="top:${t};left:${l};width:${3 + (i % 3)}px;height:${3 + (i % 3)}px;background:${d.dot}"></span>`).join("");
+  }
+  // reward decorations: lantern garland, butterflies, koi pond (each only once unlocked and switched on)
+  let fxBuilt = false;
+  function applyFx() {
+    if (!fxBuilt) {
+      fxBuilt = true;
+      $("fxGarland").innerHTML = `<svg class="rope" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3 Q75 26 150 8 Q225 26 300 3" stroke="#BA7517" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg>` +
+        [["7%", 22, 0], ["29%", 18, -0.8], ["52%", 22, -1.6], ["74%", 18, -0.4], ["91%", 15, -1.2]].map(([l, w, dl]) => `<svg class="lan" style="left:${l};width:${w}px;height:${Math.round(w * 1.7)}px;animation-delay:${dl}s" aria-hidden="true"><use href="#fx-lan"/></svg>`).join("");
+      $("fxFlies").innerHTML = [["fly1", 26], ["fly2", 20], ["fly3", 17]].map(([c, w]) => `<svg class="bfly ${c}" style="width:${w}px;height:${Math.round(w * 0.83)}px" aria-hidden="true"><use href="#fx-fly"/></svg>`).join("");
+      $("fxPond").innerHTML = `<svg class="water" viewBox="0 0 300 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 Q75 4 150 16 T300 12 V70 H0Z" fill="var(--pond)"/><path d="M30 40 q10 -4 20 0 M200 50 q12 -5 24 0 M120 30 q8 -3 16 0" stroke="var(--pond-ripple)" stroke-width="1.4" fill="none" vector-effect="non-scaling-stroke"/></svg>
+        <svg class="koi k1" aria-hidden="true"><use href="#fx-koi"/></svg><svg class="koi k2" aria-hidden="true"><use href="#fx-koi"/></svg>
+        <svg class="pad" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M0 0 L11 -3 A11.4 11.4 0 1 1 6 -9.6 Z" fill="#9FE1CB"/></svg>`;
+    }
+    $("fxGarland").hidden = !fxOn("lanterns"); document.body.classList.toggle("fx-lanterns", fxOn("lanterns"));
+    $("fxFlies").hidden = !fxOn("butterflies");
+    $("fxPond").hidden = !fxOn("koi");
   }
   // markup helpers (return "" when decorations are off)
   const dco = (cls, sym = "spray") => decoOn() ? `<svg class="deco ${cls}" aria-hidden="true"><use href="#dk-${sym}"/></svg>` : "";
@@ -840,7 +1058,7 @@ button, label, .log { touch-action: manipulation; }
 
   // ---------- Buddy ----------
   // Drawn so the shirt ends at y=112: that line sits on the card's top edge, and the hands grip over it.
-  const buddySVG = mood => cuteSVG(mood);
+  const buddySVG = (mood, force) => cuteSVG(mood, force);
 
   // Gus's clothes: the lavender G shirt, or a seasonal outfit (same solar-term dates as the flowers).
   // Every outfit keeps the big G and the heart.
@@ -848,7 +1066,17 @@ button, label, .log { touch-action: manipulation; }
   const HEART = (x, y, k = 1) => `<path transform="translate(${x} ${y}) scale(${k})" d="M0 0 c0-2 2.6-2.3 3.2-.4 c.6-1.9 3.2-1.6 3.2.4 c0 2.3-3.2 4.2-3.2 4.2 s-3.2-1.9-3.2-4.2Z" fill="var(--m-heart)"/>`;
   const G_TEXT = (x, y, size, fill, extra = "") => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, 'Arial Rounded MT Bold', sans-serif" font-weight="700" font-size="${size}" fill="${fill}" ${extra}>G</text>`;
   const BLOSSOM = (x, y, w, color) => `<g transform="translate(${x} ${y}) scale(${w / 20})"><g fill="${color}"><circle cx="0" cy="-4.6" r="4.3"/><circle cx="4.4" cy="-1.4" r="4.3"/><circle cx="2.7" cy="3.7" r="4.3"/><circle cx="-2.7" cy="3.7" r="4.3"/><circle cx="-4.4" cy="-1.4" r="4.3"/></g><circle r="2.1" fill="#FAC775"/></g>`;
-  function gusOutfit(L) {
+  function gusOutfit(L, force) {
+    // Tang suit 唐装: unlocked by finishing the sticker book
+    if (force === "tang" || (!force && S.buddy.tang && S.unlocks && S.unlocks.tang)) return { over: "", body: `
+      <path d="${TORSO}" fill="#D9534F" ${L}/>
+      <path d="M41 98 C39 103 38 107.5 37.5 112 M79 98 C81 103 82 107.5 82.5 112" fill="none" stroke="#F6C453" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M50.5 83 Q60 88.5 69.5 83 L69.5 87 Q60 92.5 50.5 87Z" fill="#F6C453" ${L}/>
+      <path d="M60 91 V112" stroke="#F6C453" stroke-width="1.6"/>
+      <g stroke="#F6C453" stroke-width="1.6" stroke-linecap="round" fill="none"><path d="M55.5 96 h9 M56 102 h8 M56.5 108 h7"/></g>
+      <g fill="#F6C453"><circle cx="55" cy="96" r="1.5"/><circle cx="65" cy="96" r="1.5"/><circle cx="55.5" cy="102" r="1.4"/><circle cx="64.5" cy="102" r="1.4"/></g>
+      ${G_TEXT(46, 106, 13, "#F6C453")}${HEART(70.5, 101, 0.85)}
+      <path d="M28.5 111 Q60 106 91.5 111" stroke="#F6C453" stroke-width="1.4" fill="none"/>` };
     const season = S.buddy.outfits === false ? null : seasonOf(todayKey());
     if (season === "spring") return { over: "", body: `
       <path d="${TORSO}" fill="#F4C0D1" ${L}/>
@@ -894,7 +1122,7 @@ button, label, .log { touch-action: manipulation; }
   }
 
   // Clean-cut "oppa" look: sleek hair with a centre part and curtain bangs, tidy short sides, smooth sloped shoulders.
-  function cuteSVG(mood) {
+  function cuteSVG(mood, force) {
     const L = 'stroke="var(--m-line)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
     const E = 'stroke="var(--m-eye)" stroke-width="2.8" stroke-linecap="round" fill="none"';
     const star = (cx, cy, r, fill) => `<path d="M${cx} ${cy - r} Q${cx + r * 0.22} ${cy - r * 0.22} ${cx + r} ${cy} Q${cx + r * 0.22} ${cy + r * 0.22} ${cx} ${cy + r} Q${cx - r * 0.22} ${cy + r * 0.22} ${cx - r} ${cy} Q${cx - r * 0.22} ${cy - r * 0.22} ${cx} ${cy - r} Z" fill="${fill}"/>`;
@@ -918,7 +1146,7 @@ button, label, .log { touch-action: manipulation; }
         <text x="96" y="22" font-family="Fredoka, sans-serif" font-weight="700" font-size="13" fill="var(--m-shirt-2)">z</text><text x="106" y="12" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="var(--m-shirt-2)">z</text>`,
     }[mood] || "";
     const blush = mood === "shocked" ? "" : `<ellipse cx="41" cy="67" rx="5.5" ry="3.6" fill="var(--m-blush-soft)"/><ellipse cx="79" cy="67" rx="5.5" ry="3.6" fill="var(--m-blush-soft)"/>`;
-    const fit = gusOutfit(L);
+    const fit = gusOutfit(L, force);
     return `<svg viewBox="0 0 120 120" aria-hidden="true">
       <rect x="53.5" y="74" width="13" height="12" fill="var(--m-skin-2)"/>
       ${fit.body}
@@ -989,6 +1217,20 @@ button, label, .log { touch-action: manipulation; }
     return { mood, msgs };
   }
   const buddyState = {};
+  function pandaSVG() {
+    const L = 'stroke="#3B2B40" stroke-width="1.6" stroke-linejoin="round"';
+    return `<svg viewBox="0 0 60 60" aria-hidden="true">
+      <circle cx="16" cy="13" r="6.5" fill="#2E2B33" ${L}/><circle cx="44" cy="13" r="6.5" fill="#2E2B33" ${L}/>
+      <ellipse cx="30" cy="30" rx="18" ry="16.5" fill="#FFFFFF" ${L}/>
+      <ellipse cx="22.5" cy="29" rx="4.6" ry="6" transform="rotate(25 22.5 29)" fill="#2E2B33"/><ellipse cx="37.5" cy="29" rx="4.6" ry="6" transform="rotate(-25 37.5 29)" fill="#2E2B33"/>
+      <circle cx="23.3" cy="28" r="1.5" fill="#fff"/><circle cx="36.7" cy="28" r="1.5" fill="#fff"/>
+      <ellipse cx="30" cy="35" rx="2.4" ry="1.7" fill="#2E2B33"/><path d="M27.5 38 q2.5 2 5 0" stroke="#2E2B33" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="18.5" cy="36" rx="3" ry="2" fill="#F7C1C1"/><ellipse cx="41.5" cy="36" rx="3" ry="2" fill="#F7C1C1"/>
+      <use href="#dk-mini" x="38" y="3" width="11" height="11"/>
+      <ellipse cx="20" cy="55" rx="6.5" ry="4.8" fill="#2E2B33" ${L}/><ellipse cx="40" cy="55" rx="6.5" ry="4.8" fill="#2E2B33" ${L}/>
+    </svg>`;
+  }
+  const pandaOn = () => !!(S.buddy.panda && S.unlocks && S.unlocks.panda);
   function buddyZone(view, b) {
     if (!S.buddy.on) return "";
     const bs = buddyState[view] || (buddyState[view] = { i: 0, first: "" });
@@ -997,6 +1239,7 @@ button, label, .log { touch-action: manipulation; }
     const name = S.buddy.name || "Gus";
     return `<div class="buddy-zone">
       <div class="bubble" data-buddy="${view}" role="status" aria-live="polite"><span class="who">${esc(name)}</span><span class="say">${esc(b.msgs[bs.i % b.msgs.length])}</span><span class="more">${b.msgs.length > 1 ? `${bs.i % b.msgs.length + 1}/${b.msgs.length}` : ""}</span></div>
+      ${pandaOn() ? `<span class="panda" aria-hidden="true">${pandaSVG()}</span>` : ""}
       <button type="button" class="buddy-btn ${b.mood}" data-buddy="${view}" aria-label="${esc(name)}, tap to hear more">${buddySVG(b.mood)}</button>
     </div>`;
   }
@@ -1009,6 +1252,293 @@ button, label, .log { touch-action: manipulation; }
     zone.querySelector(".more").textContent = `${bs.i + 1}/${bs.msgs.length}`;
     for (const el of [zone.querySelector(".bubble"), zone.querySelector(".buddy-btn")]) { el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); el.addEventListener("animationend", () => el.classList.remove("pop"), { once: true }); }
   });
+
+  // ---------- Sticker book ----------
+  // Stickers reward staying at or under the daily budget. Past days count.
+  const STICKER_ART = `
+    <symbol id="st-bl" viewBox="-10 -10 20 20"><g fill="currentColor"><circle cx="0" cy="-4.6" r="4.3"/><circle cx="4.4" cy="-1.4" r="4.3"/><circle cx="2.7" cy="3.7" r="4.3"/><circle cx="-2.7" cy="3.7" r="4.3"/><circle cx="-4.4" cy="-1.4" r="4.3"/></g><circle r="2.1" fill="#FAC775"/></symbol>
+    <symbol id="st-first" viewBox="0 0 60 60"><g fill="#F7C1C1" stroke="#fff" stroke-width="5" paint-order="stroke"><circle cx="30" cy="16" r="11"/><circle cx="43" cy="26" r="11"/><circle cx="38" cy="42" r="11"/><circle cx="22" cy="42" r="11"/><circle cx="17" cy="26" r="11"/></g><g fill="#F7C1C1"><circle cx="30" cy="16" r="11"/><circle cx="43" cy="26" r="11"/><circle cx="38" cy="42" r="11"/><circle cx="22" cy="42" r="11"/><circle cx="17" cy="26" r="11"/></g><circle cx="30" cy="30" r="9" fill="#FAC775"/><circle cx="26.5" cy="29" r="1.4" fill="#4A3226"/><circle cx="33.5" cy="29" r="1.4" fill="#4A3226"/><path d="M27 32.5 q3 2.5 6 0" stroke="#4A3226" stroke-width="1.3" fill="none" stroke-linecap="round"/><circle cx="24.5" cy="32" r="1.5" fill="#F09595"/><circle cx="35.5" cy="32" r="1.5" fill="#F09595"/></symbol>
+    <symbol id="st-streak3" viewBox="0 0 60 60"><path d="M6 46 C20 40 34 30 52 12" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M6 46 C20 40 34 30 52 12" stroke="#8C6A5A" stroke-width="3.5" fill="none" stroke-linecap="round"/><use href="#st-bl" x="4" y="30" width="18" height="18" color="#F09595"/><use href="#st-bl" x="20" y="20" width="20" height="20" color="#F7C1C1"/><use href="#st-bl" x="38" y="4" width="18" height="18" color="#F09595"/><circle cx="46" cy="44" r="10" fill="#7F77DD" stroke="#fff" stroke-width="3"/><text x="46" y="48.5" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="Fredoka, sans-serif">3</text></symbol>
+    <symbol id="st-streak7" viewBox="0 0 60 60"><path d="M6 42 A24 24 0 0 1 54 42" fill="none" stroke="#fff" stroke-width="22"/><path d="M8 42 A22 22 0 0 1 52 42" fill="none" stroke="#F7C1C1" stroke-width="5"/><path d="M13 42 A17 17 0 0 1 47 42" fill="none" stroke="#FAC775" stroke-width="5"/><path d="M18 42 A12 12 0 0 1 42 42" fill="none" stroke="#9FE1CB" stroke-width="5"/><path d="M23 42 A7 7 0 0 1 37 42" fill="none" stroke="#AFA9EC" stroke-width="5"/><g fill="#fff" stroke="#E4E0F5" stroke-width="1"><circle cx="9" cy="44" r="6"/><circle cx="15" cy="46" r="5"/><circle cx="51" cy="44" r="6"/><circle cx="45" cy="46" r="5"/></g><text x="30" y="58" text-anchor="middle" font-size="10" font-weight="700" fill="#7F77DD" font-family="Fredoka, sans-serif">7 days</text></symbol>
+    <symbol id="st-streak30" viewBox="0 0 60 60"><circle cx="30" cy="30" r="21" fill="#FAC775" stroke="#fff" stroke-width="5"/><circle cx="23" cy="24" r="3.5" fill="#EF9F27" opacity="0.5"/><circle cx="37" cy="38" r="2.5" fill="#EF9F27" opacity="0.5"/><path d="M22 31 q3 2.6 6 0 M32 31 q3 2.6 6 0" stroke="#854F0B" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M27.5 37 q2.5 2 5 0" stroke="#854F0B" stroke-width="1.3" fill="none" stroke-linecap="round"/><use href="#st-bl" x="36" y="6" width="16" height="16" color="#F09595"/><g fill="#AFA9EC"><path d="M8 12 l1.3 -3.5 l1.3 3.5 l3.5 1.3 l-3.5 1.3 l-1.3 3.5 l-1.3 -3.5 l-3.5 -1.3Z"/><path d="M50 48 l1 -2.6 l1 2.6 l2.6 1 l-2.6 1 l-1 2.6 l-1 -2.6 l-2.6 -1Z"/></g><text x="30" y="57.5" text-anchor="middle" font-size="9" font-weight="700" fill="#854F0B" font-family="Fredoka, sans-serif">30</text></symbol>
+    <symbol id="st-diary" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><rect x="14" y="8" width="34" height="44" rx="5" fill="#CECBF6"/></g><rect x="14" y="8" width="34" height="44" rx="5" fill="#CECBF6" stroke="#7F77DD" stroke-width="1.2"/><rect x="14" y="8" width="8" height="44" rx="3" fill="#AFA9EC"/><rect x="27" y="15" width="16" height="11" rx="2" fill="#fff"/><path d="M30 20.5 l3 3 l6 -6" stroke="#5DCAA5" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="30" y="4" width="14" height="7" fill="#F4C0D1" transform="rotate(-8 37 7)"/><text x="35" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="#534AB7" font-family="Fredoka, sans-serif">30</text></symbol>
+    <symbol id="st-piggy" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><ellipse cx="30" cy="34" rx="20" ry="15" fill="#F4C0D1"/><path d="M16 22 l-2 -9 l9 5Z M40 18 l7 -6 l0 10Z" fill="#ED93B1"/><rect x="18" y="45" width="6" height="7" rx="2" fill="#ED93B1"/><rect x="36" y="45" width="6" height="7" rx="2" fill="#ED93B1"/></g><ellipse cx="30" cy="34" rx="20" ry="15" fill="#F4C0D1"/><ellipse cx="45" cy="36" rx="5.5" ry="4.5" fill="#ED93B1"/><circle cx="43.5" cy="36" r="1" fill="#993556"/><circle cx="46.5" cy="36" r="1" fill="#993556"/><path d="M30 31 q3 2.4 6 0 M20 31 q3 2.4 6 0" stroke="#72243E" stroke-width="1.4" fill="none" stroke-linecap="round"/><rect x="25" y="21" width="10" height="2.4" rx="1.2" fill="#993556"/><circle cx="30" cy="14" r="5" fill="#FAC775" stroke="#BA7517" stroke-width="1"/><text x="52" y="17" font-size="9" font-weight="700" fill="#7F77DD" font-family="Fredoka, sans-serif">z</text><text x="56" y="10" font-size="7" font-weight="700" fill="#7F77DD" font-family="Fredoka, sans-serif">z</text></symbol>
+    <symbol id="st-saver" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M22 18 C10 26 8 48 18 52 C26 55 34 55 42 52 C52 48 50 26 38 18 Z" fill="#9FE1CB"/><path d="M22 18 l-3 -8 q11 4 22 0 l-3 8 Z" fill="#5DCAA5"/></g><path d="M22 18 C10 26 8 48 18 52 C26 55 34 55 42 52 C52 48 50 26 38 18 Z" fill="#9FE1CB"/><path d="M21 19 q9 4 18 0" stroke="#F09595" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="30" cy="19" r="2.6" fill="#F09595"/><path d="M24 35 l6 6 l6 -6 M30 41 v8 M25 44 h10" stroke="#085041" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M48 12 l1.5 -4 l1.5 4 l4 1.5 l-4 1.5 l-1.5 4 l-1.5 -4 l-4 -1.5Z" fill="#FAC775"/></symbol>
+    <symbol id="st-perfect" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M10 44 L8 18 L20 30 L30 12 L40 30 L52 18 L50 44 Z" fill="#FAC775"/></g><path d="M10 44 L8 18 L20 30 L30 12 L40 30 L52 18 L50 44 Z" fill="#FAC775" stroke="#EF9F27" stroke-width="1.5" stroke-linejoin="round"/><rect x="10" y="40" width="40" height="7" rx="2" fill="#EF9F27"/><circle cx="20" cy="36" r="3" fill="#F09595"/><circle cx="30" cy="34" r="3.6" fill="#AFA9EC"/><circle cx="40" cy="36" r="3" fill="#9FE1CB"/><circle cx="8" cy="18" r="2.6" fill="#fff"/><circle cx="30" cy="12" r="2.6" fill="#fff"/><circle cx="52" cy="18" r="2.6" fill="#fff"/><text x="30" y="57" text-anchor="middle" font-size="9" font-weight="700" fill="#854F0B" font-family="Fredoka, sans-serif">7/7</text></symbol>
+    <symbol id="st-boba" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M17 20 L21 52 Q30 56 39 52 L43 20 Z" fill="#FBEAF0"/><rect x="14" y="16" width="32" height="6" rx="3" fill="#AFA9EC"/></g><path d="M17 20 L21 52 Q30 56 39 52 L43 20 Z" fill="#FBEAF0"/><rect x="14" y="16" width="32" height="6" rx="3" fill="#AFA9EC"/><rect x="31" y="4" width="4" height="14" rx="2" fill="#F09595"/><g fill="#5F5E5A"><circle cx="25" cy="47" r="2.4"/><circle cx="31" cy="49" r="2.4"/><circle cx="36" cy="46" r="2.4"/><circle cx="28" cy="43" r="2.4"/></g><circle cx="26" cy="31" r="1.3" fill="#4A3226"/><circle cx="34" cy="31" r="1.3" fill="#4A3226"/><path d="M28 34 q2 1.8 4 0" stroke="#4A3226" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="23.5" cy="34" r="1.6" fill="#F7C1C1"/><circle cx="36.5" cy="34" r="1.6" fill="#F7C1C1"/></symbol>
+    <symbol id="st-pals" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M22 48 C8 38 6 26 12 20 C17 15 23 17 25 22 C27 17 33 15 38 20 C44 26 42 38 22 48Z" fill="#F7C1C1"/><path d="M38 52 C26 44 24 34 29 29 C33 25 38 27 40 31 C42 27 47 25 51 29 C56 34 54 44 38 52Z" fill="#AFA9EC"/></g><path d="M22 48 C8 38 6 26 12 20 C17 15 23 17 25 22 C27 17 33 15 38 20 C44 26 42 38 22 48Z" fill="#F7C1C1"/><path d="M38 52 C26 44 24 34 29 29 C33 25 38 27 40 31 C42 27 47 25 51 29 C56 34 54 44 38 52Z" fill="#AFA9EC"/><circle cx="18" cy="29" r="1.3" fill="#4A3226"/><circle cx="27" cy="29" r="1.3" fill="#4A3226"/><path d="M20 33 q2.5 2 5 0" stroke="#4A3226" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="35" cy="38" r="1.3" fill="#26215C"/><circle cx="44" cy="38" r="1.3" fill="#26215C"/><path d="M37 42 q2.5 2 5 0" stroke="#26215C" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M48 10 l1.5 -4 l1.5 4 l4 1.5 l-4 1.5 l-1.5 4 l-1.5 -4 l-4 -1.5Z" fill="#FAC775"/></symbol>
+    <symbol id="st-spring" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><ellipse cx="30" cy="48" rx="20" ry="7" fill="#C9A27E"/></g><ellipse cx="30" cy="48" rx="20" ry="7" fill="#C9A27E"/><path d="M30 46 C30 36 30 28 31 20" stroke="#639922" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M30 34 C20 34 14 26 15 20 C24 20 30 26 30 34Z" fill="#97C459" stroke="#fff" stroke-width="1.5"/><path d="M31 30 C40 30 46 22 45 16 C36 16 31 22 31 30Z" fill="#C0DD97" stroke="#fff" stroke-width="1.5"/><use href="#st-bl" x="23" y="5" width="16" height="16" color="#F4C0D1"/><circle cx="25" cy="49" r="1.2" fill="#4A3226"/><circle cx="35" cy="49" r="1.2" fill="#4A3226"/><path d="M28.5 51 q1.5 1.2 3 0" stroke="#4A3226" stroke-width="1.1" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="st-summer" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><path d="M30 44 L52 38 A23 23 0 1 1 44 26 Z" fill="#9FE1CB"/></g><path d="M30 44 L52 38 A23 23 0 1 1 44 26 Z" fill="#9FE1CB"/><path d="M30 40 C14 36 11 24 13 18 C20 20 26 26 30 40Z M30 40 C46 36 49 24 47 18 C40 20 34 26 30 40Z" fill="#F4C0D1"/><path d="M30 40 C21 32 20 20 24 12 C28 18 30 28 30 40Z M30 40 C39 32 40 20 36 12 C32 18 30 28 30 40Z" fill="#ED93B1"/><path d="M30 40 C25 30 25 16 30 6 C35 16 35 30 30 40Z" fill="#F4C0D1"/><path d="M10 52 q5 -3 10 0 M42 54 q5 -3 10 0" stroke="#85B7EB" stroke-width="1.6" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="st-autumn" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><circle cx="30" cy="32" r="20" fill="#EFB45A"/></g><circle cx="30" cy="32" r="20" fill="#EFB45A"/><circle cx="30" cy="32" r="14.5" fill="none" stroke="#C47F22" stroke-width="1.6" stroke-dasharray="3 2.4"/><g fill="#C47F22"><circle cx="30" cy="27.5" r="3"/><circle cx="34.5" cy="32" r="3"/><circle cx="30" cy="36.5" r="3"/><circle cx="25.5" cy="32" r="3"/></g><circle cx="30" cy="32" r="2" fill="#FAC775"/><path d="M42 12 l5 -4" stroke="#639922" stroke-width="1.6"/><circle cx="44" cy="12" r="2.4" fill="#FAC775" stroke="#fff" stroke-width="1"/><circle cx="48" cy="10" r="2" fill="#EF9F27" stroke="#fff" stroke-width="1"/><circle cx="46.5" cy="14.5" r="2" fill="#FAC775" stroke="#fff" stroke-width="1"/></symbol>
+    <symbol id="st-winter" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><circle cx="30" cy="40" r="14" fill="#EEF4FB"/><circle cx="30" cy="20" r="10" fill="#EEF4FB"/></g><circle cx="30" cy="40" r="14" fill="#EEF4FB" stroke="#B5D4F4" stroke-width="1.2"/><circle cx="30" cy="20" r="10" fill="#EEF4FB" stroke="#B5D4F4" stroke-width="1.2"/><path d="M20 27 q10 6 20 0 l1 4 q-11 5 -22 0Z" fill="#F09595"/><path d="M24 29 l-3 9 l-4 -1 l3 -8Z" fill="#F09595"/><circle cx="26.5" cy="18" r="1.4" fill="#4A3226"/><circle cx="33.5" cy="18" r="1.4" fill="#4A3226"/><path d="M30 21 l5 1.5 l-5 1Z" fill="#EF9F27"/><circle cx="44" cy="40" r="6" fill="#FAC775" stroke="#BA7517" stroke-width="1"/><path d="M41.5 38 l2.5 2.5 l2.5 -2.5 M44 40.5 v3.5" stroke="#854F0B" stroke-width="1.2" fill="none" stroke-linecap="round"/><use href="#st-bl" x="36" y="9" width="9" height="9" color="#F09595"/></symbol>
+    <symbol id="st-hongbao" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><rect x="14" y="8" width="32" height="46" rx="5" fill="#E24B4A"/></g><rect x="14" y="8" width="32" height="46" rx="5" fill="#E24B4A"/><path d="M14 13 Q30 28 46 13 Q46 8 41 8 L19 8 Q14 8 14 13Z" fill="#C83A39"/><circle cx="30" cy="25" r="6" fill="#FAC775" stroke="#EF9F27" stroke-width="1.2"/><text x="30" y="46" text-anchor="middle" font-size="12" font-weight="700" fill="#FAC775" font-family="sans-serif">福</text></symbol>
+    <symbol id="st-month" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M18 10 h24 v12 a12 12 0 0 1 -24 0Z" fill="#FAC775"/><rect x="22" y="44" width="16" height="8" rx="2" fill="#EF9F27"/></g><path d="M18 10 h24 v12 a12 12 0 0 1 -24 0Z" fill="#FAC775" stroke="#EF9F27" stroke-width="1.2"/><path d="M18 14 q-8 0 -7 7 q1 6 9 6 M42 14 q8 0 7 7 q-1 6 -9 6" stroke="#EF9F27" stroke-width="2.4" fill="none"/><rect x="27" y="33" width="6" height="11" fill="#EF9F27"/><rect x="22" y="44" width="16" height="8" rx="2" fill="#EF9F27"/><use href="#st-bl" x="23" y="11" width="14" height="14" color="#F09595"/></symbol>
+    <symbol id="st-lantern" viewBox="0 0 60 60"><path d="M30 2 v6" stroke="#BA7517" stroke-width="2"/><g stroke="#fff" stroke-width="5" paint-order="stroke"><ellipse cx="30" cy="30" rx="19" ry="17" fill="#E24B4A"/></g><ellipse cx="30" cy="30" rx="19" ry="17" fill="#E24B4A"/><path d="M30 13 C22 18 22 42 30 47 M30 13 C38 18 38 42 30 47 M30 13 C16 20 16 40 30 47 M30 13 C44 20 44 40 30 47" stroke="#C83A39" stroke-width="1.2" fill="none"/><rect x="22" y="9" width="16" height="6" rx="2" fill="#FAC775" stroke="#BA7517" stroke-width="1"/><rect x="22" y="45" width="16" height="5" rx="2" fill="#FAC775" stroke="#BA7517" stroke-width="1"/><path d="M27 50 v7 M30 50 v8 M33 50 v7" stroke="#FAC775" stroke-width="1.6" stroke-linecap="round"/><circle cx="24.5" cy="29" r="1.5" fill="#4A1B0C"/><circle cx="35.5" cy="29" r="1.5" fill="#4A1B0C"/><path d="M27.5 33 q2.5 2.2 5 0" stroke="#4A1B0C" stroke-width="1.3" fill="none" stroke-linecap="round"/><circle cx="21.5" cy="33" r="1.8" fill="#F7C1C1"/><circle cx="38.5" cy="33" r="1.8" fill="#F7C1C1"/></symbol>
+    <symbol id="st-hundred" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><circle cx="30" cy="28" r="22" fill="#FBEAF0"/></g><circle cx="30" cy="28" r="22" fill="#FBEAF0" stroke="#F4C0D1" stroke-width="1.2"/><use href="#st-bl" x="12" y="10" width="14" height="14" color="#F09595"/><use href="#st-bl" x="33" y="8" width="15" height="15" color="#F4C0D1"/><use href="#st-bl" x="22" y="22" width="16" height="16" color="#ED93B1"/><use href="#st-bl" x="10" y="27" width="12" height="12" color="#F7C1C1"/><use href="#st-bl" x="38" y="25" width="12" height="12" color="#F09595"/><rect x="15" y="44" width="30" height="13" rx="6.5" fill="#7F77DD" stroke="#fff" stroke-width="2.5"/><text x="30" y="54" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" font-family="Fredoka, sans-serif">100</text></symbol>
+    <symbol id="st-dumpling" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M8 38 C8 22 20 14 30 14 C40 14 52 22 52 38 C44 44 16 44 8 38Z" fill="#FFF8EE"/></g><path d="M8 38 C8 22 20 14 30 14 C40 14 52 22 52 38 C44 44 16 44 8 38Z" fill="#FFF8EE" stroke="#E8D9BF" stroke-width="1.4"/><path d="M18 19 q2 4 0 7 M24 15.5 q2 4 0 7 M30 14.5 q2 4 0 7 M36 15.5 q2 4 0 7 M42 19 q2 4 0 7" stroke="#E8D9BF" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="33" r="1.5" fill="#4A3226"/><circle cx="36" cy="33" r="1.5" fill="#4A3226"/><path d="M28 36 q2 1.8 4 0" stroke="#4A3226" stroke-width="1.3" fill="none" stroke-linecap="round"/><circle cx="20" cy="36" r="2" fill="#F7C1C1"/><circle cx="40" cy="36" r="2" fill="#F7C1C1"/><ellipse cx="30" cy="48" rx="18" ry="4" fill="#9FE1CB" opacity="0.7"/><text x="46" y="14" font-size="10" font-weight="700" fill="#7F77DD" font-family="Fredoka, sans-serif">×10</text></symbol>
+    <symbol id="st-tea" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M12 26 h32 v6 a16 16 0 0 1 -32 0Z" fill="#9FE1CB"/></g><path d="M12 26 h32 v6 a16 16 0 0 1 -32 0Z" fill="#9FE1CB" stroke="#5DCAA5" stroke-width="1.2"/><path d="M44 30 q9 0 8 7 q-1 6 -9 5" stroke="#5DCAA5" stroke-width="2.6" fill="none"/><ellipse cx="28" cy="50" rx="18" ry="3.5" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="1"/><path d="M22 20 q-3 -4 0 -8 q3 -4 0 -8 M30 20 q-3 -4 0 -8 q3 -4 0 -8" stroke="#CECBF6" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M36 14 q4 -6 10 -4 q-2 6 -10 4Z" fill="#97C459"/><circle cx="23" cy="34" r="1.4" fill="#085041"/><circle cx="33" cy="34" r="1.4" fill="#085041"/><path d="M26 37 q2 1.8 4 0" stroke="#085041" stroke-width="1.2" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="st-kite" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M30 4 L48 24 L30 44 L12 24Z" fill="#F4C0D1"/></g><path d="M30 4 L48 24 L30 44 L12 24Z" fill="#F4C0D1"/><path d="M30 4 L48 24 L30 24Z M30 24 L12 24 L30 44Z" fill="#AFA9EC"/><path d="M30 4 V44 M12 24 H48" stroke="#fff" stroke-width="1.2"/><path d="M30 44 C24 50 36 52 30 58" stroke="#7F77DD" stroke-width="1.4" fill="none"/><path d="M27 49 l-4 -2 l0 4Z M33 49 l4 -2 l0 4Z M27 55 l-4 -2 l0 4Z" fill="#FAC775"/><circle cx="26" cy="22" r="1.3" fill="#26215C"/><circle cx="34" cy="22" r="1.3" fill="#26215C"/><path d="M28 26 q2 1.8 4 0" stroke="#26215C" stroke-width="1.2" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="st-zodiac" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><circle cx="30" cy="30" r="23" fill="#E24B4A"/></g><circle cx="30" cy="30" r="23" fill="#E24B4A"/><circle cx="30" cy="30" r="19" fill="none" stroke="#FAC775" stroke-width="1.6"/><circle cx="30" cy="30" r="15.5" fill="none" stroke="#FAC775" stroke-width="0.8" stroke-dasharray="2 2"/><use href="#st-bl" x="44" y="2" width="13" height="13" color="#F4C0D1"/></symbol>`;
+  $("stickerDefs").innerHTML = STICKER_ART;
+  const STICKER_DEMO = ["localhost", "127.0.0.1"].includes(location.hostname) ? (location.search.match(/[?&]stickerdemo=([a-z0-9]+)/) || [])[1] || "" : "";
+  // Spring Festival (Chinese New Year) dates, for the red envelope sticker
+  const SPRING_FESTIVAL = ["2025-01-29", "2026-02-17", "2027-02-06", "2028-01-26", "2029-02-13", "2030-02-03", "2031-01-23", "2032-02-11"];
+  function stickerList() {
+    const two = S.dailyBudgetCents ? money(S.dailyBudgetCents * 2) : "2 days' budget";
+    const v1 = [
+      { group: "streaks", id: "first", name: "First bloom", how: "Your first day at or under budget" },
+      { group: "streaks", id: "streak3", name: "3 in a row", how: "3 days under budget in a row" },
+      { group: "streaks", id: "streak7", name: "Rainbow", how: "7 days under budget in a row" },
+      { group: "streaks", id: "streak30", name: "Full moon", how: "30 days under budget in a row", legendary: true },
+      { group: "streaks", id: "diary", name: "Diary keeper", how: "Log (or mark no-spend) 30 days in a row" },
+      { group: "savings", id: "piggy", name: "No-spend day", how: "Mark a day where you spent nothing", repeat: true },
+      { group: "savings", id: "saver", name: "Big saver", how: `Save ${two} or more in one week`, repeat: true },
+      { group: "savings", id: "perfect", name: "Perfect week", how: "Every day of a week under budget (7/7)", repeat: true },
+      { group: "savings", id: "boba", name: "Boba break", how: "7 logged days in a row with no Coffee & snacks spending" },
+      { group: "savings", id: "pals", name: "Payback pal", how: "Get paid back for a group payment" },
+      { group: "seasons and specials", id: "spring", name: "Spring sprout", how: "20 days under budget during spring (立春–立夏)", repeat: true },
+      { group: "seasons and specials", id: "summer", name: "Lotus splash", how: "20 days under budget during summer (立夏–立秋)", repeat: true },
+      { group: "seasons and specials", id: "autumn", name: "Mooncake", how: "20 days under budget during autumn (立秋–立冬)", repeat: true },
+      { group: "seasons and specials", id: "winter", name: "Winter saver", how: "20 days under budget during winter (立冬–立春)", repeat: true },
+      { group: "seasons and specials", id: "hongbao", name: "Red envelope", how: "Stay under budget through Spring Festival week", repeat: true },
+      { group: "seasons and specials", id: "month", name: "Month master", how: "Every day of a calendar month under budget", legendary: true, repeat: true },
+    ];
+    const ten = S.dailyBudgetCents ? money(S.dailyBudgetCents * 10) : "10 days' budget";
+    const [animal] = zodiacOf(+todayKey().slice(0, 4));
+    const v2 = [
+      { group: "festivals", id: "lantern", name: "Red lantern", how: "60 days under budget in a row" },
+      { group: "festivals", id: "zodiac", name: `Year of the ${animal}`, how: "100 days under budget in one calendar year", repeat: true },
+      { group: "treats", id: "dumpling", name: "Dumplings", how: "10 no-spend days in total" },
+      { group: "treats", id: "tea", name: "Tea time", how: "4 perfect weeks in total" },
+      { group: "milestones", id: "hundred", name: "Hundred blossoms", how: "100 days under budget in a row", legendary: true },
+      { group: "milestones", id: "kite", name: "High kite", how: `Save ${ten} or more in one month`, repeat: true },
+    ];
+    return [...v1.map(x => ({ ...x, vol: 1 })), ...v2.map(x => ({ ...x, vol: 2 }))];
+  }
+  // which stickers are earned (with counts for repeatable ones), plus streak info for the "next" hint
+  function computeStickers(c) {
+    const got = {}; const add = (id, n = 1) => { if (n > 0) got[id] = (got[id] || 0) + n; };
+    const coffeeByDay = {}; c.all.forEach(e => { if (e.cat === "coffee") coffeeByDay[e.date] = (coffeeByDay[e.date] || 0) + homeCents(e); });
+    const under = k => counted(k, c) && dayBudget(k) > 0 && (c.byDay[k] || 0) <= dayBudget(k);
+    let run = 0, best = 0, logRun = 0, logBest = 0, bobaRun = 0, bobaBest = 0;
+    const seasonDays = {}, yearUnder = {};
+    for (let d = parseKey(c.start); keyOf(d) <= c.today; d = addDays(d, 1)) {
+      const k = keyOf(d), isLogged = logged(k, c);
+      if (under(k)) { yearUnder[k.slice(0, 4)] = (yearUnder[k.slice(0, 4)] || 0) + 1; run++; best = Math.max(best, run); const sk = seasonOf(k), yr = sk === "winter" && k.slice(5) < "02-04" ? +k.slice(0, 4) - 1 : +k.slice(0, 4); seasonDays[sk + yr] = (seasonDays[sk + yr] || 0) + 1; }
+      else if (k !== c.today || isLogged) run = 0;
+      if (isLogged) { logRun++; logBest = Math.max(logBest, logRun); } else if (k !== c.today) logRun = 0;
+      if (isLogged && !coffeeByDay[k]) { bobaRun++; bobaBest = Math.max(bobaBest, bobaRun); } else if (k !== c.today || isLogged) bobaRun = 0;
+      if (isNoSpend(k) && counted(k, c) && !(c.byDay[k])) add("piggy");
+    }
+    if (best >= 1) add("first"); if (best >= 3) add("streak3"); if (best >= 7) add("streak7"); if (best >= 30) add("streak30");
+    if (logBest >= 30) add("diary"); if (bobaBest >= 7) add("boba"); if (c.paybacks.length) add("pals");
+    for (const [key, n] of Object.entries(seasonDays)) if (n >= 20) add(key.replace(/\d+$/, ""));
+    // whole weeks (by your week start) that are over
+    for (let w = weekStartOf(c.start); keyOf(addDays(w, 6)) < c.today; w = addDays(w, 7)) {
+      const t = tally(keyOf(w), keyOf(addDays(w, 7)), c);
+      if (t.budget > 0 && t.days === 7 && t.onBudget === 7) add("perfect");
+      if (t.budget > 0 && S.dailyBudgetCents > 0 && t.diff >= S.dailyBudgetCents * 2) add("saver");
+    }
+    // whole calendar months that are over
+    for (let m = new Date(parseKey(c.start).getFullYear(), parseKey(c.start).getMonth(), 1); ; m = new Date(m.getFullYear(), m.getMonth() + 1, 1)) {
+      const end = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+      if (keyOf(end) > c.today) break;
+      const t = tally(keyOf(m), keyOf(end), c), days = Math.round((end - m) / 864e5);
+      if (keyOf(m) >= c.start && t.budget > 0 && t.days === days && t.onBudget === days) add("month");
+      if (t.budget > 0 && S.dailyBudgetCents > 0 && t.diff >= S.dailyBudgetCents * 10) add("kite");
+    }
+    for (const sf of SPRING_FESTIVAL) {
+      const end = shiftKey(sf, 7); if (end > c.today || sf < c.start) continue;
+      const t = tally(sf, end, c); if (t.budget > 0 && t.days >= 5 && t.onBudget === t.days) add("hongbao");
+    }
+    if (best >= 60) add("lantern"); if (best >= 100) add("hundred");
+    if ((got.piggy || 0) >= 10) add("dumpling"); if ((got.perfect || 0) >= 4) add("tea");
+    for (const n of Object.values(yearUnder)) if (n >= 100) add("zodiac");
+    // local preview only: pretend Volume 1 is complete, to demo the finale
+    if (STICKER_DEMO) {
+      const v2demo = ["vol2", "festivals", "treats", "milestones"].includes(STICKER_DEMO);
+      for (const s of stickerList()) if (!got[s.id] && (s.vol === 1 ? (v2demo || STICKER_DEMO === "all" || s.group.startsWith(STICKER_DEMO)) : (STICKER_DEMO === "vol2" || s.group === STICKER_DEMO))) got[s.id] = 1;
+    }
+    return { got, run, best };
+  }
+  const ZODIAC = [["Rat", "鼠"], ["Ox", "牛"], ["Tiger", "虎"], ["Rabbit", "兔"], ["Dragon", "龍"], ["Snake", "蛇"], ["Horse", "馬"], ["Goat", "羊"], ["Monkey", "猴"], ["Rooster", "雞"], ["Dog", "狗"], ["Pig", "豬"]];
+  const zodiacOf = y => ZODIAC[((y - 2020) % 12 + 12) % 12];
+  function stickerSVG(id, size = 56) {
+    const extra = id === "zodiac" ? `<text x="30" y="37" text-anchor="middle" font-size="17" font-weight="700" fill="#FAC775" font-family="sans-serif">${zodiacOf(+todayKey().slice(0, 4))[1]}</text>` : "";
+    return `<svg width="${size}" height="${size}" viewBox="0 0 60 60" aria-hidden="true"><use href="#st-${id}"/>${extra}</svg>`;
+  }
+  const vol1 = () => stickerList().filter(s => s.vol === 1);
+  const vol1Count = got => vol1().filter(s => got[s.id]).length;
+  function nextStickerHint(info) {
+    const n = info.run;
+    for (const [id, need, name] of [["first", 1, "First bloom"], ["streak3", 3, "3 in a row"], ["streak7", 7, "Rainbow"], ["streak30", 30, "Full moon"], ["lantern", 60, "Red lantern"], ["hundred", 100, "Hundred blossoms"]]) {
+      if (!info.got[id]) { const left = Math.max(1, need - n); return `Next: <b>${name}</b> · ${left} more day${left === 1 ? "" : "s"} under budget in a row`; }
+    }
+    return "You've collected every streak sticker. Amazing!";
+  }
+  function renderBook() {
+    const c = context(), info = computeStickers(c), all = stickerList();
+    const v1n = vol1Count(info.got), v1t = vol1().length, done = v1n === v1t;
+    if (!done) st.bookVol = 1; else if (!st.bookVol) st.bookVol = 2;
+    const list = all.filter(s => s.vol === st.bookVol);
+    const have = list.filter(s => info.got[s.id]).length;
+    const tapes = { streaks: ["#F4C0D1", "#72243E", -3], savings: ["#9FE1CB", "#04342C", 2], "seasons and specials": ["#FAC775", "#412402", -2], festivals: ["#F7C1C1", "#791F1F", -2], treats: ["#FBEAF0", "#72243E", 2], milestones: ["#CECBF6", "#26215C", -3] };
+    const groups = [...new Set(list.map(s => s.group))];
+    const giftTag = g => {
+      const keys = PAGE_REWARDS[g]; if (!keys) return "";
+      const items = list.filter(s => s.group === g), n = items.filter(s => info.got[s.id]).length;
+      return keys.every(k => S.unlocks && S.unlocks[k]) ? `<span class="gift-tag open" title="${esc(keys.map(k => REWARD[k].name).join(" and "))}">🎁 2 gifts unlocked</span>` : `<span class="gift-tag" title="Complete this page for 2 surprise gifts">🎁 ×2 Surprise · ${n}/${items.length}</span>`;
+    };
+    $("bookBody").innerHTML = `
+      ${done ? `<div class="book-cover"><span class="ribbon" aria-hidden="true"></span>
+        <svg width="34" height="34" viewBox="0 0 60 60" aria-hidden="true"><use href="#st-month"/></svg>
+        <div><div class="cover-title">Master saver</div><div class="cover-sub">Volume 1 complete · 16 of 16</div></div></div>
+        <div class="seg book-tabs" role="group" aria-label="Volume">
+          <button type="button" data-vol="1" aria-pressed="${st.bookVol === 1}">Volume 1 ✓</button>
+          <button type="button" data-vol="2" aria-pressed="${st.bookVol === 2}">Volume 2</button></div>` : ""}
+      <div class="book-top">
+        <div><div class="book-count">${have} of ${list.length} collected</div>
+        <div class="book-bar ${st.bookVol === 1 && done ? "gold" : ""}"><span style="width:${(have / list.length * 100).toFixed(1)}%"></span></div>
+        <div class="sub" style="margin-top:4px">${!S.dailyBudgetCents ? "Set a daily budget to start earning stickers." : st.bookVol === 1 && done ? "Every sticker collected. Volume 2 is open!" : nextStickerHint(info)}</div>
+        ${st.bookVol === 1 && !done ? `<div class="vol-gift">🏆 Finish the whole book for a legendary surprise</div>` : ""}</div>
+      </div>
+      ${groups.map(g => `<div class="book-page ${st.bookVol === 1 && done ? "gilded" : ""}"><span class="book-tape" style="background:${tapes[g][0]};color:${tapes[g][1]};transform:rotate(${tapes[g][2]}deg)">${g}</span>${giftTag(g)}
+        <div class="book-grid">${list.filter(s => s.group === g).map((s, i) => {
+          const n = info.got[s.id] || 0;
+          return `<button type="button" class="sticker ${n ? "" : "locked"} ${s.legendary ? "legendary" : ""}" data-sticker="${s.id}" style="--tilt:${n ? [-6, 4, -3, 6, -2][i % 5] : 0}deg">
+            <span class="art">${n ? stickerSVG(s.id) : `<span class="q">?</span>`}${n > 1 ? `<span class="times">×${n}</span>` : ""}</span>
+            <span class="nm">${esc(s.name)}</span>${s.legendary ? `<span class="leg">legendary</span>` : ""}</button>`;
+        }).join("")}</div></div>`).join("")}
+      <p class="sub" id="bookHow" style="text-align:center;min-height:1.4em;margin:0">Tap a sticker to see how to earn it.</p>`;
+  }
+  function openBook() { renderBook(); showSheet($("bookSheet")); }
+  $("bookSheet").addEventListener("click", e => {
+    const v = e.target.closest("[data-vol]"); if (v) { st.bookVol = +v.dataset.vol; renderBook(); return; }
+    const b = e.target.closest("[data-sticker]"); if (!b) return;
+    const s = stickerList().find(x => x.id === b.dataset.sticker);
+    $("bookHow").innerHTML = `<b>${esc(s.name)}:</b> ${esc(s.how)}${s.repeat ? " (you can earn it again)" : ""}`;
+  });
+  // celebrate stickers earned since last time (first run: quietly count what was already earned)
+  let bookReady = false;
+  const stickerQueue = [];
+  // Each page of Volume 1 hides a surprise reward; the whole book unlocks the finale and Volume 2.
+  const REWARD = {
+    panda: { key: "panda", name: "Bao the panda 熊猫", what: "A tiny panda friend now keeps Gus company.", where: "Turn Bao on or off in Settings → Buddy.", use: "Say hi to Bao", cheer: "A new friend! Bao, meet everyone." },
+    butterflies: { key: "butterflies", name: "Butterflies 蝴蝶", what: "Pastel butterflies now flutter around the edges of the app.", where: "Find it in Settings → Decorations.", use: "Let them fly", cheer: "Look, they like your savings too!" },
+    gold: { key: "gold", name: "Golden Blossom theme", what: "A new cream-and-gold look for the whole app.", where: "Switch to it any time in Settings → Look.", use: "Try it now", cheer: "Ooh, shiny! Gold looks good on you." },
+    koi: { key: "koi", name: "Koi pond 锦鲤", what: "A calm pond with two lucky koi now sits at the bottom of the app.", where: "Find it in Settings → Decorations.", use: "Fill the pond", cheer: "Lucky koi for a lucky saver!" },
+    tang: { key: "tang", name: "Tang suit 唐装", what: "A red-and-gold Tang suit for Gus, for a whole year of careful saving.", where: "Turn it on or off in Settings → Buddy.", use: "Dress Gus up", cheer: "A Tang suit, for me?! I'll wear it proudly." },
+    lanterns: { key: "lanterns", name: "Lantern garland 灯笼", what: "Red lanterns now swing across the top of the app.", where: "Find it in Settings → Decorations.", use: "Hang them up", cheer: "It feels like a festival every day!" },
+    gilded: { key: "gilded", name: "Gilded blossoms", what: "Every flower, vine and border turns gold leaf, with tiny sparkles.", where: "Find it in Settings → Decorations.", use: "Make it gold", cheer: "Legendary! Everything's sparkling!" },
+  };
+  // each Volume 1 page hides two gifts; finishing the whole book adds a legendary one
+  const PAGE_REWARDS = { streaks: ["panda", "butterflies"], savings: ["gold", "koi"], "seasons and specials": ["tang", "lanterns"] };
+  const BOOK_REWARD = "gilded";
+  const DECO_KEYS = ["lanterns", "butterflies", "koi", "gilded"];
+  const pageDone = (got, g) => stickerList().filter(s => s.group === g).every(s => got[s.id]);
+  function checkStickers(c) {
+    if (!bookReady || readOnly) return;
+    const { got } = computeStickers(c);
+    const complete = vol1Count(got) === vol1().length;
+    let changed = false;
+    if (!S.stickersSeen) {
+      // first run: count earlier stickers quietly, but still reveal any page rewards already earned
+      S.stickersSeen = { ...got }; changed = true;
+      const n = Object.keys(got).length;
+      if (n) toast(`${S.buddy.name} found ${n} sticker${n === 1 ? "" : "s"} you already earned! Open your sticker book.`);
+    } else {
+      for (const [id, n] of Object.entries(got)) {
+        const seen = S.stickersSeen[id] || 0;
+        if (n > seen) { if (!seen && !stickerQueue.includes(id)) stickerQueue.push(id); else if (seen) toast(`${stickerList().find(s => s.id === id).name} ×${n}!`); S.stickersSeen[id] = n; changed = true; }
+      }
+    }
+    S.unlocks = S.unlocks || {};
+    for (const [g, keys] of Object.entries(PAGE_REWARDS)) {
+      if (!pageDone(got, g)) continue;
+      keys.forEach((k, i) => { if (!S.unlocks[k]) { S.unlocks[k] = true; changed = true; stickerQueue.push(`__gift:${g}:${i}`); } });
+    }
+    if (complete && !S.unlocks[BOOK_REWARD]) { S.unlocks[BOOK_REWARD] = true; changed = true; stickerQueue.push(`__gift:__book:0`); }
+    if (complete && !S.unlocks.book) { S.unlocks.book = true; changed = true; stickerQueue.push("__finale"); }
+    if (changed) saveSettings();
+    showNextSticker();
+  }
+  const CHEERS = { first: "Your very first bloom! This is how it starts.", streak3: "Three days strong. Keep it blooming!", streak7: "A whole week! I made you a rainbow.", streak30: "THIRTY days?! You're a legend.", diary: "30 days of logging. Your diary is so tidy!", piggy: "Your piggy is napping on a full tummy. So proud!", saver: "Look at that bag of savings!", perfect: "Seven out of seven. Crown on!", boba: "A whole week without snacks. Wow, willpower!", pals: "Friends who pay back are the best friends.", spring: "Your savings sprouted this spring!", summer: "Cool savings for a hot summer!", autumn: "Sweet savings, like a mooncake!", winter: "Warm wallet, cold weather. Nice!", hongbao: "A lucky red envelope for a careful New Year!", month: "A WHOLE MONTH. I'm framing this one.", lantern: "Sixty days! I lit a lantern for you.", hundred: "One hundred days. A hundred blossoms for you!", dumpling: "Ten no-spend days. Dumplings to celebrate!", tea: "Four perfect weeks. Let's have tea.", kite: "Your savings are flying high!", zodiac: "A whole lucky year of saving!" };
+  const GIFT_SVG = `<svg class="gift" viewBox="0 0 60 60" aria-hidden="true"><rect x="10" y="26" width="40" height="28" rx="4" fill="#F4C0D1" stroke="#fff" stroke-width="3"/><rect x="7" y="18" width="46" height="11" rx="3" fill="#ED93B1" stroke="#fff" stroke-width="3"/><rect x="26" y="18" width="8" height="36" fill="#AFA9EC"/><path d="M30 18 C22 6 12 10 18 16 C21 19 30 18 30 18 M30 18 C38 6 48 10 42 16 C39 19 30 18 30 18" fill="#CECBF6" stroke="#7F77DD" stroke-width="1.5"/><text x="30" y="46" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Fredoka, sans-serif">?</text></svg>`;
+  function rewardArt(key) {
+    if (key === "gold") return `<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="24" fill="#F6D88A" stroke="#fff" stroke-width="5"/><circle cx="30" cy="30" r="24" fill="none" stroke="#D9A441" stroke-width="1.5"/><use href="#st-bl" x="16" y="16" width="28" height="28" color="#FFF3D6"/></svg>`;
+    if (key === "panda") return pandaSVG();
+    if (key === "lanterns") return `<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M0 10 Q30 22 60 10" stroke="#BA7517" stroke-width="1.2" fill="none"/><svg x="6" y="10" width="20" height="34"><use href="#fx-lan"/></svg><svg x="34" y="12" width="22" height="38"><use href="#fx-lan"/></svg></svg>`;
+    if (key === "butterflies") return `<svg viewBox="0 0 60 60" aria-hidden="true"><svg x="8" y="10" width="44" height="38"><use href="#fx-fly"/></svg></svg>`;
+    if (key === "koi") return `<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="25" fill="#D7E8F6"/><svg x="8" y="14" width="40" height="18"><use href="#fx-koi"/></svg><svg x="14" y="32" width="34" height="15" style="transform:scaleX(-1);transform-origin:31px 39px"><use href="#fx-koi"/></svg></svg>`;
+    if (key === "gilded") return `<svg viewBox="0 0 60 60" aria-hidden="true"><use href="#dk-gb" x="12" y="12" width="36" height="36"/><g fill="#F2C562"><path d="M50 10 l2 -5 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2Z"/><path d="M8 44 l1.5 -3.5 l1.5 3.5 l3.5 1.5 l-3.5 1.5 l-1.5 3.5 l-1.5 -3.5 l-3.5 -1.5Z"/></g></svg>`;
+    return buddySVG("excited", "tang");
+  }
+  let popAction = null, revealT = null;
+  function showNextSticker() {
+    if (!stickerQueue.length || !$("stickerPop").hidden || !$("finale").hidden || openSheets.length) return;
+    const id = stickerQueue.shift();
+    if (id === "__finale") { showFinale(); return; }
+    popAction = null; $("popLater").hidden = true; $("popArt").classList.remove("reveal");
+    if (id.startsWith("__gift:")) {
+      const [, g, i] = id.split(":"), r = REWARD[g === "__book" ? BOOK_REWARD : PAGE_REWARDS[g][+i]];
+      $("popKicker").textContent = g === "__book" ? "Volume 1 complete!" : +i === 0 ? `“${g}” page complete!` : "And a bonus gift!";
+      $("popArt").innerHTML = `${GIFT_SVG}<span class="prize">${rewardArt(r.key)}</span>`;
+      $("popArt").classList.add("reveal");
+      // keep it a surprise until the gift opens
+      $("popName").textContent = "What's inside…?";
+      $("popHow").textContent = g === "__book" ? "A legendary gift for finishing the whole book!" : +i === 0 ? "You finished a whole page!" : "There's one more present for this page!";
+      $("popGus").innerHTML = `<span class="gus-mini">${buddySVG("excited")}</span><span>Ooh, a present! Open it, open it!</span>`;
+      $("stickerPop").classList.add("revealing");
+      clearTimeout(revealT);
+      revealT = setTimeout(() => {
+        $("popName").textContent = r.name;
+        $("popHow").textContent = `${r.what} ${r.where}`;
+        $("popGus").innerHTML = `<span class="gus-mini">${buddySVG("excited")}</span><span>${esc(r.cheer)}</span>`;
+        $("stickerPop").classList.remove("revealing");
+      }, 1300);
+      $("popStick").textContent = r.use;
+      $("popLater").hidden = false;
+      popAction = () => {
+        if (r.key === "gold") S.goldTheme = true;
+        if (r.key === "tang") S.buddy = { ...S.buddy, tang: true };
+        if (r.key === "panda") S.buddy = { ...S.buddy, panda: true };
+        if (DECO_KEYS.includes(r.key)) S.decos = { ...(S.decos || {}), [r.key]: true };
+        saveSettings(); render();
+      };
+    } else {
+      const s = stickerList().find(x => x.id === id);
+      clearTimeout(revealT); $("stickerPop").classList.remove("revealing");
+      $("popKicker").textContent = "New sticker!";
+      $("popArt").innerHTML = stickerSVG(id, 128);
+      $("popName").textContent = s.name;
+      $("popHow").textContent = s.how;
+      $("popGus").innerHTML = `<span class="gus-mini">${buddySVG("excited")}</span><span>${esc(CHEERS[id] || "You earned a sticker!")}</span>`;
+      $("popStick").textContent = "Stick it in my book";
+    }
+    $("stickerPop").hidden = false; $("scrim").hidden = false;
+  }
+  function closePop() { $("stickerPop").hidden = true; if (!openSheets.length) $("scrim").hidden = true; setTimeout(showNextSticker, 250); }
+  $("popLater").onclick = () => { popAction = null; closePop(); };
+  // ---------- the big finish ----------
+  function showFinale() {
+    const c = context(), info = computeStickers(c), all = tally(c.start, shiftKey(c.today, 1), c);
+    const fly = vol1().map((s, i) => {
+      const a = i / 16 * Math.PI * 2, r = 230 + (i % 3) * 30;
+      return `<span class="fly" style="--fx:${Math.round(Math.cos(a) * r)}px;--fy:${Math.round(Math.sin(a) * r)}px;--fr:${(i % 2 ? 1 : -1) * (20 + i * 7)}deg;--d:${(0.15 + i * 0.07).toFixed(2)}s">${stickerSVG(s.id, 44)}</span>`;
+    }).join("");
+    $("finFly").innerHTML = fly;
+    $("finGus").innerHTML = buddySVG("excited");
+    $("finStats").innerHTML = [
+      [money(Math.max(0, all.diff)), "saved overall"], [`${info.best} days`, "longest streak"],
+      [String(info.got.piggy || 0), "no-spend days"], [String(all.days), "days tracked"],
+    ].map(([v, l]) => `<div><b>${esc(v)}</b><span>${l}</span></div>`).join("");
+    $("finale").hidden = false;
+  }
+  function closeFinale(next) { $("finale").hidden = true; if (next) next(); setTimeout(showNextSticker, 250); }
+  $("finTang").onclick = () => closeFinale(() => { st.bookVol = 2; openBook(); });
+  $("finBook").onclick = () => closeFinale(() => { st.bookVol = 1; openBook(); });
+  document.addEventListener("click", e => { if (e.target.closest("[data-open-book]")) openBook(); });
+  $("popStick").onclick = () => { const act = popAction; popAction = null; closePop(); if (act) act(); };
 
   // ---------- Today ----------
   function renderToday(c) {
@@ -1060,7 +1590,7 @@ button, label, .log { touch-action: manipulation; }
             </div>
           </div>
         </div>
-        <div class="streak"><span>${streak ? `<b>${streak}-day</b> streak on budget` : "Stay under budget to start a streak"}</span><span class="sub">${logs.length} log${logs.length === 1 ? "" : "s"}</span></div>
+        <div class="streak"><span>${streak ? `<b>${streak}-day</b> streak on budget` : "Stay under budget to start a streak"}</span><button type="button" class="chip soft btn" data-open-book>Sticker book ›</button></div>
       </div></div>
       <div class="week" role="group" aria-label="This week">${week}</div>
       <div class="card">${dvine("18px", "52%")}${dtendril("t-br")}
@@ -1191,6 +1721,11 @@ button, label, .log { touch-action: manipulation; }
         <div class="kpi good"><span class="lbl">No-spend days</span><span class="v">${T.noSpend}</span><span class="hint">${T.noSpend ? (hasB ? `${money(T.nsKept)} kept` : "Nothing spent") : "Mark one from Today"}</span></div>
         <div class="kpi ${T.notLogged ? "bad" : ""}"><span class="lbl">Not logged</span><span class="v">${T.notLogged}</span><span class="hint">${T.notLogged ? "Not counted yet" : "All days accounted for"}</span></div>
       </div>
+      <button type="button" class="details-btn book-btn" data-open-book>
+        <span class="book-btn-art">${stickerSVG("first", 30)}</span>
+        <span class="sub" style="flex:1">Sticker book · earn stickers for staying under budget</span>
+        <b>Open</b>
+      </button>
       <div class="hang">${buddyZone("reports", rb)}<div class="card">${dco("br")}${dvine("18px", "calc(100% - 190px)")}
         <div class="card-head"><h2>${hdeco()}${p === "year" ? "Spending by month" : "Spending by day"}</h2><span class="sub">avg ${money(T.days ? Math.round(T.spentCounted / T.days) : 0)}/day</span></div>
         <div class="chart">${chart}</div>
@@ -1287,7 +1822,8 @@ button, label, .log { touch-action: manipulation; }
       <div class="card set-group">
         <h2>Look</h2>
         <div class="themes" role="group" aria-label="Colour theme">
-          ${THEMES.map(([n, h]) => `<button type="button" class="swatch" data-theme-h="${h}" style="--sh:${h}" aria-pressed="${+S.theme === h}" aria-label="${n}" title="${n}"></button>`).join("")}
+          ${THEMES.map(([n, h]) => `<button type="button" class="swatch" data-theme-h="${h}" style="--sh:${h}" aria-pressed="${+S.theme === h && !S.goldTheme}" aria-label="${n}" title="${n}"></button>`).join("")}
+          ${S.unlocks && S.unlocks.gold ? `<button type="button" class="swatch gold" data-gold-theme aria-pressed="${!!S.goldTheme}" aria-label="Golden Blossom" title="Golden Blossom"></button>` : ""}
         </div>
         <div class="field"><span>Appearance</span>
           <div class="seg" role="group" aria-label="Appearance">
@@ -1310,8 +1846,26 @@ button, label, .log { touch-action: manipulation; }
           <span><span class="nm">Seasonal outfits</span><br><span class="sub">Now: ${esc({ spring: "pink cardigan", summer: "mint tee", autumn: "mustard knit", winter: "quilted coat, scarf and earmuffs" }[seasonOf(c.today)])}. Otherwise the lavender G shirt.</span></span>
           <button type="button" class="ghost" id="sOutfitToggle" aria-pressed="${S.buddy.outfits !== false}">${S.buddy.outfits !== false ? "On" : "Off"}</button>
         </div>
+        ${S.unlocks && S.unlocks.tang ? `<div class="cat-item" style="grid-template-columns:minmax(0,1fr) auto">
+          <span><span class="nm">Tang suit 唐装</span><br><span class="sub">Your reward for completing the seasons and specials page.</span></span>
+          <button type="button" class="ghost" id="sTangToggle" aria-pressed="${!!S.buddy.tang}">${S.buddy.tang ? "On" : "Off"}</button>
+        </div>` : ""}
+        ${S.unlocks && S.unlocks.panda ? `<div class="cat-item" style="grid-template-columns:42px minmax(0,1fr) auto">
+          <span style="width:42px;height:42px;display:block">${pandaSVG()}</span>
+          <span><span class="nm">Bao the panda 熊猫</span><br><span class="sub">Your reward for completing the streaks page.</span></span>
+          <button type="button" class="ghost" id="sPandaToggle" aria-pressed="${!!S.buddy.panda}">${S.buddy.panda ? "On" : "Off"}</button>
+        </div>` : ""}
         <label class="field"><span>Buddy's name</span><input id="sBuddyName" maxlength="16" value="${esc(S.buddy.name)}" placeholder="Gus"></label>
       </div>
+      ${DECO_KEYS.some(k => S.unlocks && S.unlocks[k]) ? `<div class="card set-group">
+        <h2>Decorations</h2>
+        <p class="inline-note">Rewards from your sticker book.</p>
+        ${[["lanterns", "Lantern garland 灯笼", "Red lanterns across the top"], ["butterflies", "Butterflies 蝴蝶", "Fluttering around your cards"], ["koi", "Koi pond 锦鲤", "Lucky koi at the bottom"], ["gilded", "Gilded blossoms", "Every flower turns gold leaf"]]
+          .filter(([k]) => S.unlocks && S.unlocks[k]).map(([k, n, d]) => `<div class="cat-item" style="grid-template-columns:42px minmax(0,1fr) auto">
+          <span style="width:42px;height:42px;display:block">${rewardArt(k)}</span>
+          <span><span class="nm">${n}</span><br><span class="sub">${d}</span></span>
+          <button type="button" class="ghost" data-deco-toggle="${k}" aria-pressed="${fxOn(k)}">${fxOn(k) ? "On" : "Off"}</button></div>`).join("")}
+      </div>` : ""}
       <div class="card set-group">
         <h2>Budget</h2>
         <label class="field"><span>Minimum daily budget (${esc(S.currency)})</span><input id="sDaily" inputmode="decimal" placeholder="e.g. 50" value="${S.dailyBudgetCents ? S.dailyBudgetCents / 100 : ""}"></label>
@@ -1362,7 +1916,17 @@ button, label, .log { touch-action: manipulation; }
     if (readOnly) return;
     const t = e.target.closest("button"); if (!t) return;
     if (t.dataset.appearance) { S.appearance = t.dataset.appearance; saveSettings(); render(); return; }
-    if (t.dataset.themeH) { S.theme = +t.dataset.themeH; saveSettings(); render(); return; }
+    if (t.dataset.themeH) { S.theme = +t.dataset.themeH; S.goldTheme = false; saveSettings(); render(); return; }
+    if (t.hasAttribute("data-gold-theme")) {
+      if (!(S.unlocks && S.unlocks.gold)) return;
+      S.goldTheme = true; saveSettings(); render(); toast("Golden Blossom theme on"); return;
+    }
+    if (t.dataset.decoToggle) { const k = t.dataset.decoToggle; S.decos = { ...(S.decos || {}), [k]: !fxOn(k) }; saveSettings(); render(); return; }
+    if (t.id === "sPandaToggle") { S.buddy = { ...S.buddy, panda: !S.buddy.panda }; saveSettings(); render(); toast(S.buddy.panda ? "Bao is back!" : "Bao is taking a nap"); return; }
+    if (t.id === "sTangToggle") {
+      if (!(S.unlocks && S.unlocks.tang)) return;
+      S.buddy = { ...S.buddy, tang: !S.buddy.tang }; saveSettings(); render(); toast(S.buddy.tang ? `${S.buddy.name} put on his Tang suit 唐装` : `${S.buddy.name} changed back`); return;
+    }
     if (t.dataset.rateDel) { delete S.rates[t.dataset.rateDel]; saveSettings(); render(); return; }
     if (t.dataset.catEdit) { openCat(t.dataset.catEdit); return; }
     if (t.dataset.catRestore) { const ct = S.categories.find(x => x.id === t.dataset.catRestore); if (ct) { delete ct.archived; saveSettings(); render(); } return; }
@@ -1750,6 +2314,7 @@ button, label, .log { touch-action: manipulation; }
     else if (st.view === "logs") renderLogs(c);
     else renderSettings(c);
     decorateExtras();
+    checkStickers(c);
   }
 
 
@@ -1832,12 +2397,18 @@ button, label, .log { touch-action: manipulation; }
     s.decor = v.decor !== false;
     s.appearance = ["light", "dark", "system"].includes(v.appearance) ? v.appearance : "light";
     if (v.buddy && typeof v.buddy === "object") s.buddy = { on: v.buddy.on !== false, outfits: v.buddy.outfits !== false, name: typeof v.buddy.name === "string" && v.buddy.name.trim() ? v.buddy.name.trim().slice(0, 16) : "Gus" };
+    if (v.stickersSeen && typeof v.stickersSeen === "object") s.stickersSeen = { ...v.stickersSeen };
+    if (v.unlocks && typeof v.unlocks === "object") { s.unlocks = {}; for (const k of ["gold", "tang", "panda", "book", "lanterns", "butterflies", "koi", "gilded"]) if (v.unlocks[k]) s.unlocks[k] = true; }
+    if (v.decos && typeof v.decos === "object") { s.decos = {}; for (const k of ["lanterns", "butterflies", "koi", "gilded"]) if (v.decos[k]) s.decos[k] = true; }
+    s.goldTheme = !!v.goldTheme;
+    if (v.buddy && v.buddy.tang) s.buddy.tang = true;
+    if (v.buddy && v.buddy.panda) s.buddy.panda = true;
     if (v.noSpend && typeof v.noSpend === "object") for (const k of Object.keys(v.noSpend)) if (validKey(k) && v.noSpend[k]) s.noSpend[k] = true;
     if (Array.isArray(v.categories) && v.categories.length) s.categories = v.categories.filter(x => x && x.id && x.name).map(x => ({ ...x }));
     if (v.rates && typeof v.rates === "object") for (const [k, r] of Object.entries(v.rates)) if (+r > 0) s.rates[k] = +r;
     if ([0, 1, 6].includes(+v.weekStart)) s.weekStart = +v.weekStart;
     if (validKey(v.startDate)) s.startDate = v.startDate;
-    if (Number.isFinite(+v.theme)) s.theme = +v.theme;
+    if (Number.isFinite(+v.theme)) s.theme = +v.theme === 45 ? 265 : +v.theme;
     return s;
   }
   applyTheme(); render();
@@ -1845,7 +2416,8 @@ button, label, .log { touch-action: manipulation; }
   (async () => {
     db = createLocalDB(); downloads = { save: saveFile };
     try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
-    let loaded = false;
+    let loaded = false, gotLedger = false, gotSettings = false;
+    const maybeBookReady = () => { if (gotLedger && gotSettings && !bookReady) { bookReady = true; render(); } };
     const timer = setTimeout(() => { if (!loaded) setStatus("Can't reach your saved logs yet.", true); }, 10000);
     db.collection("ledger").onSnapshot(snap => {
       const next = {};
@@ -1853,9 +2425,11 @@ button, label, .log { touch-action: manipulation; }
       for (const mk of Object.keys(pending)) if (pending[mk] > 0) { if (st.months[mk]) next[mk] = st.months[mk]; else delete next[mk]; }
       st.months = next;
       if (!snap.metadata.fromCache && !loaded) { loaded = true; clearTimeout(timer); setStatus("Saved on this device"); }
+      if (!snap.metadata.fromCache && !gotLedger) { gotLedger = true; queueMicrotask(maybeBookReady); }
       render();
     }, err => { clearTimeout(timer); setStatus(err && err.code === "revoked" ? "Access ended." : "Couldn't load saved logs.", true); });
     db.doc("settings/main").onSnapshot(snap => {
+      if (!gotSettings) { gotSettings = true; queueMicrotask(maybeBookReady); }
       if (pendingSettings > 0 || !snap.exists) return;
       S = normSettings(snap.data()); applyTheme(); render();
     }, () => {});
