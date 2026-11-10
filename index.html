@@ -512,6 +512,11 @@ body.fx-lanterns .app { padding-top: 58px; }
 @keyframes swim { from { left: -15%; transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(3deg); } to { left: 105%; transform: translateY(0) rotate(-4deg); } }
 @keyframes swim-back { from { left: 105%; transform: scaleX(-1) translateY(0); } 50% { transform: scaleX(-1) translateY(6px); } to { left: -15%; transform: scaleX(-1) translateY(0); } }
 body.gilded .deco.vine, body.gilded .deco.tendril { color: #D9A441 !important; }
+body.matcha-deco .deco.vine, body.matcha-deco .deco.tendril { color: hsl(98 30% 58%) !important; }
+body.matcha-deco .deco.stitch { color: hsl(95 30% 78%); }
+body.matcha-deco .deco.wm { color: hsl(95 40% 90%); }
+:root[data-theme="dark"] body.matcha-deco .deco.wm { color: hsl(100 18% 20%); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body.matcha-deco .deco.wm { color: hsl(100 18% 20%); } }
 body.gilded .deco.stitch { color: #EBC97A; }
 .vol-gift { margin-top: 6px; font-size: 0.78rem; font-weight: 800; color: #8A5A12; background: #FBF3DD; border: 1px dashed #F2C562; border-radius: 999px; padding: 4px 12px; justify-self: start; display: inline-block; }
 
@@ -1041,6 +1046,8 @@ button, label, .log { touch-action: manipulation; }
     <symbol id="dk-pt" viewBox="0 0 10 8"><path d="M1 4 Q5 -1 9 4 Q5 9 1 4Z" fill="currentColor"/></symbol>
     <symbol id="dk-vine" viewBox="0 0 160 14" preserveAspectRatio="none"><path d="M0 7 C20 2 30 12 50 7 C70 2 80 12 100 7 C120 2 130 12 160 7" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/></symbol>
     <symbol id="dk-stitch" viewBox="0 0 160 6" preserveAspectRatio="none"><path d="M1 3 H159" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></symbol>
+    <symbol id="dk-bowl" viewBox="0 0 30 24"><path d="M10 8 q-2 -3 0 -6 M15 7 q-2 -3 0 -6 M20 8 q-2 -3 0 -6" stroke="#B9D59A" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M3 11 h24 a12 11 0 0 1 -24 0Z" fill="#FFF8EC" stroke="#C9B48E" stroke-width="1"/><ellipse cx="15" cy="11" rx="12" ry="2.6" fill="#8FB46E"/><path d="M8 11 q3.5 -1.4 7 0 q3.5 1.4 7 0" stroke="#B9D59A" stroke-width="0.9" fill="none"/><rect x="10" y="20.5" width="10" height="2.4" rx="1" fill="#E7D9BC"/></symbol>
+    <symbol id="dk-tl" viewBox="-6 -12 12 24"><path d="M0 11 C-6 4 -5 -6 0 -11 C5 -6 6 4 0 11Z" fill="currentColor"/><path d="M0 10 L0 -9" stroke="#fff" stroke-width="0.8" opacity="0.5"/></symbol>
     <symbol id="dk-gb" viewBox="-10 -10 20 20"><g fill="#F6D88A" stroke="#D9A441" stroke-width="0.6"><circle cx="0" cy="-4.6" r="4.3"/><circle cx="4.4" cy="-1.4" r="4.3"/><circle cx="2.7" cy="3.7" r="4.3"/><circle cx="-2.7" cy="3.7" r="4.3"/><circle cx="-4.4" cy="-1.4" r="4.3"/></g><circle r="2.1" fill="#FFF3D6"/><g fill="#D9A441"><circle cx="0" cy="-2.6" r="0.6"/><circle cx="2.4" cy="-0.6" r="0.6"/><circle cx="1.5" cy="2.2" r="0.6"/><circle cx="-1.5" cy="2.2" r="0.6"/><circle cx="-2.4" cy="-0.6" r="0.6"/></g></symbol>
     <symbol id="dk-spark" viewBox="-5 -5 10 10"><path d="M0 -5 L1.2 -1.2 L5 0 L1.2 1.2 L0 5 L-1.2 1.2 L-5 0 L-1.2 -1.2Z" fill="currentColor"/></symbol>
     <symbol id="fx-lan" viewBox="0 0 20 34"><path d="M10 0 v5" stroke="#BA7517" stroke-width="1"/><rect x="5" y="4" width="10" height="3" rx="1" fill="#FAC775"/><ellipse cx="10" cy="15" rx="8.5" ry="8" fill="#E24B4A"/><path d="M10 7 C6 10 6 20 10 23 M10 7 C14 10 14 20 10 23" stroke="#C83A39" stroke-width="0.8" fill="none"/><text x="10" y="18.5" text-anchor="middle" font-size="7" font-weight="700" fill="#FAC775" font-family="sans-serif">福</text><rect x="5" y="22" width="10" height="3" rx="1" fill="#FAC775"/><path d="M8 25 v7 M10 25 v8 M12 25 v7" stroke="#FAC775" stroke-width="1" stroke-linecap="round"/></symbol>
@@ -1070,6 +1077,11 @@ button, label, .log { touch-action: manipulation; }
       wm: `<use href="#dk-leaf" x="-5" y="-10" width="10" height="20"/>`,
       bg: `<path d="M0 120 C30 92 50 70 72 42 C84 28 98 18 122 10" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><use href="#dk-leaf" x="40" y="62" width="12" height="24" transform="rotate(-60 46 74)"/><use href="#dk-leaf" x="64" y="30" width="12" height="24" transform="rotate(40 70 42)"/><use href="#dk-leaf" x="92" y="8" width="11" height="22" transform="rotate(-50 97 19)"/><use href="#dk-osm" x="76" y="44" width="10" height="10"/><use href="#dk-osm" x="104" y="20" width="9" height="9"/>` },
   };
+  const MATCHA = { dot: "#CFE3B3", petal: "#9DC27C",
+    spray: `<path d="M-2 6 C16 8 30 14 46 28" stroke="#8C7A55" stroke-width="1.8" fill="none" stroke-linecap="round"/><use href="#dk-tl" x="8" y="2" width="10" height="20" color="#6E9A4C" transform="rotate(-62 13 12)"/><use href="#dk-tl" x="20" y="10" width="9" height="18" color="#8FB46E" transform="rotate(48 24.5 19)"/><use href="#dk-tl" x="28" y="-2" width="8" height="16" color="#B9D59A" transform="rotate(-20 32 6)"/><use href="#dk-tl" x="36" y="18" width="8" height="16" color="#6E9A4C" transform="rotate(-48 40 26)"/><use href="#dk-bowl" x="44" y="26" width="30" height="24"/>`,
+    mini: `<use href="#dk-tl" x="-5" y="-10" width="10" height="20" color="#7FAA5C" transform="rotate(35)"/>`,
+    wm: `<use href="#dk-tl" x="-5" y="-10" width="10" height="20" transform="rotate(30)"/>`,
+    bg: `<path d="M0 120 C30 92 52 72 72 44 C84 28 98 18 122 12 M50 80 C62 78 76 82 88 90" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><use href="#dk-tl" x="40" y="58" width="12" height="24" transform="rotate(-60 46 70)"/><use href="#dk-tl" x="62" y="30" width="12" height="24" transform="rotate(40 68 42)"/><use href="#dk-tl" x="90" y="6" width="11" height="22" transform="rotate(-50 95 17)"/><use href="#dk-tl" x="80" y="78" width="11" height="22" transform="rotate(60 85 89)"/>` };
   const GILDED = { dot: "#F6D88A", petal: "#F2C562",
     spray: `<path d="M-2 6 C18 8 34 16 56 36 M26 13 C32 6 40 3 50 4 M44 26 C52 24 60 26 66 30" stroke="#B8862C" stroke-width="2.2" fill="none" stroke-linecap="round"/><use href="#dk-gb" x="13" y="2" width="18" height="18"/><use href="#dk-gb" x="44" y="24" width="15" height="15"/><use href="#dk-gb" x="42" y="-3" width="13" height="13"/><g color="#F2C562"><use href="#dk-spark" x="66" y="10" width="8" height="8"/><use href="#dk-spark" x="30" y="32" width="6" height="6"/><use href="#dk-spark" x="6" y="22" width="5" height="5"/></g>`,
     mini: `<use href="#dk-gb" x="-10" y="-10" width="20" height="20"/>`,
@@ -1082,10 +1094,14 @@ button, label, .log { touch-action: manipulation; }
     document.body.classList.toggle("no-deco", !decoOn());
     applyFx();
     const season = seasonOf(todayKey()), gild = fxOn("gilded");
+    // the Matcha theme brings its own tea-garden decorations (Gilded blossoms still win if switched on)
+    const tea = !gild && !S.goldTheme && !!(S.matchaTheme && S.unlocks && S.unlocks.matcha);
     document.body.classList.toggle("gilded", gild);
-    if (season + gild === decoSeason) return;
-    decoSeason = season + gild;
-    const d = gild ? GILDED : DECO_SEASONS[season];
+    document.body.classList.toggle("matcha-deco", tea);
+    const setKey = season + (gild ? ":gold" : tea ? ":matcha" : "");
+    if (setKey === decoSeason) return;
+    decoSeason = setKey;
+    const d = gild ? GILDED : tea ? MATCHA : DECO_SEASONS[season];
     document.body.dataset.season = season;
     document.documentElement.style.setProperty("--deco-petal", d.petal);
     $("decoBase").innerHTML = DECO_BASE;
