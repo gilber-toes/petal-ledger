@@ -2971,9 +2971,28 @@ button, label, .log { touch-action: manipulation; }
 </script>
 
 <script>
+const APP_VERSION = "20261111020256";
 if ("serviceWorker" in navigator) {
-  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(() => {}));
 }
+// iPhone home-screen apps often resume instead of restarting, so check for a new version
+// whenever the app opens or comes back to the front, and reload once if there is one.
+async function checkForUpdate() {
+  try {
+    const r = await fetch("version.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) return;
+    const { version } = await r.json();
+    if (!version || version === APP_VERSION) return;
+    let tried = null; try { tried = sessionStorage.getItem("pl-reload"); } catch {}
+    if (tried === version) return;
+    try { sessionStorage.setItem("pl-reload", version); } catch {}
+    const reg = await navigator.serviceWorker?.getRegistration().catch(() => null);
+    if (reg) await reg.update().catch(() => {});
+    location.reload();
+  } catch {}
+}
+addEventListener("load", checkForUpdate);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") checkForUpdate(); });
 </script>
 </body>
 </html>
