@@ -437,6 +437,51 @@ body.no-deco .deco-bg, body.no-deco .fab-deco, body.no-deco .tab-deco { display:
 @keyframes pop-in { from { transform: translate(-50%, -50%) scale(0.6) rotate(-8deg); opacity: 0; } to { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; } }
 @keyframes wiggle { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(4deg) scale(1.04); } }
 
+/* weight */
+.tabbar-in { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 1fr; }
+.tab[hidden] { display: none; }
+.wslots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.wslot { border: 1.5px dashed var(--line); background: var(--surface-2); border-radius: 18px; padding: 12px; display: grid; gap: 2px; text-align: left; min-width: 0; }
+.wslot.has { border-style: solid; border-color: var(--accent-soft); background: var(--accent-soft); }
+.wslot-h { font-size: 0.8rem; font-weight: 800; color: var(--muted); }
+.wslot-v { font-family: var(--font-display); font-weight: 700; font-size: 1.45rem; color: var(--ink); }
+.wslot-k { font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+.wslot-add { font-weight: 800; color: var(--accent-strong); padding: 10px 0 6px; }
+.wdiff { margin: 10px 0 0; font-size: 0.85rem; color: var(--muted); }
+.wdiff b { color: var(--ink); }
+.wgoal-top { display: flex; justify-content: space-between; gap: 10px; }
+.wgoal-top > div { display: grid; }
+.wgoal-top b { font-family: var(--font-display); font-size: 1.25rem; }
+.wbar { height: 12px; border-radius: 999px; background: var(--surface-2); margin-top: 10px; overflow: hidden; }
+.wbar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--mint-bar)); }
+.wrange { margin: 2px 0 10px; box-shadow: none; background: var(--surface-2); }
+.wrange button { padding: 6px 0; font-size: 0.8rem; }
+.wchart { width: 100%; height: auto; display: block; overflow: visible; }
+.wchart .grid { stroke: var(--line); stroke-dasharray: 3 4; }
+.wchart .ax { fill: var(--muted); font-size: 10px; font-weight: 700; font-family: var(--font-body); }
+.wchart .goal { stroke: var(--mint-ink); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.wchart .goal-l { fill: var(--mint-ink); font-size: 10px; font-weight: 800; font-family: var(--font-body); }
+.wchart .am-line { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+.wchart .am-dot { fill: var(--surface); stroke: var(--accent-strong); stroke-width: 1.8; }
+.wchart .am-dot.last { fill: var(--accent); }
+.wchart .pm-dot { fill: var(--rose-bar); opacity: 0.8; }
+.wrow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 14px; align-items: center; width: 100%; border: 0; background: none; padding: 9px 4px; border-bottom: 1px dashed var(--line); text-align: left; font-size: 0.9rem; }
+.wrow:last-child { border-bottom: 0; }
+.wrow .num { font-weight: 800; min-width: 4.6em; text-align: right; }
+.wbox { justify-content: center; }
+.wbox input { text-align: center; max-width: 7ch; }
+.wunit { font-family: var(--font-display); font-weight: 600; font-size: 1.4rem; color: var(--muted); }
+.wstep { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--surface); color: var(--accent-strong); font-size: 1.4rem; font-weight: 800; flex: none; box-shadow: var(--shadow); }
+.wkg { margin: -6px 0 0; text-align: center; font-weight: 800; color: var(--accent-strong); }
+
+/* weight stickers */
+.wbook-btn { margin-top: 12px; box-shadow: none; background: var(--surface-2); }
+.wgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.wbook-bar span { background: linear-gradient(90deg, #FAC775, #9FE1CB); }
+:root { --cloud: #FFFFFF; }
+:root[data-theme="dark"] { --cloud: hsl(260 15% 26%); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --cloud: hsl(260 15% 26%); } }
+
 /* reward decorations */
 :root { --pond: hsl(205 60% 90%); --pond-ripple: hsl(205 60% 80%); }
 :root[data-theme="dark"] { --pond: hsl(210 30% 20%); --pond-ripple: hsl(210 30% 32%); }
@@ -484,6 +529,16 @@ body.gilded .deco.stitch { color: #EBC97A; }
 .sticker-pop.revealing .primary, .sticker-pop.revealing #popLater { visibility: hidden; }
 .panda { width: 50px; height: 50px; flex: none; margin-right: -30px; position: relative; z-index: 1; animation: sway 4.5s ease-in-out infinite reverse; transform-origin: 50% 100%; }
 .panda svg { width: 100%; height: 100%; overflow: visible; display: block; }
+
+/* Matcha theme (reward for the weight progress page) */
+:root[data-matcha] { --bg: hsl(92 38% 95%); --surface-2: hsl(92 32% 91%); --line: hsl(92 22% 84%); --accent: hsl(98 34% 60%); --accent-strong: hsl(104 38% 29%); --accent-soft: hsl(92 42% 88%); --on-accent: hsl(104 45% 13%); }
+@media (prefers-color-scheme: dark) { :root[data-matcha]:not([data-theme="light"]) { --bg: hsl(100 16% 10%); --surface-2: hsl(100 14% 18%); --line: hsl(100 12% 24%); --accent: hsl(96 36% 62%); --accent-strong: hsl(92 50% 74%); --accent-soft: hsl(100 22% 23%); --on-accent: hsl(104 45% 10%); } }
+:root[data-matcha][data-theme="dark"] { --bg: hsl(100 16% 10%); --surface-2: hsl(100 14% 18%); --line: hsl(100 12% 24%); --accent: hsl(96 36% 62%); --accent-strong: hsl(92 50% 74%); --accent-soft: hsl(100 22% 23%); --on-accent: hsl(104 45% 10%); }
+.swatch.matcha { background: linear-gradient(135deg, #D7E8BF, #8FB46E); }
+/* unlocked special themes get a gold ring and a little sparkle */
+.swatch.special { position: relative; box-shadow: 0 0 0 2.5px #E2B04A, 0 0 8px 1px rgb(226 176 74 / 0.45); }
+.swatch.special[aria-pressed="true"] { box-shadow: 0 0 0 2.5px #E2B04A, 0 0 0 5.5px var(--accent-strong), 0 0 10px 2px rgb(226 176 74 / 0.4); }
+.swatch.special::after { content: "✦"; position: absolute; top: -9px; right: -8px; font-size: 13px; line-height: 1; color: #E2B04A; text-shadow: 0 0 2px var(--surface); }
 
 /* Golden Blossom theme (reward for the savings page) */
 :root[data-gold] { --bg: hsl(42 75% 96%); --surface-2: hsl(42 70% 93%); --line: hsl(40 45% 86%); --accent: hsl(40 82% 62%); --accent-strong: hsl(32 68% 34%); --accent-soft: hsl(44 92% 89%); --on-accent: hsl(30 60% 15%); }
@@ -583,6 +638,7 @@ button, label, .log { touch-action: manipulation; }
     <section class="view" id="view-today" aria-label="Today"></section>
     <section class="view" id="view-reports" aria-label="Reports" hidden></section>
     <section class="view" id="view-logs" aria-label="All logs" hidden></section>
+    <section class="view" id="view-weight" aria-label="Weight" hidden></section>
     <section class="view" id="view-settings" aria-label="Settings" hidden></section>
   </main>
 </div>
@@ -596,6 +652,7 @@ button, label, .log { touch-action: manipulation; }
   <div class="tabbar-in">
     <button type="button" class="tab" data-view="today" aria-current="page"><svg class="tab-deco" aria-hidden="true"><use href="#dk-mini"/></svg><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>Today</button>
     <button type="button" class="tab" data-view="reports"><svg class="tab-deco" aria-hidden="true"><use href="#dk-mini"/></svg><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V11M12 20V5M19 20v-6"/></svg></span>Reports</button>
+    <button type="button" class="tab" data-view="weight"><svg class="tab-deco" aria-hidden="true"><use href="#dk-mini"/></svg><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="4"/><path d="M8.5 9.5a5 5 0 0 1 7 0"/><path d="M12 9.5l1.6 -1.6"/></svg></span>Weight</button>
     <button type="button" class="tab" data-view="logs"><svg class="tab-deco" aria-hidden="true"><use href="#dk-mini"/></svg><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg></span>Logs</button>
     <button type="button" class="tab" data-view="settings"><svg class="tab-deco" aria-hidden="true"><use href="#dk-mini"/></svg><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span>Settings</button>
   </div>
@@ -641,6 +698,27 @@ button, label, .log { touch-action: manipulation; }
   </div>
 </form>
 
+<!-- Weight sheet -->
+<form class="sheet" id="weightSheet" role="dialog" aria-modal="true" aria-labelledby="wTitle" hidden novalidate>
+  <div class="grab" aria-hidden="true"></div>
+  <div class="sheet-head"><h2 id="wTitle">Log weight</h2><button type="button" class="x" data-close aria-label="Close">✕</button></div>
+  <div class="seg" id="wSlot" role="group" aria-label="Time of day">
+    <button type="button" data-slot="am" aria-pressed="true">☀️ Morning</button>
+    <button type="button" data-slot="pm" aria-pressed="false">🌙 Night</button>
+  </div>
+  <div class="amount-box wbox">
+    <button type="button" class="wstep" data-wstep="-0.1" aria-label="Minus 0.1">−</button>
+    <input id="wVal" inputmode="decimal" placeholder="120.0" autocomplete="off" aria-label="Weight in jin">
+    <span class="wunit" id="wUnit">斤</span>
+    <button type="button" class="wstep" data-wstep="0.1" aria-label="Plus 0.1">+</button>
+  </div>
+  <p class="wkg" id="wKg">1 斤 = 0.5 kg</p>
+  <label class="field"><span>Date</span><input type="date" id="wDate"></label>
+  <p class="msg" id="wMsg" aria-live="polite"></p>
+  <div class="btn-row"><button type="submit" class="primary">Save weight</button></div>
+  <div class="btn-row"><button type="button" class="danger" id="wDel" hidden>Delete</button></div>
+</form>
+
 <!-- Day budget sheet -->
 <form class="sheet" id="budgetSheet" role="dialog" aria-modal="true" aria-labelledby="budgetTitle" hidden novalidate>
   <div class="grab" aria-hidden="true"></div>
@@ -684,6 +762,13 @@ button, label, .log { touch-action: manipulation; }
   <div class="pop-gus" id="popGus"></div>
   <button type="button" class="primary" id="popStick">Stick it in my book</button>
   <button type="button" class="secondary" id="popLater" hidden>Maybe later</button>
+</div>
+
+<!-- Weight sticker book -->
+<div class="sheet book" id="wBookSheet" role="dialog" aria-modal="true" aria-labelledby="wBookTitle" hidden>
+  <div class="grab" aria-hidden="true"></div>
+  <div class="sheet-head"><h2 id="wBookTitle">Weight stickers</h2><button type="button" class="x" data-close aria-label="Close">✕</button></div>
+  <div id="wBookBody"></div>
 </div>
 
 <!-- Sticker book finale -->
@@ -741,11 +826,11 @@ button, label, .log { touch-action: manipulation; }
     { id: "gifts", name: "Gifts", emoji: "🎁", hue: 350 },
     { id: "other", name: "Other", emoji: "✨", hue: 185 },
   ];
-  const DEFAULTS = { currency: "USD", dailyBudgetCents: 0, dayBudgets: {}, noSpend: {}, buddy: { on: true, name: "Gus" }, decor: true, appearance: "light", categories: DEFAULT_CATS, rates: {}, weekStart: 1, startDate: "", theme: 265 };
+  const DEFAULTS = { currency: "USD", dailyBudgetCents: 0, dayBudgets: {}, noSpend: {}, buddy: { on: true, name: "Gus" }, decor: true, appearance: "light", weightOn: true, goalJin: 0, weightUnit: "jin", categories: DEFAULT_CATS, rates: {}, weekStart: 1, startDate: "", theme: 265 };
   let S = clone(DEFAULTS);
 
   const st = {
-    months: {}, view: "today", day: todayKey(),
+    months: {}, weights: {}, wRange: "30", view: "today", day: todayKey(),
     period: "week", anchor: todayKey(),
     logsMonth: todayKey().slice(0, 7), logsCat: "all", logsQuery: "",
     edit: null, formCat: null, lastCur: null, catEdit: null, catHue: 205, catFromLog: false, budgetDay: null,
@@ -898,8 +983,10 @@ button, label, .log { touch-action: manipulation; }
   // Light pastel is the default look; dark only when chosen (or "Match phone" while the phone is dark)
   function applyTheme() {
     const root = document.documentElement;
-    root.style.setProperty("--h", S.goldTheme && S.unlocks && S.unlocks.gold ? 40 : S.theme);
-    root.toggleAttribute("data-gold", !!(S.goldTheme && S.unlocks && S.unlocks.gold));
+    const gold = !!(S.goldTheme && S.unlocks && S.unlocks.gold), matcha = !gold && !!(S.matchaTheme && S.unlocks && S.unlocks.matcha);
+    root.style.setProperty("--h", gold ? 40 : matcha ? 100 : S.theme);
+    root.toggleAttribute("data-gold", gold);
+    root.toggleAttribute("data-matcha", matcha);
     if (S.appearance === "system") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", S.appearance === "dark" ? "dark" : "light");
     const dark = S.appearance === "dark" || (S.appearance === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
     const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = dark ? `hsl(${S.theme} 22% 11%)` : `hsl(${S.theme} 70% 97%)`;
@@ -1041,7 +1128,7 @@ button, label, .log { touch-action: manipulation; }
   function decorateExtras() {
     if (!decoOn()) return;
     const view = $("view-" + st.view);
-    if (st.view === "logs" || st.view === "settings") {
+    if (st.view === "logs" || st.view === "settings" || st.view === "weight") {
       let i = 0;
       view.querySelectorAll(".card").forEach(card => {
         if (card.querySelector(":scope > .deco.pair")) return;
@@ -1066,7 +1153,16 @@ button, label, .log { touch-action: manipulation; }
   const HEART = (x, y, k = 1) => `<path transform="translate(${x} ${y}) scale(${k})" d="M0 0 c0-2 2.6-2.3 3.2-.4 c.6-1.9 3.2-1.6 3.2.4 c0 2.3-3.2 4.2-3.2 4.2 s-3.2-1.9-3.2-4.2Z" fill="var(--m-heart)"/>`;
   const G_TEXT = (x, y, size, fill, extra = "") => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, 'Arial Rounded MT Bold', sans-serif" font-weight="700" font-size="${size}" fill="${fill}" ${extra}>G</text>`;
   const BLOSSOM = (x, y, w, color) => `<g transform="translate(${x} ${y}) scale(${w / 20})"><g fill="${color}"><circle cx="0" cy="-4.6" r="4.3"/><circle cx="4.4" cy="-1.4" r="4.3"/><circle cx="2.7" cy="3.7" r="4.3"/><circle cx="-2.7" cy="3.7" r="4.3"/><circle cx="-4.4" cy="-1.4" r="4.3"/></g><circle r="2.1" fill="#FAC775"/></g>`;
+  const MEDAL = `<path d="M50 83 L56 96 M70 83 L64 96" stroke="#E24B4A" stroke-width="3.4" stroke-linecap="round"/><circle cx="60" cy="100.5" r="6.2" fill="#F6C453" stroke="#C9922E" stroke-width="1.2"/><path d="M60 96.6 l1.2 2.5 l2.7 .3 l-2 1.8 l.6 2.6 l-2.5 -1.4 l-2.5 1.4 l.6 -2.6 l-2 -1.8 l2.7 -.3Z" fill="#FFF3D6"/>`;
+  const medalOn = force => force === "medal" || (!force && S.buddy.medal && S.unlocks && S.unlocks.medal);
   function gusOutfit(L, force) {
+    // sporty tracksuit: reward for the weight book's habits page
+    if (force === "track" || (!force && S.buddy.track && S.unlocks && S.unlocks.track)) return { over: "", body: `
+      <path d="${TORSO}" fill="#85B7EB" ${L}/>
+      <path d="M51 83 L51 88 Q60 92 69 88 L69 83" fill="#B5D4F4" ${L}/>
+      <path d="M60 89 V112" stroke="#fff" stroke-width="1.6"/><circle cx="60" cy="93" r="1.4" fill="#fff"/>
+      <path d="M36 92 C33 99 31 106 30.5 112 M84 92 C87 99 89 106 89.5 112" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+      ${G_TEXT(49, 106, 12, "#fff")}${HEART(67.5, 99, 0.8)}` };
     // Tang suit 唐装: unlocked by finishing the sticker book
     if (force === "tang" || (!force && S.buddy.tang && S.unlocks && S.unlocks.tang)) return { over: "", body: `
       <path d="${TORSO}" fill="#D9534F" ${L}/>
@@ -1160,7 +1256,7 @@ button, label, .log { touch-action: manipulation; }
       <path d="M31 48.5 C27.5 24 42 11.5 60 11.5 C78 11.5 92.5 24 89 48.5 C87.5 46 86.2 44 85 43 C83 38 77.5 34.5 71 34.8 C69.3 38 68.4 41.4 68 45.5 C66.2 41.2 63.6 38 60 36 C57.5 37.6 55.6 39.6 54 42.5 C53 39.8 51.2 38 49 37.3 C47.8 40.5 46.6 43.4 45 46 C43.6 43.3 41.6 41.3 39.2 40.3 C37.2 42.6 35.6 45.4 35 48 C33.6 46.6 32.3 47 31 48.5 Z" fill="var(--m-hair-soft)" ${L}/>
       <path d="M60 15.5 C60.2 22 60.3 29 60 36" fill="none" stroke="var(--m-hair-hi)" stroke-width="1.4" stroke-linecap="round"/>
       <path d="M57 17 C47 18.5 39.5 25 37 34 M63 17 C73 18.5 80.5 25 83 34" fill="none" stroke="var(--m-hair-hi)" stroke-width="2.6" stroke-linecap="round" opacity="0.8"/>
-      ${blush}${face}${fit.over}
+      ${blush}${face}${fit.over}${medalOn(force) ? MEDAL : ""}
     </svg>`;
   }
 
@@ -1278,7 +1374,20 @@ button, label, .log { touch-action: manipulation; }
     <symbol id="st-dumpling" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M8 38 C8 22 20 14 30 14 C40 14 52 22 52 38 C44 44 16 44 8 38Z" fill="#FFF8EE"/></g><path d="M8 38 C8 22 20 14 30 14 C40 14 52 22 52 38 C44 44 16 44 8 38Z" fill="#FFF8EE" stroke="#E8D9BF" stroke-width="1.4"/><path d="M18 19 q2 4 0 7 M24 15.5 q2 4 0 7 M30 14.5 q2 4 0 7 M36 15.5 q2 4 0 7 M42 19 q2 4 0 7" stroke="#E8D9BF" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="33" r="1.5" fill="#4A3226"/><circle cx="36" cy="33" r="1.5" fill="#4A3226"/><path d="M28 36 q2 1.8 4 0" stroke="#4A3226" stroke-width="1.3" fill="none" stroke-linecap="round"/><circle cx="20" cy="36" r="2" fill="#F7C1C1"/><circle cx="40" cy="36" r="2" fill="#F7C1C1"/><ellipse cx="30" cy="48" rx="18" ry="4" fill="#9FE1CB" opacity="0.7"/><text x="46" y="14" font-size="10" font-weight="700" fill="#7F77DD" font-family="Fredoka, sans-serif">×10</text></symbol>
     <symbol id="st-tea" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M12 26 h32 v6 a16 16 0 0 1 -32 0Z" fill="#9FE1CB"/></g><path d="M12 26 h32 v6 a16 16 0 0 1 -32 0Z" fill="#9FE1CB" stroke="#5DCAA5" stroke-width="1.2"/><path d="M44 30 q9 0 8 7 q-1 6 -9 5" stroke="#5DCAA5" stroke-width="2.6" fill="none"/><ellipse cx="28" cy="50" rx="18" ry="3.5" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="1"/><path d="M22 20 q-3 -4 0 -8 q3 -4 0 -8 M30 20 q-3 -4 0 -8 q3 -4 0 -8" stroke="#CECBF6" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M36 14 q4 -6 10 -4 q-2 6 -10 4Z" fill="#97C459"/><circle cx="23" cy="34" r="1.4" fill="#085041"/><circle cx="33" cy="34" r="1.4" fill="#085041"/><path d="M26 37 q2 1.8 4 0" stroke="#085041" stroke-width="1.2" fill="none" stroke-linecap="round"/></symbol>
     <symbol id="st-kite" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"><path d="M30 4 L48 24 L30 44 L12 24Z" fill="#F4C0D1"/></g><path d="M30 4 L48 24 L30 44 L12 24Z" fill="#F4C0D1"/><path d="M30 4 L48 24 L30 24Z M30 24 L12 24 L30 44Z" fill="#AFA9EC"/><path d="M30 4 V44 M12 24 H48" stroke="#fff" stroke-width="1.2"/><path d="M30 44 C24 50 36 52 30 58" stroke="#7F77DD" stroke-width="1.4" fill="none"/><path d="M27 49 l-4 -2 l0 4Z M33 49 l4 -2 l0 4Z M27 55 l-4 -2 l0 4Z" fill="#FAC775"/><circle cx="26" cy="22" r="1.3" fill="#26215C"/><circle cx="34" cy="22" r="1.3" fill="#26215C"/><path d="M28 26 q2 1.8 4 0" stroke="#26215C" stroke-width="1.2" fill="none" stroke-linecap="round"/></symbol>
-    <symbol id="st-zodiac" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><circle cx="30" cy="30" r="23" fill="#E24B4A"/></g><circle cx="30" cy="30" r="23" fill="#E24B4A"/><circle cx="30" cy="30" r="19" fill="none" stroke="#FAC775" stroke-width="1.6"/><circle cx="30" cy="30" r="15.5" fill="none" stroke="#FAC775" stroke-width="0.8" stroke-dasharray="2 2"/><use href="#st-bl" x="44" y="2" width="13" height="13" color="#F4C0D1"/></symbol>`;
+    <symbol id="st-zodiac" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><circle cx="30" cy="30" r="23" fill="#E24B4A"/></g><circle cx="30" cy="30" r="23" fill="#E24B4A"/><circle cx="30" cy="30" r="19" fill="none" stroke="#FAC775" stroke-width="1.6"/><circle cx="30" cy="30" r="15.5" fill="none" stroke="#FAC775" stroke-width="0.8" stroke-dasharray="2 2"/><use href="#st-bl" x="44" y="2" width="13" height="13" color="#F4C0D1"/></symbol>
+    <symbol id="st-w-first" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><rect x="10" y="14" width="40" height="38" rx="9" fill="#CECBF6"/></g><rect x="10" y="14" width="40" height="38" rx="9" fill="#CECBF6"/><path d="M19 28 a11 11 0 0 1 22 0" fill="#fff"/><path d="M30 28 l4 -6" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="40" r="1.5" fill="#26215C"/><circle cx="36" cy="40" r="1.5" fill="#26215C"/><path d="M27 44 q3 2.6 6 0" stroke="#26215C" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="20" cy="43" r="2" fill="#F7C1C1"/><circle cx="40" cy="43" r="2" fill="#F7C1C1"/><path d="M48 8 l1.5 -4 l1.5 4 l4 1.5 l-4 1.5 l-1.5 4 l-1.5 -4 l-4 -1.5Z" fill="#FAC775"/></symbol>
+    <symbol id="st-w-sun" viewBox="0 0 60 60"><g stroke="#FAC775" stroke-width="3.5" stroke-linecap="round"><path d="M30 4 v7 M30 49 v7 M4 30 h7 M49 30 h7 M11.6 11.6 l5 5 M43.4 43.4 l5 5 M11.6 48.4 l5 -5 M43.4 16.6 l5 -5"/></g><circle cx="30" cy="30" r="16" fill="#FAC775" stroke="#fff" stroke-width="4"/><path d="M23 30 q3 2.6 6 0 M31 30 q3 2.6 6 0" stroke="#854F0B" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M27 35 q3 2.4 6 0" stroke="#854F0B" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="21.5" cy="34" r="2" fill="#F09595"/><circle cx="38.5" cy="34" r="2" fill="#F09595"/></symbol>
+    <symbol id="st-w-moon" viewBox="0 0 60 60"><path d="M38 8 a22 22 0 1 0 14 34 a18 18 0 1 1 -14 -34Z" fill="#AFA9EC" stroke="#fff" stroke-width="4"/><circle cx="25" cy="32" r="1.4" fill="#26215C"/><path d="M28 37 q2.5 2 5 0" stroke="#26215C" stroke-width="1.3" fill="none" stroke-linecap="round"/><circle cx="22" cy="36" r="2" fill="#F4C0D1"/><g fill="#FAC775"><path d="M46 14 l1.2 -3 l1.2 3 l3 1.2 l-3 1.2 l-1.2 3 l-1.2 -3 l-3 -1.2Z"/><circle cx="52" cy="28" r="1.4"/></g></symbol>
+    <symbol id="st-w-both" viewBox="0 0 60 60"><circle cx="30" cy="30" r="22" fill="#fff" stroke="#fff" stroke-width="5"/><path d="M30 8 a22 22 0 0 0 0 44Z" fill="#FAEEDA"/><path d="M30 8 a22 22 0 0 1 0 44Z" fill="#EEEDFE"/><circle cx="30" cy="30" r="22" fill="none" stroke="#E4E0F5" stroke-width="1.5"/><circle cx="20" cy="27" r="7" fill="#FAC775"/><path d="M44 20 a8 8 0 1 0 4 13 a6 6 0 1 1 -4 -13Z" fill="#AFA9EC"/><text x="30" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="#534AB7" font-family="Fredoka, sans-serif">×7</text></symbol>
+    <symbol id="st-w-cal" viewBox="0 0 60 60"><rect x="10" y="12" width="40" height="40" rx="7" fill="#fff" stroke="#fff" stroke-width="5"/><rect x="10" y="12" width="40" height="40" rx="7" fill="#fff" stroke="#5DCAA5" stroke-width="2"/><rect x="10" y="12" width="40" height="11" rx="6" fill="#5DCAA5"/><rect x="18" y="7" width="4" height="9" rx="2" fill="#0F6E56"/><rect x="38" y="7" width="4" height="9" rx="2" fill="#0F6E56"/><text x="30" y="44" text-anchor="middle" font-size="16" font-weight="700" fill="#085041" font-family="Fredoka, sans-serif">30</text></symbol>
+    <symbol id="st-w-back" viewBox="0 0 60 60"><path d="M8 30 a22 22 0 0 1 44 0 q-5.5 -4 -11 0 q-5.5 -4 -11 0 q-5.5 -4 -11 0 q-5.5 -4 -11 0Z" fill="#F4C0D1" stroke="#fff" stroke-width="4"/><path d="M30 30 v18 q0 5 -5 5 q-4 0 -4 -4" stroke="#7F77DD" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M30 8 v-3" stroke="#7F77DD" stroke-width="2.6" stroke-linecap="round"/><g fill="#B5D4F4"><path d="M12 42 q2 4 0 6 q-2 -2 0 -6Z"/><path d="M48 44 q2 4 0 6 q-2 -2 0 -6Z"/></g></symbol>
+    <symbol id="st-w-sprout" viewBox="0 0 60 60"><ellipse cx="30" cy="50" rx="18" ry="6" fill="#C9A27E" stroke="#fff" stroke-width="3"/><path d="M30 48 V28" stroke="#639922" stroke-width="3" stroke-linecap="round"/><path d="M30 34 C20 34 14 26 15 20 C24 20 30 26 30 34Z" fill="#97C459" stroke="#fff" stroke-width="2"/><path d="M30 30 C40 30 46 22 45 16 C36 16 30 22 30 30Z" fill="#C0DD97" stroke="#fff" stroke-width="2"/><text x="30" y="12" text-anchor="middle" font-size="10" font-weight="700" fill="#3B6D11" font-family="Fredoka, sans-serif">25%</text></symbol>
+    <symbol id="st-w-bamboo" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><rect x="20" y="8" width="9" height="46" rx="4" fill="#97C459"/><rect x="33" y="16" width="8" height="38" rx="4" fill="#C0DD97"/></g><rect x="20" y="8" width="9" height="46" rx="4" fill="#97C459"/><rect x="33" y="16" width="8" height="38" rx="4" fill="#C0DD97"/><path d="M20 22 h9 M20 38 h9 M33 30 h8 M33 44 h8" stroke="#639922" stroke-width="1.6"/><path d="M29 14 q10 -6 16 -4 q-6 6 -16 4Z" fill="#639922"/></symbol>
+    <symbol id="st-w-peach" viewBox="0 0 60 60"><path d="M30 18 C14 14 8 30 14 42 C20 54 40 54 46 42 C52 30 46 14 30 18Z" fill="#F7C1C1" stroke="#fff" stroke-width="4"/><path d="M30 18 C26 28 26 40 30 50" stroke="#ED93B1" stroke-width="1.6" fill="none"/><path d="M30 18 q2 -8 10 -10 q-2 8 -10 10Z M30 18 q-6 -6 -14 -4 q6 6 14 4Z" fill="#97C459"/><text x="30" y="40" text-anchor="middle" font-size="10" font-weight="700" fill="#993556" font-family="Fredoka, sans-serif">75%</text></symbol>
+    <symbol id="st-w-goal" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><path d="M18 10 h24 v12 a12 12 0 0 1 -24 0Z" fill="#FAC775"/><rect x="22" y="44" width="16" height="8" rx="2" fill="#EF9F27"/></g><path d="M18 10 h24 v12 a12 12 0 0 1 -24 0Z" fill="#FAC775" stroke="#EF9F27" stroke-width="1.2"/><path d="M18 14 q-8 0 -7 7 q1 6 9 6 M42 14 q8 0 7 7 q-1 6 -9 6" stroke="#EF9F27" stroke-width="2.4" fill="none"/><rect x="27" y="33" width="6" height="11" fill="#EF9F27"/><rect x="22" y="44" width="16" height="8" rx="2" fill="#EF9F27"/><path d="M24 18 l4 4 l8 -8" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="st-w-lotus" viewBox="0 0 60 60"><ellipse cx="30" cy="48" rx="22" ry="7" fill="#9FE1CB" stroke="#fff" stroke-width="3"/><path d="M30 44 C14 40 11 28 13 22 C20 24 26 30 30 44Z M30 44 C46 40 49 28 47 22 C40 24 34 30 30 44Z" fill="#F4C0D1" stroke="#fff" stroke-width="1.5"/><path d="M30 44 C24 34 24 18 30 8 C36 18 36 34 30 44Z" fill="#ED93B1" stroke="#fff" stroke-width="1.5"/></symbol>
+    <symbol id="st-w-100" viewBox="0 0 60 60"><g stroke="#fff" stroke-width="5" paint-order="stroke"><rect x="13" y="8" width="34" height="44" rx="5" fill="#FBEAF0"/></g><rect x="13" y="8" width="34" height="44" rx="5" fill="#FBEAF0" stroke="#ED93B1" stroke-width="1.4"/><rect x="13" y="8" width="8" height="44" rx="3" fill="#F4C0D1"/><path d="M26 20 h15 M26 26 h15 M26 32 h10" stroke="#ED93B1" stroke-width="1.6" stroke-linecap="round"/><rect x="22" y="38" width="22" height="10" rx="5" fill="#7F77DD"/><text x="33" y="46" text-anchor="middle" font-size="8" font-weight="700" fill="#fff" font-family="Fredoka, sans-serif">100</text></symbol>`;
+
   $("stickerDefs").innerHTML = STICKER_ART;
   const STICKER_DEMO = ["localhost", "127.0.0.1"].includes(location.hostname) ? (location.search.match(/[?&]stickerdemo=([a-z0-9]+)/) || [])[1] || "" : "";
   // Spring Festival (Chinese New Year) dates, for the red envelope sticker
@@ -1429,6 +1538,9 @@ button, label, .log { touch-action: manipulation; }
     koi: { key: "koi", name: "Koi pond 锦鲤", what: "A calm pond with two lucky koi now sits at the bottom of the app.", where: "Find it in Settings → Decorations.", use: "Fill the pond", cheer: "Lucky koi for a lucky saver!" },
     tang: { key: "tang", name: "Tang suit 唐装", what: "A red-and-gold Tang suit for Gus, for a whole year of careful saving.", where: "Turn it on or off in Settings → Buddy.", use: "Dress Gus up", cheer: "A Tang suit, for me?! I'll wear it proudly." },
     lanterns: { key: "lanterns", name: "Lantern garland 灯笼", what: "Red lanterns now swing across the top of the app.", where: "Find it in Settings → Decorations.", use: "Hang them up", cheer: "It feels like a festival every day!" },
+    track: { key: "track", name: "Sporty tracksuit", what: "A comfy sky-blue tracksuit for Gus.", where: "Turn it on or off in Settings → Buddy.", use: "Suit up", cheer: "Ready for my morning walk!" },
+    matcha: { key: "matcha", name: "Matcha theme 抹茶", what: "A fresh green-and-cream look for the whole app.", where: "Switch to it any time in Settings → Look.", use: "Try it now", cheer: "Fresh like a cup of morning tea!" },
+    medal: { key: "medal", name: "Gold medal", what: "A shiny gold medal for Gus, for finishing the whole weight book.", where: "Turn it on or off in Settings → Buddy.", use: "Wear it proudly", cheer: "A medal?! I'll never take it off!" },
     gilded: { key: "gilded", name: "Gilded blossoms", what: "Every flower, vine and border turns gold leaf, with tiny sparkles.", where: "Find it in Settings → Decorations.", use: "Make it gold", cheer: "Legendary! Everything's sparkling!" },
   };
   // each Volume 1 page hides two gifts; finishing the whole book adds a legendary one
@@ -1459,6 +1571,7 @@ button, label, .log { touch-action: manipulation; }
     }
     if (complete && !S.unlocks[BOOK_REWARD]) { S.unlocks[BOOK_REWARD] = true; changed = true; stickerQueue.push(`__gift:__book:0`); }
     if (complete && !S.unlocks.book) { S.unlocks.book = true; changed = true; stickerQueue.push("__finale"); }
+    if (checkWeightStickers()) changed = true;
     if (changed) saveSettings();
     showNextSticker();
   }
@@ -1470,6 +1583,9 @@ button, label, .log { touch-action: manipulation; }
     if (key === "lanterns") return `<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M0 10 Q30 22 60 10" stroke="#BA7517" stroke-width="1.2" fill="none"/><svg x="6" y="10" width="20" height="34"><use href="#fx-lan"/></svg><svg x="34" y="12" width="22" height="38"><use href="#fx-lan"/></svg></svg>`;
     if (key === "butterflies") return `<svg viewBox="0 0 60 60" aria-hidden="true"><svg x="8" y="10" width="44" height="38"><use href="#fx-fly"/></svg></svg>`;
     if (key === "koi") return `<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="25" fill="#D7E8F6"/><svg x="8" y="14" width="40" height="18"><use href="#fx-koi"/></svg><svg x="14" y="32" width="34" height="15" style="transform:scaleX(-1);transform-origin:31px 39px"><use href="#fx-koi"/></svg></svg>`;
+    if (key === "track") return buddySVG("excited", "track");
+    if (key === "medal") return buddySVG("excited", "medal");
+    if (key === "matcha") return `<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="24" fill="#B9D59A" stroke="#fff" stroke-width="5"/><circle cx="30" cy="30" r="24" fill="none" stroke="#6E9A4C" stroke-width="1.5"/><path d="M19 28 h22 v4 a11 11 0 0 1 -22 0Z" fill="#fff"/><path d="M21 28 h18" stroke="#8FB46E" stroke-width="3" stroke-linecap="round"/><path d="M41 30 q6 0 5 5 q-1 4 -6 3" stroke="#fff" stroke-width="2.4" fill="none"/><path d="M27 22 q-2 -4 0 -7 M33 22 q-2 -4 0 -7" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M38 14 q6 -4 10 -2 q-4 6 -10 2Z" fill="#6E9A4C"/></svg>`;
     if (key === "gilded") return `<svg viewBox="0 0 60 60" aria-hidden="true"><use href="#dk-gb" x="12" y="12" width="36" height="36"/><g fill="#F2C562"><path d="M50 10 l2 -5 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2Z"/><path d="M8 44 l1.5 -3.5 l1.5 3.5 l3.5 1.5 l-3.5 1.5 l-1.5 3.5 l-1.5 -3.5 l-3.5 -1.5Z"/></g></svg>`;
     return buddySVG("excited", "tang");
   }
@@ -1479,14 +1595,15 @@ button, label, .log { touch-action: manipulation; }
     const id = stickerQueue.shift();
     if (id === "__finale") { showFinale(); return; }
     popAction = null; $("popLater").hidden = true; $("popArt").classList.remove("reveal");
-    if (id.startsWith("__gift:")) {
-      const [, g, i] = id.split(":"), r = REWARD[g === "__book" ? BOOK_REWARD : PAGE_REWARDS[g][+i]];
-      $("popKicker").textContent = g === "__book" ? "Volume 1 complete!" : +i === 0 ? `“${g}” page complete!` : "And a bonus gift!";
+    if (id.startsWith("__gift:") || id.startsWith("__wgift:")) {
+      const weight = id.startsWith("__wgift:");
+      const [, g, i] = id.split(":"), r = REWARD[weight ? (g === "__book" ? W_BOOK_REWARD : W_PAGE_REWARDS[g]) : g === "__book" ? BOOK_REWARD : PAGE_REWARDS[g][+i]];
+      $("popKicker").textContent = weight ? (g === "__book" ? "Weight book complete!" : `Weight “${g}” page complete!`) : g === "__book" ? "Volume 1 complete!" : +i === 0 ? `“${g}” page complete!` : "And a bonus gift!";
       $("popArt").innerHTML = `${GIFT_SVG}<span class="prize">${rewardArt(r.key)}</span>`;
       $("popArt").classList.add("reveal");
       // keep it a surprise until the gift opens
       $("popName").textContent = "What's inside…?";
-      $("popHow").textContent = g === "__book" ? "A legendary gift for finishing the whole book!" : +i === 0 ? "You finished a whole page!" : "There's one more present for this page!";
+      $("popHow").textContent = g === "__book" ? "A legendary gift for finishing the whole book!" : weight || +i === 0 ? "You finished a whole page!" : "There's one more present for this page!";
       $("popGus").innerHTML = `<span class="gus-mini">${buddySVG("excited")}</span><span>Ooh, a present! Open it, open it!</span>`;
       $("stickerPop").classList.add("revealing");
       clearTimeout(revealT);
@@ -1499,20 +1616,24 @@ button, label, .log { touch-action: manipulation; }
       $("popStick").textContent = r.use;
       $("popLater").hidden = false;
       popAction = () => {
-        if (r.key === "gold") S.goldTheme = true;
-        if (r.key === "tang") S.buddy = { ...S.buddy, tang: true };
+        if (r.key === "gold") { S.goldTheme = true; S.matchaTheme = false; }
+        if (r.key === "matcha") { S.matchaTheme = true; S.goldTheme = false; }
+        if (r.key === "tang") S.buddy = { ...S.buddy, tang: true, track: false };
+        if (r.key === "track") S.buddy = { ...S.buddy, track: true, tang: false };
+        if (r.key === "medal") S.buddy = { ...S.buddy, medal: true };
         if (r.key === "panda") S.buddy = { ...S.buddy, panda: true };
         if (DECO_KEYS.includes(r.key)) S.decos = { ...(S.decos || {}), [r.key]: true };
         saveSettings(); render();
       };
     } else {
-      const s = stickerList().find(x => x.id === id);
+      const wid = id.startsWith("w:") ? id.slice(2) : null;
+      const s = wid ? WSTICKERS.find(x => x.id === wid) : stickerList().find(x => x.id === id);
       clearTimeout(revealT); $("stickerPop").classList.remove("revealing");
-      $("popKicker").textContent = "New sticker!";
-      $("popArt").innerHTML = stickerSVG(id, 128);
+      $("popKicker").textContent = wid ? "New weight sticker!" : "New sticker!";
+      $("popArt").innerHTML = stickerSVG(wid || id, 128);
       $("popName").textContent = s.name;
       $("popHow").textContent = s.how;
-      $("popGus").innerHTML = `<span class="gus-mini">${buddySVG("excited")}</span><span>${esc(CHEERS[id] || "You earned a sticker!")}</span>`;
+      $("popGus").innerHTML = `<span class="gus-mini">${buddySVG("excited")}</span><span>${esc((wid ? W_CHEERS[wid] : CHEERS[id]) || "You earned a sticker!")}</span>`;
       $("popStick").textContent = "Stick it in my book";
     }
     $("stickerPop").hidden = false; $("scrim").hidden = false;
@@ -1822,8 +1943,9 @@ button, label, .log { touch-action: manipulation; }
       <div class="card set-group">
         <h2>Look</h2>
         <div class="themes" role="group" aria-label="Colour theme">
-          ${THEMES.map(([n, h]) => `<button type="button" class="swatch" data-theme-h="${h}" style="--sh:${h}" aria-pressed="${+S.theme === h && !S.goldTheme}" aria-label="${n}" title="${n}"></button>`).join("")}
-          ${S.unlocks && S.unlocks.gold ? `<button type="button" class="swatch gold" data-gold-theme aria-pressed="${!!S.goldTheme}" aria-label="Golden Blossom" title="Golden Blossom"></button>` : ""}
+          ${THEMES.map(([n, h]) => `<button type="button" class="swatch" data-theme-h="${h}" style="--sh:${h}" aria-pressed="${+S.theme === h && !S.goldTheme && !S.matchaTheme}" aria-label="${n}" title="${n}"></button>`).join("")}
+          ${S.unlocks && S.unlocks.gold ? `<button type="button" class="swatch gold special" data-gold-theme aria-pressed="${!!S.goldTheme}" aria-label="Golden Blossom" title="Golden Blossom"></button>` : ""}
+          ${S.unlocks && S.unlocks.matcha ? `<button type="button" class="swatch matcha special" data-matcha-theme aria-pressed="${!!S.matchaTheme}" aria-label="Matcha" title="Matcha 抹茶"></button>` : ""}
         </div>
         <div class="field"><span>Appearance</span>
           <div class="seg" role="group" aria-label="Appearance">
@@ -1850,6 +1972,14 @@ button, label, .log { touch-action: manipulation; }
           <span><span class="nm">Tang suit 唐装</span><br><span class="sub">Your reward for completing the seasons and specials page.</span></span>
           <button type="button" class="ghost" id="sTangToggle" aria-pressed="${!!S.buddy.tang}">${S.buddy.tang ? "On" : "Off"}</button>
         </div>` : ""}
+        ${S.unlocks && S.unlocks.track ? `<div class="cat-item" style="grid-template-columns:minmax(0,1fr) auto">
+          <span><span class="nm">Sporty tracksuit</span><br><span class="sub">Your reward for the weight habits page.</span></span>
+          <button type="button" class="ghost" id="sTrackToggle" aria-pressed="${!!S.buddy.track}">${S.buddy.track ? "On" : "Off"}</button>
+        </div>` : ""}
+        ${S.unlocks && S.unlocks.medal ? `<div class="cat-item" style="grid-template-columns:minmax(0,1fr) auto">
+          <span><span class="nm">Gold medal</span><br><span class="sub">Your reward for finishing the weight book.</span></span>
+          <button type="button" class="ghost" id="sMedalToggle" aria-pressed="${!!S.buddy.medal}">${S.buddy.medal ? "On" : "Off"}</button>
+        </div>` : ""}
         ${S.unlocks && S.unlocks.panda ? `<div class="cat-item" style="grid-template-columns:42px minmax(0,1fr) auto">
           <span style="width:42px;height:42px;display:block">${pandaSVG()}</span>
           <span><span class="nm">Bao the panda 熊猫</span><br><span class="sub">Your reward for completing the streaks page.</span></span>
@@ -1866,6 +1996,15 @@ button, label, .log { touch-action: manipulation; }
           <span><span class="nm">${n}</span><br><span class="sub">${d}</span></span>
           <button type="button" class="ghost" data-deco-toggle="${k}" aria-pressed="${fxOn(k)}">${fxOn(k) ? "On" : "Off"}</button></div>`).join("")}
       </div>` : ""}
+      <div class="card set-group">
+        <div class="card-head" style="margin:0"><h2>Weight</h2><button type="button" class="ghost" id="sWeightToggle" aria-pressed="${S.weightOn}">${S.weightOn ? "On" : "Off"}</button></div>
+        <p class="inline-note">Log your weight each morning and night.${S.weightOn ? "" : " Turn it on to show the Weight tab."}</p>
+        ${S.weightOn ? `<div class="field"><span>Weight unit</span><div class="seg" role="group" aria-label="Weight unit">
+          ${[["jin", "斤 jin"], ["kg", "kg"], ["lb", "lb"]].map(([v, n]) => `<button type="button" data-wunit="${v}" aria-pressed="${wu() === v}">${n}</button>`).join("")}</div></div>
+        <p class="inline-note">${unitNote()}. Switching only changes how weights are shown.</p>
+        <label class="field"><span>Goal weight (${W_UNITS[wu()].label})</span><input id="sGoal" inputmode="decimal" placeholder="e.g. ${W_UNITS[wu()].eg}" value="${S.goalJin ? toU(S.goalJin).toFixed(1) : ""}"></label>
+        <p class="inline-note" id="sGoalKg">${S.goalJin ? `= ${fmtKg(S.goalJin)}` : "Leave empty for no goal."}</p>` : ""}
+      </div>
       <div class="card set-group">
         <h2>Budget</h2>
         <label class="field"><span>Minimum daily budget (${esc(S.currency)})</span><input id="sDaily" inputmode="decimal" placeholder="e.g. 50" value="${S.dailyBudgetCents ? S.dailyBudgetCents / 100 : ""}"></label>
@@ -1916,16 +2055,21 @@ button, label, .log { touch-action: manipulation; }
     if (readOnly) return;
     const t = e.target.closest("button"); if (!t) return;
     if (t.dataset.appearance) { S.appearance = t.dataset.appearance; saveSettings(); render(); return; }
-    if (t.dataset.themeH) { S.theme = +t.dataset.themeH; S.goldTheme = false; saveSettings(); render(); return; }
+    if (t.dataset.themeH) { S.theme = +t.dataset.themeH; S.goldTheme = false; S.matchaTheme = false; saveSettings(); render(); return; }
+    if (t.hasAttribute("data-matcha-theme")) { if (!(S.unlocks && S.unlocks.matcha)) return; S.matchaTheme = true; S.goldTheme = false; saveSettings(); render(); toast("Matcha theme on"); return; }
     if (t.hasAttribute("data-gold-theme")) {
       if (!(S.unlocks && S.unlocks.gold)) return;
-      S.goldTheme = true; saveSettings(); render(); toast("Golden Blossom theme on"); return;
+      S.goldTheme = true; S.matchaTheme = false; saveSettings(); render(); toast("Golden Blossom theme on"); return;
     }
+    if (t.dataset.wunit) { S.weightUnit = t.dataset.wunit; saveSettings(); render(); toast(`Weights now shown in ${W_UNITS[wu()].label}`); return; }
+    if (t.id === "sWeightToggle") { S.weightOn = !S.weightOn; saveSettings(); render(); toast(S.weightOn ? "Weight tab is back" : "Weight tab hidden"); return; }
     if (t.dataset.decoToggle) { const k = t.dataset.decoToggle; S.decos = { ...(S.decos || {}), [k]: !fxOn(k) }; saveSettings(); render(); return; }
     if (t.id === "sPandaToggle") { S.buddy = { ...S.buddy, panda: !S.buddy.panda }; saveSettings(); render(); toast(S.buddy.panda ? "Bao is back!" : "Bao is taking a nap"); return; }
+    if (t.id === "sTrackToggle") { if (!(S.unlocks && S.unlocks.track)) return; S.buddy = { ...S.buddy, track: !S.buddy.track, tang: S.buddy.track ? S.buddy.tang : false }; saveSettings(); render(); toast(S.buddy.track ? `${S.buddy.name} put on his tracksuit` : `${S.buddy.name} changed back`); return; }
+    if (t.id === "sMedalToggle") { if (!(S.unlocks && S.unlocks.medal)) return; S.buddy = { ...S.buddy, medal: !S.buddy.medal }; saveSettings(); render(); return; }
     if (t.id === "sTangToggle") {
       if (!(S.unlocks && S.unlocks.tang)) return;
-      S.buddy = { ...S.buddy, tang: !S.buddy.tang }; saveSettings(); render(); toast(S.buddy.tang ? `${S.buddy.name} put on his Tang suit 唐装` : `${S.buddy.name} changed back`); return;
+      S.buddy = { ...S.buddy, tang: !S.buddy.tang, track: S.buddy.tang ? S.buddy.track : false }; saveSettings(); render(); toast(S.buddy.tang ? `${S.buddy.name} put on his Tang suit 唐装` : `${S.buddy.name} changed back`); return;
     }
     if (t.dataset.rateDel) { delete S.rates[t.dataset.rateDel]; saveSettings(); render(); return; }
     if (t.dataset.catEdit) { openCat(t.dataset.catEdit); return; }
@@ -1959,6 +2103,7 @@ button, label, .log { touch-action: manipulation; }
     const t = e.target;
     if (t.id === "sDaily") { const v = parseNum(t.value); S.dailyBudgetCents = v > 0 ? Math.round(v * 100) : 0; saveSettings(); t.blur(); render(); toast(S.dailyBudgetCents ? `Daily budget set to ${money(S.dailyBudgetCents)}` : "Daily budget cleared"); }
     else if (t.id === "sBuddyName") { S.buddy = { ...S.buddy, name: t.value.trim().slice(0, 16) || "Gus" }; saveSettings(); t.blur(); render(); toast(`Hi, I'm ${S.buddy.name}!`); }
+    else if (t.id === "sGoal") { const v = parseNum(t.value); S.goalJin = v > 0 ? Math.round(fromU(v) * 1000) / 1000 : 0; saveSettings(); t.blur(); render(); toast(S.goalJin ? `Goal set to ${fmtJin(S.goalJin)} (${fmtKg(S.goalJin)})` : "Goal cleared"); }
     else if (t.id === "sWeek") { S.weekStart = +t.value; saveSettings(); render(); }
     else if (t.id === "sStart") { if (validKey(t.value)) { S.startDate = t.value; saveSettings(); t.blur(); render(); } }
     else if (t.id === "sCur") {
@@ -2151,7 +2296,7 @@ button, label, .log { touch-action: manipulation; }
     if (opts.forKey) { fillForSelect(opts.forKey); updateForNote(); }
     renderPaybacks(); updateRate(); showSheet($("logSheet"));
   }
-  $("fab").onclick = () => openLog(null);
+  $("fab").onclick = () => st.view === "weight" ? openWeight(todayKey(), autoSlot()) : openLog(null);
   function readForm() {
     const msg = $("fMsg");
     const a = parseNum($("fAmt").value), amt = Math.round(a * 100);
@@ -2293,8 +2438,266 @@ button, label, .log { touch-action: manipulation; }
     });
   };
 
+  // ---------- Weight (斤 jin; 1 斤 = 0.5 kg) ----------
+  const JIN_TO_KG = 0.5;
+  const W_UNITS = { jin: { label: "斤", per: 1, eg: "120.5" }, kg: { label: "kg", per: JIN_TO_KG, eg: "60.3" }, lb: { label: "lb", per: JIN_TO_KG * 2.20462, eg: "132.8" } };
+  const wu = () => W_UNITS[S.weightUnit] ? S.weightUnit : "jin";
+  const toU = (jin, u = wu()) => jin * W_UNITS[u].per;
+  const fromU = (v, u = wu()) => v / W_UNITS[u].per;
+  const secU = () => wu() === "kg" ? "jin" : "kg";
+  const fmtU = (jin, u, dec = 1) => `${toU(+jin, u).toFixed(dec)} ${W_UNITS[u].label}`;
+  // main unit (your choice) and the reference unit shown underneath
+  const fmtJin = v => fmtU(v, wu());
+  const fmtKg = v => fmtU(v, secU(), secU() === "kg" ? 2 : 1);
+  const unitNote = () => ({ jin: "1 斤 = 0.5 kg", kg: "1 kg = 2 斤", lb: "1 lb ≈ 0.45 kg" })[wu()];
+  const pendingW = {};
+  function saveWeights(mk) {
+    if (!db) return;
+    const days = clone(st.weights[mk] || {});
+    pendingW[mk] = (pendingW[mk] || 0) + 1;
+    enqueue(() => { const ref = db.doc("weights/" + mk); return Object.keys(days).length ? ref.set({ month: mk, days }) : ref.delete(); }, () => { pendingW[mk]--; });
+  }
+  const weightDay = k => (st.weights[k.slice(0, 7)] || {})[k] || {};
+  function allWeights() {
+    const out = [];
+    for (const days of Object.values(st.weights)) for (const [date, d] of Object.entries(days)) if (validKey(date) && (d.am || d.pm)) out.push({ date, am: d.am, pm: d.pm });
+    return out.sort((a, z) => a.date < z.date ? -1 : 1);
+  }
+  const lastWeight = () => { const all = allWeights(); for (let i = all.length - 1; i >= 0; i--) { const d = all[i]; if (d.pm || d.am) return (d.pm && (!d.am || d.pm.at > d.am.at) ? d.pm : d.am).jin; } return null; };
+  const autoSlot = () => new Date().getHours() < 15 ? "am" : "pm";
+  function goalProgress(all) {
+    const goal = S.goalJin; if (!goal || !all.length) return null;
+    const mornings = all.filter(d => d.am), pick = d => (d.am || d.pm).jin;
+    const start = pick(mornings[0] || all[0]), current = pick(mornings[mornings.length - 1] || all[all.length - 1]);
+    const span = start - goal, done = start - current;
+    const pct = span === 0 ? 1 : Math.max(0, Math.min(1, done / span));
+    return { start, current, goal, left: current - goal, pct, reached: span === 0 ? Math.abs(current - goal) < 0.05 : (span > 0 ? current <= goal : current >= goal) };
+  }
+  function weightChart(all) {
+    const days = { "30": 30, "90": 90, all: 0 }[st.wRange || "30"];
+    const since = days ? shiftKey(todayKey(), -(days - 1)) : (all[0] ? all[0].date : todayKey());
+    const pts = all.filter(d => d.date >= since);
+    const am = pts.filter(d => d.am).map(d => ({ date: d.date, v: d.am.jin })), pm = pts.filter(d => d.pm).map(d => ({ date: d.date, v: d.pm.jin }));
+    if (am.length + pm.length < 2) return `<p class="empty">Log a couple of days to see your progress here.</p>`;
+    const W = 320, H = 180, L = 40, R = 10, T = 12, B = 26;
+    const first = pts[0].date, last = days ? todayKey() : pts[pts.length - 1].date;
+    const span = Math.max(1, Math.round((parseKey(last) - parseKey(first)) / 864e5));
+    const vals = [...am, ...pm].map(p => p.v).concat(S.goalJin ? [S.goalJin] : []);
+    let lo = Math.floor(Math.min(...vals) - 1), hi = Math.ceil(Math.max(...vals) + 1);
+    if (hi - lo < 4) { lo -= 1; hi += 1; }
+    const x = k => L + (Math.round((parseKey(k) - parseKey(first)) / 864e5) / span) * (W - L - R);
+    const y = v => T + (1 - (v - lo) / (hi - lo)) * (H - T - B);
+    const ticks = [lo, (lo + hi) / 2, hi];
+    const mid = keyOf(addDays(parseKey(first), Math.round(span / 2)));
+    const lab = k => esc(fmtD(k, { month: "numeric", day: "numeric" }));
+    return `<svg class="wchart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Weight from ${lab(first)} to ${lab(last)}">
+      ${ticks.map(t => `<line x1="${L}" x2="${W - R}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" class="grid"/><text x="${L - 6}" y="${(y(t) + 3.5).toFixed(1)}" text-anchor="end" class="ax">${toU(t).toFixed(wu() === "jin" && t % 1 === 0 ? 0 : 1)}</text>`).join("")}
+      ${S.goalJin ? `<line x1="${L}" x2="${W - R}" y1="${y(S.goalJin).toFixed(1)}" y2="${y(S.goalJin).toFixed(1)}" class="goal"/><text x="${W - R}" y="${(y(S.goalJin) - 4).toFixed(1)}" text-anchor="end" class="goal-l">Goal ${toU(S.goalJin).toFixed(1)}</text>` : ""}
+      ${am.length > 1 ? `<polyline class="am-line" points="${am.map(p => `${x(p.date).toFixed(1)},${y(p.v).toFixed(1)}`).join(" ")}"/>` : ""}
+      ${pm.map(p => `<circle class="pm-dot" cx="${x(p.date).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="2.6"><title>${lab(p.date)} night ${fmtJin(p.v)}</title></circle>`).join("")}
+      ${am.map((p, i) => `<circle class="am-dot${i === am.length - 1 ? " last" : ""}" cx="${x(p.date).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="${i === am.length - 1 ? 4.2 : 2.8}"><title>${lab(p.date)} morning ${fmtJin(p.v)}</title></circle>`).join("")}
+      ${[first, mid, last].map((k, i) => `<text x="${x(k).toFixed(1)}" y="${H - 8}" text-anchor="${["start", "middle", "end"][i]}" class="ax">${lab(k)}</text>`).join("")}
+    </svg>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Morning</span><span><i style="background:var(--rose-bar);border-radius:50%"></i>Night</span>${S.goalJin ? `<span><i class="dash"></i>Goal</span>` : ""}<span class="sub">${W_UNITS[wu()].label}</span></div>`;
+  }
+  function renderWeight() {
+    const all = allWeights(), t = todayKey(), today = weightDay(t);
+    const slot = (key, icon, label) => {
+      const e = today[key];
+      return `<button type="button" class="wslot ${e ? "has" : ""}" data-wlog="${key}">
+        <span class="wslot-h">${icon} ${label}</span>
+        ${e ? `<span class="wslot-v">${fmtJin(e.jin)}</span><span class="wslot-k">${fmtKg(e.jin)} · ${esc(new Date(e.at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }))}</span>` : `<span class="wslot-add">+ Log ${label.toLowerCase()}</span>`}
+      </button>`;
+    };
+    const diff = today.am && today.pm ? today.pm.jin - today.am.jin : null;
+    const g = goalProgress(all);
+    const recent = all.slice(-14).reverse();
+    $("view-weight").innerHTML = `
+      <div class="card">${dco("br")}
+        <div class="card-head"><h2>${hdeco()}Today</h2><span class="sub">${esc(fmtD(t, { weekday: "short", month: "short", day: "numeric" }))}</span></div>
+        <div class="wslots">${slot("am", "☀️", "Morning")}${slot("pm", "🌙", "Night")}</div>
+        <button type="button" class="details-btn book-btn wbook-btn" data-open-wbook><span class="book-btn-art">${stickerSVG("w-sun", 28)}</span><span class="sub" style="flex:1">Weight stickers · ${WSTICKERS.filter(x => wEarned()[x.id]).length} of ${WSTICKERS.length}</span><b>Open</b></button>
+        ${diff !== null ? `<p class="wdiff">Night is <b>${diff >= 0 ? "+" : "−"}${fmtJin(Math.abs(diff))}</b> (${fmtKg(Math.abs(diff))}) vs morning. Changes through the day are normal.</p>` : ""}
+      </div>
+      <div class="card">${dstitch()}
+        <div class="card-head"><h2>${hdeco()}Goal</h2><button type="button" class="ghost" id="wGoalEdit">${S.goalJin ? "Change" : "Set goal"}</button></div>
+        ${!S.goalJin ? `<p class="empty" style="text-align:left;padding:4px 0">Set a goal weight to see how far you've come.</p>` : !g ? `<p class="empty" style="text-align:left;padding:4px 0">Goal: ${fmtJin(S.goalJin)} (${fmtKg(S.goalJin)}). Log your weight to start tracking.</p>` : `
+          <div class="wgoal-top"><div><span class="lbl">Now</span><b>${fmtJin(g.current)}</b><span class="sub">${fmtKg(g.current)}</span></div>
+            <div style="text-align:right"><span class="lbl">Goal</span><b>${fmtJin(g.goal)}</b><span class="sub">${fmtKg(g.goal)}</span></div></div>
+          <div class="wbar"><span style="width:${(g.pct * 100).toFixed(1)}%"></span></div>
+          <p class="sub" style="margin:6px 0 0">${g.reached ? "Goal reached 🎉" : `${fmtJin(Math.abs(g.left))} to go (${fmtKg(Math.abs(g.left))}) · started at ${fmtJin(g.start)}`}</p>`}
+      </div>
+      <div class="card">${dvine("18px", "45%")}
+        <div class="card-head"><h2>${hdeco()}Progress</h2><span class="sub">by date</span></div>
+        <div class="seg wrange" role="group" aria-label="Chart range">${[["30", "30 days"], ["90", "90 days"], ["all", "All time"]].map(([v, n]) => `<button type="button" data-wrange="${v}" aria-pressed="${(st.wRange || "30") === v}">${n}</button>`).join("")}</div>
+        ${weightChart(all)}
+      </div>
+      <div class="card">${dtendril("t-br")}
+        <div class="card-head"><h2>${hdeco()}History</h2><span class="sub">morning · night (${W_UNITS[wu()].label})</span></div>
+        ${recent.length ? recent.map(d => `<button type="button" class="wrow" data-wedit="${d.date}">
+          <span>${esc(fmtD(d.date, { weekday: "short", month: "short", day: "numeric" }))}</span>
+          <span class="num">☀️ ${d.am ? toU(d.am.jin).toFixed(1) : "—"}</span><span class="num">🌙 ${d.pm ? toU(d.pm.jin).toFixed(1) : "—"}</span></button>`).join("") : `<p class="empty">No weights yet. Tap ☀️ Morning above to log your first one.</p>`}
+      </div>`;
+  }
+  $("view-weight").addEventListener("click", e => {
+    const b = e.target.closest("[data-wlog]"); if (b) { openWeight(todayKey(), b.dataset.wlog); return; }
+    const r = e.target.closest("[data-wrange]"); if (r) { st.wRange = r.dataset.wrange; render(); return; }
+    const h = e.target.closest("[data-wedit]"); if (h) { const d = weightDay(h.dataset.wedit); openWeight(h.dataset.wedit, d.am ? "am" : "pm"); return; }
+    if (e.target.closest("#wGoalEdit")) { st.view = "settings"; render(); setTimeout(() => { const g = $("sGoal"); if (g) { g.scrollIntoView({ block: "center" }); g.focus(); } }, 50); }
+  });
+  // entry sheet
+  let wSlot = "am";
+  function setWSlot(v) { wSlot = v; $("wSlot").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.slot === v))); fillWeightForm(); }
+  function fillWeightForm() {
+    const k = $("wDate").value, e = validKey(k) ? weightDay(k)[wSlot] : null;
+    $("wUnit").textContent = W_UNITS[wu()].label; $("wVal").placeholder = W_UNITS[wu()].eg;
+    $("wVal").setAttribute("aria-label", `Weight in ${W_UNITS[wu()].label}`);
+    $("wVal").value = e ? toU(e.jin).toFixed(1) : (lastWeight() != null ? toU(lastWeight()).toFixed(1) : "");
+    $("wDel").hidden = !e; disarm($("wDel"), "Delete");
+    $("wTitle").textContent = e ? "Edit weight" : "Log weight";
+    updateWKg();
+  }
+  function updateWKg() { const v = parseNum($("wVal").value); $("wKg").textContent = v > 0 ? `= ${fmtKg(fromU(v))}` : unitNote(); }
+  function openWeight(date, slot) {
+    if (readOnly) return;
+    $("wDate").value = date; $("wMsg").textContent = "";
+    setWSlot(slot || autoSlot());
+    showSheet($("weightSheet"));
+  }
+  $("wSlot").addEventListener("click", e => { const b = e.target.closest("[data-slot]"); if (b) setWSlot(b.dataset.slot); });
+  $("wDate").onchange = fillWeightForm;
+  $("wVal").oninput = updateWKg;
+  document.querySelectorAll("[data-wstep]").forEach(b => b.onclick = () => { const v = parseNum($("wVal").value) || (lastWeight() != null ? toU(lastWeight()) : toU(120)); $("wVal").value = Math.max(0, v + +b.dataset.wstep).toFixed(1); updateWKg(); });
+  $("weightSheet").addEventListener("submit", ev => {
+    ev.preventDefault();
+    const k = $("wDate").value, entered = parseNum($("wVal").value), v = Math.round(fromU(entered) * 1000) / 1000;
+    if (!validKey(k)) { $("wMsg").textContent = "Pick a date."; return; }
+    if (!(v >= 20 && v <= 600)) { $("wMsg").textContent = `Enter a weight in ${W_UNITS[wu()].label} (for example ${W_UNITS[wu()].eg}).`; $("wVal").focus(); return; }
+    const mk = k.slice(0, 7), days = { ...(st.weights[mk] || {}) };
+    days[k] = { ...(days[k] || {}), [wSlot]: { jin: v, at: Date.now() } };
+    st.weights = { ...st.weights, [mk]: days };
+    saveWeights(mk); closeSheet($("weightSheet"));
+    toast(`${wSlot === "am" ? "Morning" : "Night"} weight saved · ${fmtJin(v)} (${fmtKg(v)})`); render();
+  });
+  $("wDel").onclick = () => armOr($("wDel"), "Delete", () => {
+    const k = $("wDate").value, mk = k.slice(0, 7), days = { ...(st.weights[mk] || {}) }, d = { ...(days[k] || {}) };
+    delete d[wSlot]; if (d.am || d.pm) days[k] = d; else delete days[k];
+    st.weights = { ...st.weights, [mk]: days };
+    saveWeights(mk); closeSheet($("weightSheet")); toast("Weight deleted"); render();
+  });
+
+  // ---------- Weight sticker book (separate from the spending book) ----------
+  // Rewards habits and steady progress toward the goal; nothing rewards fast changes.
+  const WSTICKERS = [
+    { group: "habits", id: "w-first", name: "First weigh-in", how: "Log your first weight" },
+    { group: "habits", id: "w-sun", name: "Rise and shine", how: "Log 7 mornings in a row" },
+    { group: "habits", id: "w-moon", name: "Night owl", how: "Log 7 nights in a row" },
+    { group: "habits", id: "w-both", name: "Full day", how: "Log both morning and night on 7 days" },
+    { group: "habits", id: "w-cal", name: "30 mornings", how: "Log 30 mornings in total" },
+    { group: "habits", id: "w-back", name: "Welcome back", how: "Log again after a break of 7 days or more" },
+    { group: "progress", id: "w-sprout", name: "A quarter there", how: "25% of the way from your starting weight to your goal" },
+    { group: "progress", id: "w-bamboo", name: "Halfway", how: "Halfway from your starting weight to your goal" },
+    { group: "progress", id: "w-peach", name: "Almost there", how: "75% of the way to your goal" },
+    { group: "progress", id: "w-goal", name: "Goal reached", how: "Reach your goal weight", legendary: true },
+    { group: "progress", id: "w-lotus", name: "Holding steady", how: "Stay within 2 斤 (1 kg) of your goal for 14 days after reaching it" },
+    { group: "progress", id: "w-100", name: "100 weigh-ins", how: "Log 100 weights in total" },
+  ];
+  const W_PAGE_REWARDS = { habits: "track", progress: "matcha" };
+  const W_BOOK_REWARD = "medal";
+  const W_CHEERS = { "w-first": "Our first weigh-in! The journey starts here.", "w-sun": "Seven sunny mornings in a row!", "w-moon": "Seven nights logged. Sweet dreams!", "w-both": "Morning and night, seven times. So thorough!", "w-cal": "Thirty mornings! That's a real habit now.", "w-back": "Welcome back! I missed you.", "w-sprout": "A little sprout of progress. Keep going!", "w-bamboo": "Slow and steady, like bamboo!", "w-peach": "So close now. Sweet as a peach!", "w-goal": "You reached your goal! I'm so proud of you.", "w-lotus": "Calm and steady, like a lotus. Amazing!", "w-100": "One hundred weigh-ins. What a diary!" };
+  function computeWeightStickers() {
+    const got = {}, all = allWeights();
+    const run = slot => { let best = 0, cur = 0, prev = null; for (const d of all) { if (!d[slot]) { cur = 0; prev = null; continue; } cur = prev && shiftKey(prev, 1) === d.date ? cur + 1 : 1; prev = d.date; best = Math.max(best, cur); } return best; };
+    if (all.length) got["w-first"] = 1;
+    if (run("am") >= 7) got["w-sun"] = 1;
+    if (run("pm") >= 7) got["w-moon"] = 1;
+    if (all.filter(d => d.am && d.pm).length >= 7) got["w-both"] = 1;
+    const mornings = all.filter(d => d.am);
+    if (mornings.length >= 30) got["w-cal"] = 1;
+    for (let i = 1; i < all.length; i++) if (Math.round((parseKey(all[i].date) - parseKey(all[i - 1].date)) / 864e5) >= 8) { got["w-back"] = 1; break; }
+    if (all.reduce((n, d) => n + (d.am ? 1 : 0) + (d.pm ? 1 : 0), 0) >= 100) got["w-100"] = 1;
+    const goal = S.goalJin;
+    if (goal && mornings.length) {
+      const start = mornings[0].am.jin, span = start - goal;
+      let best = 0, reachedAt = null;
+      for (const d of mornings) {
+        const pct = span === 0 ? 1 : (start - d.am.jin) / span;
+        best = Math.max(best, pct);
+        if (!reachedAt && pct >= 1) reachedAt = d.date;
+      }
+      if (span !== 0) { if (best >= 0.25) got["w-sprout"] = 1; if (best >= 0.5) got["w-bamboo"] = 1; if (best >= 0.75) got["w-peach"] = 1; }
+      if (reachedAt) {
+        got["w-goal"] = 1;
+        let runStart = null, count = 0;
+        for (const d of mornings.filter(m => m.date >= reachedAt)) {
+          if (Math.abs(d.am.jin - goal) <= 2) { if (!runStart) { runStart = d.date; count = 0; } count++; if (count >= 8 && Math.round((parseKey(d.date) - parseKey(runStart)) / 864e5) >= 13) { got["w-lotus"] = 1; break; } }
+          else runStart = null;
+        }
+      }
+    }
+    if (STICKER_DEMO.startsWith("w")) for (const s of WSTICKERS) if (STICKER_DEMO === "wall" || "w" + s.group === STICKER_DEMO) got[s.id] = 1;
+    return got;
+  }
+  // a sticker stays in the book once earned, even if the goal changes later
+  const wEarned = () => { const got = computeWeightStickers(); for (const id of Object.keys(S.wSeen || {})) got[id] = 1; return got; };
+  const wPageDone = (got, g) => WSTICKERS.filter(s => s.group === g).every(s => got[s.id]);
+  function checkWeightStickers() {
+    const got = computeWeightStickers();
+    let changed = false;
+    if (!S.wSeen) {
+      S.wSeen = { ...got }; changed = true;
+      const n = Object.keys(got).length;
+      if (n) setTimeout(() => toast(`${S.buddy.name} found ${n} weight sticker${n === 1 ? "" : "s"} you already earned!`), 2600);
+    } else {
+      for (const id of Object.keys(got)) if (!S.wSeen[id]) { S.wSeen[id] = 1; changed = true; if (!stickerQueue.includes("w:" + id)) stickerQueue.push("w:" + id); }
+    }
+    const earned = { ...got, ...S.wSeen };
+    S.unlocks = S.unlocks || {};
+    for (const [g, k] of Object.entries(W_PAGE_REWARDS)) if (wPageDone(earned, g) && !S.unlocks[k]) { S.unlocks[k] = true; changed = true; stickerQueue.push("__wgift:" + g); }
+    if (WSTICKERS.every(s => earned[s.id]) && !S.unlocks[W_BOOK_REWARD]) { S.unlocks[W_BOOK_REWARD] = true; changed = true; stickerQueue.push("__wgift:__book"); }
+    return changed;
+  }
+  function renderWBook() {
+    const got = wEarned(), have = WSTICKERS.filter(s => got[s.id]).length, done = have === WSTICKERS.length;
+    const tapes = { habits: ["#FAEEDA", "#633806", -3], progress: ["#C0DD97", "#173404", 2] };
+    const morningsRun = (() => { let cur = 0; for (let d = parseKey(todayKey()), i = 0; i < 400; i++, d = addDays(d, -1)) { const w = weightDay(keyOf(d)); if (w.am) cur++; else if (i > 0) break; } return cur; })();
+    // next progress sticker: how far (in 斤) from the next milestone between start and goal
+    const nextProgress = (() => {
+      const all = allWeights().filter(d => d.am); if (!S.goalJin || !all.length) return "";
+      const start = all[0].am.jin, now = all[all.length - 1].am.jin, span = start - S.goalJin; if (span === 0) return "";
+      for (const [id, t, name] of [["w-sprout", 0.25, "A quarter there"], ["w-bamboo", 0.5, "Halfway"], ["w-peach", 0.75, "Almost there"], ["w-goal", 1, "Goal reached"]]) {
+        if (got[id]) continue;
+        const left = Math.abs(now - (start - span * t));
+        return `Next: <b>${name}</b> · ${fmtJin(left)} to go (${fmtKg(left)})`;
+      }
+      return "";
+    })();
+    const hint = !got["w-sun"] ? `Next: <b>Rise and shine</b> · ${Math.max(1, 7 - morningsRun)} more morning${7 - morningsRun === 1 ? "" : "s"} in a row` : !S.goalJin ? "Set a goal weight to unlock the progress stickers." : done ? "Every weight sticker collected!" : nextProgress || "Keep logging, slow and steady.";
+    $("wBookBody").innerHTML = `
+      <div class="book-top"><div>
+        <div class="book-count">${have} of ${WSTICKERS.length} collected</div>
+        <div class="book-bar wbook-bar"><span style="width:${(have / WSTICKERS.length * 100).toFixed(1)}%"></span></div>
+        <div class="sub" style="margin-top:4px">${hint}</div>
+        <div class="vol-gift">${S.unlocks && S.unlocks[W_BOOK_REWARD] ? `🏆 Legendary reward: ${esc(REWARD[W_BOOK_REWARD].name)}` : "🏆 Finish the whole weight book for a legendary surprise"}</div></div></div>
+      ${Object.keys(tapes).map(g => {
+        const items = WSTICKERS.filter(s => s.group === g), n = items.filter(s => got[s.id]).length, k = W_PAGE_REWARDS[g];
+        return `<div class="book-page"><span class="book-tape" style="background:${tapes[g][0]};color:${tapes[g][1]};transform:rotate(${tapes[g][2]}deg)">${g}</span>
+          ${S.unlocks && S.unlocks[k] ? `<span class="gift-tag open">🎁 ${esc(REWARD[k].name)}</span>` : `<span class="gift-tag">🎁 Surprise · ${n}/${items.length}</span>`}
+          <div class="book-grid wgrid">${items.map((s, i) => `<button type="button" class="sticker ${got[s.id] ? "" : "locked"} ${s.legendary ? "legendary" : ""}" data-wsticker="${s.id}" style="--tilt:${got[s.id] ? [-5, 4, -3, 5, -2, 3][i % 6] : 0}deg">
+            <span class="art">${got[s.id] ? stickerSVG(s.id) : `<span class="q">?</span>`}</span><span class="nm">${esc(s.name)}</span>${s.legendary ? `<span class="leg">legendary</span>` : ""}</button>`).join("")}</div></div>`;
+      }).join("")}
+      <p class="sub" id="wBookHow" style="text-align:center;min-height:1.4em;margin:0">Tap a sticker to see how to earn it.</p>`;
+  }
+  function openWBook() { renderWBook(); showSheet($("wBookSheet")); }
+  $("wBookSheet").addEventListener("click", e => {
+    const b = e.target.closest("[data-wsticker]"); if (!b) return;
+    const s = WSTICKERS.find(x => x.id === b.dataset.wsticker);
+    $("wBookHow").innerHTML = `<b>${esc(s.name)}:</b> ${esc(s.how)}`;
+  });
+  document.addEventListener("click", e => { if (e.target.closest("[data-open-wbook]")) openWBook(); });
+
   // ---------- navigation ----------
-  const TITLES = { today: "My day", reports: "Reports", logs: "All logs", settings: "Settings" };
+  const TITLES = { today: "My day", reports: "Reports", weight: "Weight", logs: "All logs", settings: "Settings" };
   document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
     st.view = t.dataset.view;
     if (st.view !== "settings") st.pendingCur = null;
@@ -2304,14 +2707,18 @@ button, label, .log { touch-action: manipulation; }
   function render() {
     applyDecor();
     const c = context();
-    for (const v of ["today", "reports", "logs", "settings"]) $("view-" + v).hidden = v !== st.view;
+    if (st.view === "weight" && !S.weightOn) st.view = "today";
+    document.querySelector('.tab[data-view="weight"]').hidden = !S.weightOn;
+    for (const v of ["today", "reports", "weight", "logs", "settings"]) $("view-" + v).hidden = v !== st.view;
     document.querySelectorAll(".tab").forEach(t => { if (t.dataset.view === st.view) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current"); });
     $("viewTitle").textContent = TITLES[st.view];
     $("fab").hidden = st.view === "settings" || readOnly;
+    $("fab").setAttribute("aria-label", st.view === "weight" ? "Log weight" : "Log spending");
     $("sampleBanner").hidden = readOnly || !c.all.some(x => x.ex);
     if (st.view === "today") renderToday(c);
     else if (st.view === "reports") renderReports(c);
     else if (st.view === "logs") renderLogs(c);
+    else if (st.view === "weight") renderWeight();
     else renderSettings(c);
     decorateExtras();
     checkStickers(c);
@@ -2320,40 +2727,44 @@ button, label, .log { touch-action: manipulation; }
 
   // ---------- on-device storage (replaces the claude.ai database) ----------
   const STORE_KEY = "petal-ledger-v1";
+  // collections are kept per name (ledger = spending logs, weights = weight logs); settings is one document
+  const COLS = ["ledger", "weights"];
   function loadStore() {
+    const out = { settings: null }; COLS.forEach(c => out[c] = {});
     try {
       const v = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
-      if (v && typeof v === "object") return { ledger: v.ledger && typeof v.ledger === "object" ? v.ledger : {}, settings: v.settings || null };
+      if (v && typeof v === "object") { COLS.forEach(c => { if (v[c] && typeof v[c] === "object") out[c] = v[c]; }); out.settings = v.settings || null; }
     } catch {}
-    return { ledger: {}, settings: null };
+    return out;
   }
   let store = loadStore();
-  const listeners = { ledger: new Set(), settings: new Set() };
+  const listeners = { settings: new Set() }; COLS.forEach(c => listeners[c] = new Set());
   function persist() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
     catch { throw { code: "quota_exceeded" }; }
   }
   const meta = { fromCache: false, hasPendingWrites: false };
-  const snapLedger = () => ({ docs: Object.keys(store.ledger).sort().map(id => ({ id, exists: true, data: () => store.ledger[id] })), metadata: meta });
+  const snapCol = c => ({ docs: Object.keys(store[c]).sort().map(id => ({ id, exists: true, data: () => store[c][id] })), metadata: meta });
   const snapSettings = () => ({ id: "main", exists: !!store.settings, data: () => store.settings || undefined, metadata: meta });
-  function emit(kind) { for (const fn of listeners[kind]) { try { fn(kind === "ledger" ? snapLedger() : snapSettings()); } catch (e) { console.error(e); } } }
+  function emit(kind) { for (const fn of listeners[kind]) { try { fn(kind === "settings" ? snapSettings() : snapCol(kind)); } catch (e) { console.error(e); } } }
   function createLocalDB() {
     return {
       doc(path) {
         const [col, id] = path.split("/");
-        const kind = col === "ledger" ? "ledger" : "settings";
+        const kind = COLS.includes(col) ? col : "settings";
         return {
-          async set(data) { const c = clone(data); if (kind === "ledger") store.ledger[id] = c; else store.settings = c; persist(); emit(kind); },
-          async delete() { if (kind === "ledger") delete store.ledger[id]; else store.settings = null; persist(); emit(kind); },
+          async set(data) { const c = clone(data); if (kind === "settings") store.settings = c; else store[kind][id] = c; persist(); emit(kind); },
+          async delete() { if (kind === "settings") store.settings = null; else delete store[kind][id]; persist(); emit(kind); },
           onSnapshot(next) { listeners.settings.add(next); queueMicrotask(() => next(snapSettings())); return () => listeners.settings.delete(next); },
         };
       },
-      collection() {
-        return { onSnapshot(next) { listeners.ledger.add(next); queueMicrotask(() => next(snapLedger())); return () => listeners.ledger.delete(next); } };
+      collection(name) {
+        const c = COLS.includes(name) ? name : "ledger";
+        return { onSnapshot(next) { listeners[c].add(next); queueMicrotask(() => next(snapCol(c))); return () => listeners[c].delete(next); } };
       },
     };
   }
-  addEventListener("storage", e => { if (e.key === STORE_KEY) { store = loadStore(); emit("ledger"); emit("settings"); } });
+  addEventListener("storage", e => { if (e.key === STORE_KEY) { store = loadStore(); COLS.forEach(emit); emit("settings"); } });
 
   // Share sheet on iPhone (Save to Files, AirDrop…); a normal download elsewhere.
   async function saveFile({ filename, data, type = "text/csv" }) {
@@ -2370,7 +2781,7 @@ button, label, .log { touch-action: manipulation; }
 
   // ---------- backup & restore ----------
   function backupData() {
-    return JSON.stringify({ app: "petal-ledger", version: 1, exportedAt: new Date().toISOString(), ledger: store.ledger, settings: store.settings || clone(S) }, null, 1);
+    return JSON.stringify({ app: "petal-ledger", version: 2, exportedAt: new Date().toISOString(), ledger: store.ledger, weights: store.weights, settings: store.settings || clone(S) }, null, 1);
   }
   function parseBackup(text) {
     const v = JSON.parse(text);
@@ -2379,13 +2790,18 @@ button, label, .log { touch-action: manipulation; }
     for (const [mk, doc] of Object.entries(v.ledger)) {
       if (/^\d{4}-\d{2}$/.test(mk) && doc && Array.isArray(doc.entries)) ledger[mk] = { month: mk, entries: doc.entries.filter(e => e && e.id && validKey(e.date)) };
     }
-    return { ledger, settings: v.settings && typeof v.settings === "object" ? v.settings : null };
+    // weights arrived in version 2; older backups simply have none
+    const weights = {};
+    if (v.weights && typeof v.weights === "object") for (const [mk, doc] of Object.entries(v.weights)) {
+      if (/^\d{4}-\d{2}$/.test(mk) && doc && doc.days && typeof doc.days === "object") weights[mk] = { month: mk, days: doc.days };
+    }
+    return { ledger, weights, settings: v.settings && typeof v.settings === "object" ? v.settings : null };
   }
   function applyRestore(data) {
-    store = { ledger: data.ledger, settings: data.settings };
+    store = { ledger: data.ledger, weights: data.weights || {}, settings: data.settings };
     persist();
     if (data.settings) S = normSettings(data.settings);
-    applyTheme(); emit("ledger"); emit("settings");
+    applyTheme(); COLS.forEach(emit); emit("settings");
   }
 
   // ---------- boot ----------
@@ -2395,14 +2811,21 @@ button, label, .log { touch-action: manipulation; }
     s.dailyBudgetCents = Number(v.dailyBudgetCents) || 0;
     if (v.dayBudgets && typeof v.dayBudgets === "object") s.dayBudgets = { ...v.dayBudgets };
     s.decor = v.decor !== false;
+    s.weightOn = v.weightOn !== false;
+    s.goalJin = +v.goalJin > 0 ? Math.round(+v.goalJin * 1000) / 1000 : 0;
+    s.weightUnit = ["jin", "kg", "lb"].includes(v.weightUnit) ? v.weightUnit : "jin";
     s.appearance = ["light", "dark", "system"].includes(v.appearance) ? v.appearance : "light";
     if (v.buddy && typeof v.buddy === "object") s.buddy = { on: v.buddy.on !== false, outfits: v.buddy.outfits !== false, name: typeof v.buddy.name === "string" && v.buddy.name.trim() ? v.buddy.name.trim().slice(0, 16) : "Gus" };
     if (v.stickersSeen && typeof v.stickersSeen === "object") s.stickersSeen = { ...v.stickersSeen };
-    if (v.unlocks && typeof v.unlocks === "object") { s.unlocks = {}; for (const k of ["gold", "tang", "panda", "book", "lanterns", "butterflies", "koi", "gilded"]) if (v.unlocks[k]) s.unlocks[k] = true; }
+    if (v.unlocks && typeof v.unlocks === "object") { s.unlocks = {}; for (const k of ["gold", "tang", "panda", "book", "lanterns", "butterflies", "koi", "gilded", "track", "matcha", "medal"]) if (v.unlocks[k]) s.unlocks[k] = true; }
     if (v.decos && typeof v.decos === "object") { s.decos = {}; for (const k of ["lanterns", "butterflies", "koi", "gilded"]) if (v.decos[k]) s.decos[k] = true; }
+    if (v.wSeen && typeof v.wSeen === "object") s.wSeen = { ...v.wSeen };
     s.goldTheme = !!v.goldTheme;
+    s.matchaTheme = !s.goldTheme && !!v.matchaTheme;
     if (v.buddy && v.buddy.tang) s.buddy.tang = true;
     if (v.buddy && v.buddy.panda) s.buddy.panda = true;
+    if (v.buddy && v.buddy.track) s.buddy.track = true;
+    if (v.buddy && v.buddy.medal) s.buddy.medal = true;
     if (v.noSpend && typeof v.noSpend === "object") for (const k of Object.keys(v.noSpend)) if (validKey(k) && v.noSpend[k]) s.noSpend[k] = true;
     if (Array.isArray(v.categories) && v.categories.length) s.categories = v.categories.filter(x => x && x.id && x.name).map(x => ({ ...x }));
     if (v.rates && typeof v.rates === "object") for (const [k, r] of Object.entries(v.rates)) if (+r > 0) s.rates[k] = +r;
@@ -2417,7 +2840,8 @@ button, label, .log { touch-action: manipulation; }
     db = createLocalDB(); downloads = { save: saveFile };
     try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
     let loaded = false, gotLedger = false, gotSettings = false;
-    const maybeBookReady = () => { if (gotLedger && gotSettings && !bookReady) { bookReady = true; render(); } };
+    let gotWeights = false;
+    const maybeBookReady = () => { if (gotLedger && gotSettings && gotWeights && !bookReady) { bookReady = true; render(); } };
     const timer = setTimeout(() => { if (!loaded) setStatus("Can't reach your saved logs yet.", true); }, 10000);
     db.collection("ledger").onSnapshot(snap => {
       const next = {};
@@ -2428,6 +2852,14 @@ button, label, .log { touch-action: manipulation; }
       if (!snap.metadata.fromCache && !gotLedger) { gotLedger = true; queueMicrotask(maybeBookReady); }
       render();
     }, err => { clearTimeout(timer); setStatus(err && err.code === "revoked" ? "Access ended." : "Couldn't load saved logs.", true); });
+    db.collection("weights").onSnapshot(snap => {
+      const next = {};
+      snap.docs.forEach(d => { const v = d.data(); if (v && v.days && typeof v.days === "object") next[d.id] = v.days; });
+      for (const mk of Object.keys(pendingW)) if (pendingW[mk] > 0) { if (st.weights[mk]) next[mk] = st.weights[mk]; else delete next[mk]; }
+      st.weights = next;
+      if (!gotWeights) { gotWeights = true; queueMicrotask(maybeBookReady); }
+      render();
+    }, () => {});
     db.doc("settings/main").onSnapshot(snap => {
       if (!gotSettings) { gotSettings = true; queueMicrotask(maybeBookReady); }
       if (pendingSettings > 0 || !snap.exists) return;
