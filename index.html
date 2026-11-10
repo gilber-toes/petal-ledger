@@ -151,6 +151,8 @@ h1 { font-size: 1.55rem; line-height: 1.1; }
 .wday .d { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
 .wday .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
 .wday .dot.good { background: var(--mint-bar); } .wday .dot.bad { background: var(--rose-bar); }
+.wday .dot.half { background: linear-gradient(90deg, var(--mint-bar) 50%, var(--line) 50%); }
+.wday:disabled { opacity: 0.45; cursor: default; }
 .wday .dot.ns { background: var(--mint-ink); box-shadow: 0 0 0 2px var(--mint-bg); }
 .wday .dot.miss { background: transparent; box-shadow: inset 0 0 0 1.5px var(--muted); }
 .ns-badge { width: 30px; height: 30px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--mint-bar); color: var(--mint-ink); font-weight: 800; flex: none; }
@@ -2365,7 +2367,7 @@ button, label, .log { touch-action: manipulation; }
     if (opts.forKey) { fillForSelect(opts.forKey); updateForNote(); }
     renderPaybacks(); updateRate(); showSheet($("logSheet"));
   }
-  $("fab").onclick = () => st.view === "weight" ? openWeight(todayKey(), autoSlot()) : openLog(null);
+  $("fab").onclick = () => st.view === "weight" ? openWeight(st.wDay || todayKey(), (st.wDay || todayKey()) === todayKey() ? autoSlot() : (weightDay(st.wDay).am ? "pm" : "am")) : openLog(null);
   function readForm() {
     const msg = $("fMsg");
     const a = parseNum($("fAmt").value), amt = Math.round(a * 100);
@@ -2570,7 +2572,17 @@ button, label, .log { touch-action: manipulation; }
     <div class="legend"><span><i style="background:var(--accent)"></i>Morning</span><span><i style="background:var(--rose-bar);border-radius:50%"></i>Night</span>${S.goalJin ? `<span><i class="dash"></i>Goal</span>` : ""}<span class="sub">${W_UNITS[wu()].label}</span></div>`;
   }
   function renderWeight() {
-    const all = allWeights(), t = todayKey(), today = weightDay(t);
+    const all = allWeights(), t = todayKey();
+    if (!st.wDay || st.wDay > t) st.wDay = t;
+    const k = st.wDay, today = weightDay(k);
+    const dayLabel = k === t ? "Today" : k === shiftKey(t, -1) ? "Yesterday" : fmtD(k, { weekday: "short", month: "short", day: "numeric" });
+    const ws = weekStartOf(k);
+    const week = Array.from({ length: 7 }, (_, i) => {
+      const d = addDays(ws, i), dk = keyOf(d), w = weightDay(dk), future = dk > t;
+      const dot = w.am && w.pm ? "good" : w.am || w.pm ? "half" : "";
+      return `<button type="button" class="wday${dk === k ? " sel" : ""}${dk === t ? " today" : ""}" data-wday="${dk}" ${future ? "disabled" : ""} aria-label="${esc(fmtD(d, { weekday: "long", month: "long", day: "numeric" }))}${w.am || w.pm ? ", weight logged" : ""}">
+        <span class="w">${esc(fmtD(d, { weekday: "narrow" }))}</span><span class="d">${d.getDate()}</span><span class="dot ${dot}"></span>${dk === t ? dco("wk", "mini") : ""}</button>`;
+    }).join("");
     const slot = (key, icon, label) => {
       const e = today[key];
       return `<button type="button" class="wslot ${e ? "has" : ""}" data-wlog="${key}">
@@ -2582,10 +2594,21 @@ button, label, .log { touch-action: manipulation; }
     const g = goalProgress(all);
     const recent = all.slice(-14).reverse();
     $("view-weight").innerHTML = `
+      <div class="day-nav">
+        <button type="button" class="icon-btn" id="wDayPrev" aria-label="Previous day">‹</button>
+        <label class="day-pill" id="wDayPill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="4"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+          <span>${esc(dayLabel)}</span>
+          <input type="date" id="wDayPicker" value="${k}" max="${t}" aria-label="Pick a day">
+        </label>
+        <button type="button" class="icon-btn" id="wDayNext" aria-label="Next day" ${k >= t ? "disabled" : ""}>›</button>
+      </div>
+      <div class="week" role="group" aria-label="This week's weigh-ins">${week}</div>
       <div class="card">${dco("br")}
-        <div class="card-head"><h2>${hdeco()}Today</h2><span class="sub">${esc(fmtD(t, { weekday: "short", month: "short", day: "numeric" }))}</span></div>
+        <div class="card-head"><h2>${hdeco()}${esc(dayLabel)}</h2><span class="sub">${esc(fmtD(k, { weekday: "short", month: "short", day: "numeric" }))}</span></div>
         <div class="wslots">${slot("am", "☀️", "Morning")}${slot("pm", "🌙", "Night")}</div>
         <button type="button" class="details-btn book-btn wbook-btn" data-open-wbook><span class="book-btn-art">${stickerSVG("w-sun", 28)}</span><span class="sub" style="flex:1">Weight stickers · ${WSTICKERS.filter(x => wEarned()[x.id]).length} of ${WSTICKERS.length}</span><b>Open</b></button>
+        ${!today.am && !today.pm && k !== t ? `<p class="wdiff">Nothing logged on this day yet. Tap Morning or Night to add it.</p>` : ""}
         ${diff !== null ? `<p class="wdiff">Night is <b>${diff >= 0 ? "+" : "−"}${fmtJin(Math.abs(diff))}</b> (${fmtKg(Math.abs(diff))}) vs morning. Changes through the day are normal.</p>` : ""}
       </div>
       <div class="card">${dstitch()}
@@ -2608,10 +2631,15 @@ button, label, .log { touch-action: manipulation; }
           <span class="num">☀️ ${d.am ? toU(d.am.jin).toFixed(1) : "—"}</span><span class="num">🌙 ${d.pm ? toU(d.pm.jin).toFixed(1) : "—"}</span></button>`).join("") : `<p class="empty">No weights yet. Tap ☀️ Morning above to log your first one.</p>`}
       </div>`;
   }
+  $("view-weight").addEventListener("change", e => { if (e.target.id === "wDayPicker" && validKey(e.target.value)) { st.wDay = e.target.value > todayKey() ? todayKey() : e.target.value; render(); } });
   $("view-weight").addEventListener("click", e => {
-    const b = e.target.closest("[data-wlog]"); if (b) { openWeight(todayKey(), b.dataset.wlog); return; }
+    if (e.target.closest("#wDayPrev")) { st.wDay = shiftKey(st.wDay || todayKey(), -1); render(); return; }
+    if (e.target.closest("#wDayNext")) { const n = shiftKey(st.wDay || todayKey(), 1); if (n <= todayKey()) { st.wDay = n; render(); } return; }
+    const wd = e.target.closest("[data-wday]"); if (wd && !wd.disabled) { st.wDay = wd.dataset.wday; render(); return; }
+    if (e.target.closest("#wDayPill") && e.target.id !== "wDayPicker") { try { $("wDayPicker").showPicker(); } catch {} return; }
+    const b = e.target.closest("[data-wlog]"); if (b) { openWeight(st.wDay || todayKey(), b.dataset.wlog); return; }
     const r = e.target.closest("[data-wrange]"); if (r) { st.wRange = r.dataset.wrange; render(); return; }
-    const h = e.target.closest("[data-wedit]"); if (h) { const d = weightDay(h.dataset.wedit); openWeight(h.dataset.wedit, d.am ? "am" : "pm"); return; }
+    const h = e.target.closest("[data-wedit]"); if (h) { st.wDay = h.dataset.wedit; render(); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
     if (e.target.closest("#wGoalEdit")) { st.view = "settings"; render(); setTimeout(() => { const g = $("sGoal"); if (g) { g.scrollIntoView({ block: "center" }); g.focus(); } }, 50); }
   });
   // entry sheet
@@ -2629,7 +2657,7 @@ button, label, .log { touch-action: manipulation; }
   function updateWKg() { const v = parseNum($("wVal").value); $("wKg").textContent = v > 0 ? `= ${fmtKg(fromU(v))}` : unitNote(); }
   function openWeight(date, slot) {
     if (readOnly) return;
-    $("wDate").value = date; $("wMsg").textContent = "";
+    $("wDate").value = date; $("wDate").max = todayKey(); $("wMsg").textContent = "";
     setWSlot(slot || autoSlot());
     showSheet($("weightSheet"));
   }
@@ -2641,10 +2669,11 @@ button, label, .log { touch-action: manipulation; }
     ev.preventDefault();
     const k = $("wDate").value, entered = parseNum($("wVal").value), v = Math.round(fromU(entered) * 1000) / 1000;
     if (!validKey(k)) { $("wMsg").textContent = "Pick a date."; return; }
+    if (k > todayKey()) { $("wMsg").textContent = "You can't log a weight for a future day."; return; }
     if (!(v >= 20 && v <= 600)) { $("wMsg").textContent = `Enter a weight in ${W_UNITS[wu()].label} (for example ${W_UNITS[wu()].eg}).`; $("wVal").focus(); return; }
     const mk = k.slice(0, 7), days = { ...(st.weights[mk] || {}) };
     days[k] = { ...(days[k] || {}), [wSlot]: { jin: v, at: Date.now() } };
-    st.weights = { ...st.weights, [mk]: days };
+    st.weights = { ...st.weights, [mk]: days }; st.wDay = k;
     saveWeights(mk); closeSheet($("weightSheet"));
     toast(`${wSlot === "am" ? "Morning" : "Night"} weight saved · ${fmtJin(v)} (${fmtKg(v)})`); render();
   });
@@ -2937,7 +2966,7 @@ button, label, .log { touch-action: manipulation; }
 
   // roll over at midnight
   let lastDay = todayKey();
-  setInterval(() => { const t = todayKey(); if (t !== lastDay) { if (st.day === lastDay) st.day = t; lastDay = t; render(); } }, 60000);
+  setInterval(() => { const t = todayKey(); if (t !== lastDay) { if (st.day === lastDay) st.day = t; if (st.wDay === lastDay) st.wDay = t; lastDay = t; render(); } }, 60000);
 })();
 </script>
 
