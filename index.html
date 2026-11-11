@@ -911,6 +911,8 @@ button, label, .log { touch-action: manipulation; }
   ];
   const PAYBACK = { id: "payback", name: "Paid back", emoji: "🤝", hue: 155 };
   const activeCats = () => S.categories.filter(c => !c.archived);
+  const IN_SPENT_KINDS = [PAYBACK, ...INCOME_CATS];
+  const inLowersSpent = id => !(Array.isArray(S.inExclude) && S.inExclude.includes(id));
   const catOf = id => S.categories.find(c => c.id === id) || INCOME_CATS.find(c => c.id === id) || { id, name: "Uncategorized", emoji: "•", hue: 250 };
   const dayBudget = k => Object.prototype.hasOwnProperty.call(S.dayBudgets, k) ? S.dayBudgets[k] : S.dailyBudgetCents;
   function context() {
@@ -1845,8 +1847,12 @@ button, label, .log { touch-action: manipulation; }
       : r.counted && r.hasB ? diffChip(r.diff, true) : r.counted ? '<span class="sub">no budget</span>' : '<span class="sub">—</span>';
 
     // money in from income of every kind (paybacks already come off the log they belong to)
-    const incIn = (a, b) => c.income.filter(x => x.date >= a && x.date < b).reduce((t, x) => t + homeCents(x), 0);
-    const netSpent = T.spent - incIn(sk, ek), prevNet = P.spent - incIn(pr.sk, pr.ek);
+    const pbOn = inLowersSpent("payback");
+    const incIn = (a, b) => c.income.filter(x => x.date >= a && x.date < b && inLowersSpent(x.cat)).reduce((t, x) => t + homeCents(x), 0);
+    const backIn = (a, b) => c.all.filter(x => x.date >= a && x.date < b).reduce((t, x) => t + Math.min(paidBackOf(x), grossCents(x)), 0);
+    // T.spent already has paybacks taken off; add them back if paybacks shouldn't lower Spent
+    const netOf = (spent, a, b) => spent + (pbOn ? 0 : backIn(a, b)) - incIn(a, b);
+    const netSpent = netOf(T.spent, sk, ek), prevNet = netOf(P.spent, pr.sk, pr.ek), incCounted = incIn(sk, ek);
     let cmp = "&nbsp;";
     if (prevNet > 0 && netSpent >= 0) {
       const pct = Math.round((netSpent - prevNet) / prevNet * 100);
@@ -1871,7 +1877,7 @@ button, label, .log { touch-action: manipulation; }
         <button type="button" class="icon-btn" id="pNext" aria-label="Next ${word}" ${sk > c.today ? "disabled" : ""}>›</button>
       </div>
       <div class="kpis three">
-        <div class="kpi">${dstitch("10px")}<span class="lbl">${netSpent < 0 ? "Net in" : "Spent"}</span><span class="v">${netSpent < 0 ? "+" + money(-netSpent) : money(netSpent)}</span><span class="hint">${cmp}</span>${backSum || incTotal ? `<span class="hint down">after ${[backSum ? money(backSum) + " back" : "", incTotal ? money(incTotal) + " in" : ""].filter(Boolean).join(" + ")}</span>` : ""}</div>
+        <div class="kpi">${dstitch("10px")}<span class="lbl">${netSpent < 0 ? "Net in" : "Spent"}</span><span class="v">${netSpent < 0 ? "+" + money(-netSpent) : money(netSpent)}</span><span class="hint">${cmp}</span>${(pbOn && backSum) || incCounted ? `<span class="hint down">after ${[pbOn && backSum ? money(backSum) + " back" : "", incCounted ? money(incCounted) + " in" : ""].filter(Boolean).join(" + ")}</span>` : ""}</div>
         <div class="kpi saved-tile ${hasB ? (T.diff >= 0 ? "good" : "bad") : ""}">${hasB && T.diff >= 0 ? dco("kwm", "wm") : dco("kmini", "mini")}<span class="lbl">${!hasB ? "Difference" : T.diff >= 0 ? "Saved" : "Over by"}</span><span class="v">${hasB ? money(Math.abs(T.diff)) : "—"}</span><span class="hint">${hasB ? "Budget − spent" : "Set a daily budget"}</span></div>
         <div class="kpi ${incTotal + pbIn ? "good" : ""}">${dstitch("10px")}<span class="lbl">Money in</span><span class="v">${incTotal + pbIn ? "+" + money(incTotal + pbIn) : "—"}</span>
           <span class="hint">${incTotal + pbIn ? [pbIn ? `${money(pbIn)} back` : "", incTotal ? `${money(incTotal)} income` : ""].filter(Boolean).join(" · ") : "Paybacks and income"}</span></div>
@@ -2086,6 +2092,9 @@ button, label, .log { touch-action: manipulation; }
           <label class="field"><span>Tracking since</span><input type="date" id="sStart" value="${esc(S.startDate || c.start)}"></label>
         </div>
         <p class="inline-note">Days before this date aren't counted in budget totals.${S.startDate ? ` <button type="button" class="ghost" id="sStartReset" style="padding:3px 10px">Use first log</button>` : ""}</p>
+        <div class="field"><span>Money in that lowers Spent in Reports</span>
+          <div class="catgrid" role="group" aria-label="Money in that lowers Spent">${IN_SPENT_KINDS.map(x => `<button type="button" class="catbtn" data-inspent="${x.id}" aria-pressed="${inLowersSpent(x.id)}" style="--ch:${x.hue}"><span class="e">${x.emoji}</span><span class="t">${esc(x.name)}</span></button>`).join("")}</div></div>
+        <p class="inline-note">Tap to turn each one on or off. Paybacks come off the day of the payment they belong to, other money in counts on the day it came in.</p>
       </div>
       <div class="card set-group">
         <h2>Currencies</h2>
@@ -2133,6 +2142,11 @@ button, label, .log { touch-action: manipulation; }
     if (t.hasAttribute("data-gold-theme")) {
       if (!(S.unlocks && S.unlocks.gold)) return;
       S.goldTheme = true; S.matchaTheme = false; saveSettings(); render(); toast("Golden Blossom theme on"); return;
+    }
+    if (t.dataset.inspent) {
+      const id = t.dataset.inspent, ex = new Set(Array.isArray(S.inExclude) ? S.inExclude : []);
+      ex.has(id) ? ex.delete(id) : ex.add(id); S.inExclude = [...ex]; saveSettings(); render();
+      const k = IN_SPENT_KINDS.find(x => x.id === id); toast(`${k ? k.name : "This"} ${ex.has(id) ? "no longer lowers" : "now lowers"} Spent`); return;
     }
     if (t.dataset.wunit) { S.weightUnit = t.dataset.wunit; saveSettings(); render(); toast(`Weights now shown in ${W_UNITS[wu()].label}`); return; }
     if (t.id === "sWeightToggle") { S.weightOn = !S.weightOn; saveSettings(); render(); toast(S.weightOn ? "Weight tab is back" : "Weight tab hidden"); return; }
@@ -2930,6 +2944,7 @@ button, label, .log { touch-action: manipulation; }
     if (Array.isArray(v.categories) && v.categories.length) s.categories = v.categories.filter(x => x && x.id && x.name).map(x => ({ ...x }));
     if (v.rates && typeof v.rates === "object") for (const [k, r] of Object.entries(v.rates)) if (+r > 0) s.rates[k] = +r;
     if ([0, 1, 6].includes(+v.weekStart)) s.weekStart = +v.weekStart;
+    if (Array.isArray(v.inExclude)) s.inExclude = v.inExclude.filter(id => typeof id === "string" && id.length < 40);
     if (validKey(v.startDate)) s.startDate = v.startDate;
     if (Number.isFinite(+v.theme)) s.theme = +v.theme === 45 ? 265 : +v.theme;
     return s;
@@ -2974,7 +2989,7 @@ button, label, .log { touch-action: manipulation; }
 </script>
 
 <script>
-const APP_VERSION = "20261112004245";
+const APP_VERSION = "20261112005007";
 if ("serviceWorker" in navigator) {
   addEventListener("load", () => navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(() => {}));
 }
