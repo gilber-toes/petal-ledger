@@ -1,4 +1,4 @@
-const CACHE = "petal-ledger-20261112005007";
+const CACHE = "petal-ledger-20261112010547";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {

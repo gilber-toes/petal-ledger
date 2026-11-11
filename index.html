@@ -1865,7 +1865,9 @@ button, label, .log { touch-action: manipulation; }
     const incList = c.income.filter(x => x.date >= sk && x.date < ek);
     const incTotal = incList.reduce((t, x) => t + homeCents(x), 0);
     const pbIn = c.paybacks.filter(o => o.p.date >= sk && o.p.date < ek).reduce((t, o) => t + toHome(o.p), 0);
-    const rb = buddyReport(T, c, word, list, { backSum, incTotal });
+    // Saved follows the Spent box: money in that lowers Spent also adds to Saved
+    const savedDiff = T.diff + (T.spent - netSpent);
+    const rb = buddyReport({ ...T, diff: savedDiff }, c, word, list, { backSum, incTotal });
 
     $("view-reports").innerHTML = `
       <div class="seg" role="group" aria-label="Report period">
@@ -1878,7 +1880,7 @@ button, label, .log { touch-action: manipulation; }
       </div>
       <div class="kpis three">
         <div class="kpi">${dstitch("10px")}<span class="lbl">${netSpent < 0 ? "Net in" : "Spent"}</span><span class="v">${netSpent < 0 ? "+" + money(-netSpent) : money(netSpent)}</span><span class="hint">${cmp}</span>${(pbOn && backSum) || incCounted ? `<span class="hint down">after ${[pbOn && backSum ? money(backSum) + " back" : "", incCounted ? money(incCounted) + " in" : ""].filter(Boolean).join(" + ")}</span>` : ""}</div>
-        <div class="kpi saved-tile ${hasB ? (T.diff >= 0 ? "good" : "bad") : ""}">${hasB && T.diff >= 0 ? dco("kwm", "wm") : dco("kmini", "mini")}<span class="lbl">${!hasB ? "Difference" : T.diff >= 0 ? "Saved" : "Over by"}</span><span class="v">${hasB ? money(Math.abs(T.diff)) : "—"}</span><span class="hint">${hasB ? "Budget − spent" : "Set a daily budget"}</span></div>
+        <div class="kpi saved-tile ${hasB ? (savedDiff >= 0 ? "good" : "bad") : ""}">${hasB && savedDiff >= 0 ? dco("kwm", "wm") : dco("kmini", "mini")}<span class="lbl">${!hasB ? "Difference" : savedDiff >= 0 ? "Saved" : "Over by"}</span><span class="v">${hasB ? money(Math.abs(savedDiff)) : "—"}</span><span class="hint">${hasB ? "Budget − spent" : "Set a daily budget"}</span></div>
         <div class="kpi ${incTotal + pbIn ? "good" : ""}">${dstitch("10px")}<span class="lbl">Money in</span><span class="v">${incTotal + pbIn ? "+" + money(incTotal + pbIn) : "—"}</span>
           <span class="hint">${incTotal + pbIn ? [pbIn ? `${money(pbIn)} back` : "", incTotal ? `${money(incTotal)} income` : ""].filter(Boolean).join(" · ") : "Paybacks and income"}</span></div>
       </div>
@@ -2989,7 +2991,7 @@ button, label, .log { touch-action: manipulation; }
 </script>
 
 <script>
-const APP_VERSION = "20261112005007";
+const APP_VERSION = "20261112010547";
 if ("serviceWorker" in navigator) {
   addEventListener("load", () => navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(() => {}));
 }
